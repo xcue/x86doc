@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="style.css" type="text/css" rel="stylesheet">
+<title>SHA1RNDS4—Perform Four Rounds of SHA1 Operation </title></head>
+<body>
+<h1>SHA1RNDS4—Perform Four Rounds of SHA1 Operation</h1>
+<table>
+<tr>
+<th>Opcode/Instruction</th>
+<th>Op/En</th>
+<th>64/32 bit Mode Support</th>
+<th>CPUID Feature Flag</th>
+<th>Description</th></tr>
+<tr>
+<td>
+<p>0F 3A CC /r ib</p>
+<p>SHA1RNDS4 xmm1, xmm2/m128, imm8</p></td>
+<td>RMI</td>
+<td>V/V</td>
+<td>SHA</td>
+<td>Performs four rounds of SHA1 operation operating on SHA1 state (A,B,C,D) from xmm1, with a pre-computed sum of the next 4 round message dwords and state variable E from xmm2/m128. The immediate byte controls logic functions and round constants.</td></tr></table>
+<h3>Instruction Operand Encoding</h3>
+<table>
+<tr>
+<td>Op/En</td>
+<td>Operand 1</td>
+<td>Operand 2</td>
+<td>Operand 3</td></tr>
+<tr>
+<td>RMI</td>
+<td>ModRM:reg (r, w)</td>
+<td>ModRM:r/m (r)</td>
+<td>Imm8</td></tr></table>
+<p><strong>Description</strong></p>
+<p>The SHA1RNDS4 instruction performs four rounds of SHA1 operation using an initial SHA1 state (A,B,C,D) from the first operand (which is a source operand and the destination operand) and some pre-computed sum of the next 4 round message dwords, and state variable E from the second operand (a source operand). The updated SHA1 state (A,B,C,D) after four rounds of processing is stored in the destination operand.</p>
+<p><strong>Operation</strong></p>
+<p><strong>SHA1RNDS4</strong></p>
+<p>The function f() and Constant K are dependent on the value of the immediate.</p>
+<p>IF ( imm8[1:0] = 0 )</p>
+<p>THEN f() (cid:197) f0(), K (cid:197) K<sub>0</sub>;</p>
+<p>ELSE IF ( imm8[1:0] = 1 )</p>
+<p>THEN f() (cid:197) f1(), K (cid:197) K<sub>1</sub>;</p>
+<p>ELSE IF ( imm8[1:0] = 2 )</p>
+<p>THEN f() (cid:197) f2(), K (cid:197) K<sub>2</sub>;</p>
+<p>ELSE IF ( imm8[1:0] = 3 )</p>
+<p>THEN f() (cid:197) f3(), K (cid:197) K3;</p>
+<p>FI;</p>
+<p>A (cid:197) SRC1[127:96];</p>
+<p>B (cid:197) SRC1[95:64];</p>
+<p>C (cid:197) SRC1[63:32];</p>
+<p>D (cid:197) SRC1[31:0];</p>
+<p>W<sub>0</sub>E (cid:197) SRC2[127:96];</p>
+<p>W<sub>1</sub> (cid:197) SRC2[95:64];</p>
+<p>W<sub>2</sub> (cid:197) SRC2[63:32];</p>
+<p>W<sub>3</sub> (cid:197) SRC2[31:0];</p>
+<p>Round i = 0 operation:</p>
+<p>A_1 (cid:197) f (B, C, D) + (A ROL 5) +W<sub>0</sub>E +K;</p>
+<p>B_1 (cid:197) A;</p>
+<p>C_1 (cid:197) B ROL 30;</p>
+<p>D_1 (cid:197) C;</p>
+<p>E_1 (cid:197) D;</p>
+<p>FOR i = 1 to 3</p>
+<p>A_(i +1) (cid:197) f (B_i, C_i, D_i) + (A_i ROL 5) +W<sub>i</sub>+ E_i +K;</p>
+<p>B_(i +1) (cid:197) A_i;</p>
+<p>C_(i +1) (cid:197) B_i ROL 30;</p>
+<p>D_(i +1) (cid:197) C_i;</p>
+<p>E_(i +1) (cid:197) D_i;</p>
+<p>ENDFOR</p>
+<p>DEST[127:96] (cid:197) A_4;</p>
+<p>DEST[95:64] (cid:197) B_4;</p>
+<p>DEST[63:32] (cid:197) C_4;</p>
+<p>DEST[31:0] (cid:197) D_4;</p>
+<p><strong>Intel C/C++ Compiler Intrinsic Equivalent</strong></p>
+<p>SHA1RNDS4: __m128i _mm_sha1rnds4_epu32(__m128i, __m128i, const int);</p>
+<p><strong>Flags Affected</strong></p>
+<p>None</p>
+<p><strong>SIMD Floating-Point Exceptions</strong></p>
+<p>None</p>
+<p><strong>Other Exceptions</strong></p>
+<p>See Exceptions Type 4.</p></body></html>

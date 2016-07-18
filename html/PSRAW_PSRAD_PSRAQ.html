@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="style.css" type="text/css" rel="stylesheet">
+<title>PSRAW/PSRAD/PSRAQ—Shift Packed Data Right Arithmetic </title></head>
+<body>
+<h1>PSRAW/PSRAD/PSRAQ—Shift Packed Data Right Arithmetic</h1>
+<table>
+<tr>
+<th>Description</th>
+<th>CPUID Feature Flag</th>
+<th>Opcode/Instruction</th>
+<th>Op/En</th>
+<th>64/32 bit Mode Support</th></tr>
+<tr>
+<td>Shift words in <em>mm</em> right by <em>mm/m64</em> while shifting in sign bits.</td>
+<td>MMX</td>
+<td>
+<p>0F E1 /<em>r</em><sup>1</sup></p>
+<p>PSRAW <em>mm, mm/m64</em></p></td>
+<td>RM</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift words in <em>xmm1</em> right by <em>xmm2/m128</em> while shifting in sign bits.</td>
+<td>SSE2</td>
+<td>
+<p>66 0F E1 /<em>r</em></p>
+<p>PSRAW <em>xmm1</em>, <em>xmm2/m128</em></p></td>
+<td>RM</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift words in <em>mm</em> right by <em>imm8</em> while shifting in sign bits</td>
+<td>MMX</td>
+<td>
+<p>0F 71 /4 ib<sup>1</sup></p>
+<p>PSRAW <em>mm, imm8</em></p></td>
+<td>MI</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift words in <em>xmm1</em> right by imm8 while shifting in sign bits</td>
+<td>SSE2</td>
+<td>
+<p>66 0F 71 /4 ib</p>
+<p>PSRAW <em>xmm1</em>, imm8</p></td>
+<td>MI</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift doublewords in <em>mm</em> right by <em>mm/m64</em> while shifting in sign bits.</td>
+<td>MMX</td>
+<td>
+<p>0F E2 /<em>r</em><sup>1</sup></p>
+<p>PSRAD <em>mm, mm/m64</em></p></td>
+<td>RM</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift doubleword in <em>xmm1</em> right by <em>xmm2 /m128 </em>while shifting in sign bits.</td>
+<td>SSE2</td>
+<td>
+<p>66 0F E2 /<em>r</em></p>
+<p>PSRAD <em>xmm1</em>, <em>xmm2/m128</em></p></td>
+<td>RM</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift doublewords in <em>mm</em> right by <em>imm8</em> while shifting in sign bits.</td>
+<td>MMX</td>
+<td>
+<p>0F 72 /4 ib<sup>1</sup></p>
+<p>PSRAD <em>mm, imm8</em></p></td>
+<td>MI</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift doublewords in <em>xmm1</em> right by <em>imm8</em> while shifting in sign bits.</td>
+<td>SSE2</td>
+<td>
+<p>66 0F 72 /4 ib</p>
+<p>PSRAD <em>xmm1</em>, imm8</p></td>
+<td>MI</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift words in <em>xmm2</em> right by amount specified in <em>xmm3/m128</em> while shifting in sign bits.</td>
+<td>AVX</td>
+<td>
+<p>VEX.NDS.128.66.0F.WIG E1 /r</p>
+<p>VPSRAW <em>xmm1, xmm2, xmm3/m128</em></p></td>
+<td>RVM</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift words in <em>xmm2</em> right by <em>imm8</em> while shifting in sign bits.</td>
+<td>AVX</td>
+<td>
+<p>VEX.NDD.128.66.0F.WIG 71 /4 ib</p>
+<p>VPSRAW <em>xmm1, xmm2, imm8</em></p></td>
+<td>VMI</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift doublewords in <em>xmm2</em> right by amount specified in <em>xmm3/m128</em> while shifting in sign bits.</td>
+<td>AVX</td>
+<td>
+<p>VEX.NDS.128.66.0F.WIG E2 /r</p>
+<p>VPSRAD <em>xmm1, xmm2, xmm3/m128</em></p></td>
+<td>RVM</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift doublewords in <em>xmm2</em> right by <em>imm8</em> while shifting in sign bits.</td>
+<td>AVX</td>
+<td>
+<p>VEX.NDD.128.66.0F.WIG 72 /4 ib</p>
+<p>VPSRAD <em>xmm1, xmm2, imm8</em></p></td>
+<td>VMI</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift words in <em>ymm2</em> right by amount specified in <em>xmm3/m128</em> while shifting in sign bits.</td>
+<td>AVX2</td>
+<td>
+<p>VEX.NDS.256.66.0F.WIG E1 /r</p>
+<p>VPSRAW <em>ymm1, ymm2, xmm3/m128</em></p></td>
+<td>RVM</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift words in <em>ymm2 </em>right by <em>imm8</em> while shifting in sign bits.</td>
+<td>AVX2</td>
+<td>
+<p>VEX.NDD.256.66.0F.WIG 71 /4 ib</p>
+<p>VPSRAW <em>ymm1, ymm2, imm8</em></p></td>
+<td>VMI</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift doublewords in <em>ymm2</em> right by amount specified in <em>xmm3/m128</em> while shifting in sign bits.</td>
+<td>AVX2</td>
+<td>
+<p>VEX.NDS.256.66.0F.WIG E2 /r</p>
+<p>VPSRAD <em>ymm1, ymm2, xmm3/m128</em></p></td>
+<td>RVM</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift doublewords in <em>ymm2</em> right by <em>imm8 </em>while shifting in sign bits.</td>
+<td>AVX2</td>
+<td>
+<p>VEX.NDD.256.66.0F.WIG 72 /4 ib</p>
+<p>VPSRAD <em>ymm1, ymm2, imm8</em></p></td>
+<td>VMI</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift words in xmm2 right by amount specified in xmm3/m128 while shifting in sign bits using writemask k1.</td>
+<td>AVX512VL AVX512BW</td>
+<td>
+<p>EVEX.NDS.128.66.0F.WIG E1 /r</p>
+<p>VPSRAW xmm1 {k1}{z}, xmm2, xmm3/m128</p></td>
+<td>M128</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift words in ymm2 right by amount specified in xmm3/m128 while shifting in sign bits using writemask k1.</td>
+<td>AVX512VL AVX512BW</td>
+<td>
+<p>EVEX.NDS.256.66.0F.WIG E1 /r</p>
+<p>VPSRAW ymm1 {k1}{z}, ymm2, xmm3/m128</p></td>
+<td>M128</td>
+<td>V/V</td></tr></table>
+<table>
+<tr>
+<td>
+<p>EVEX.NDS.512.66.0F.WIG E1 /r</p>
+<p>VPSRAW zmm1 {k1}{z}, zmm2, xmm3/m128</p>
+<p>writemask k1.</p></td>
+<td>M128</td>
+<td>V/V</td>
+<td>
+<p>AVX512BW Shift words in zmm2 right by amount specified in</p>
+<p>xmm3/m128 while shifting in sign bits using</p></td></tr>
+<tr>
+<td>
+<p>EVEX.NDD.128.66.0F.WIG 71 /4 ib</p>
+<p>VPSRAW xmm1 {k1}{z}, xmm2/m128, imm8</p></td>
+<td>FVMI</td>
+<td>V/V</td>
+<td>Shift words in xmm2/m128 right by imm8 while shifting in sign bits using writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.NDD.256.66.0F.WIG 71 /4 ib</p>
+<p>VPSRAW ymm1 {k1}{z}, ymm2/m256, imm8</p></td>
+<td>FVMI</td>
+<td>V/V</td>
+<td>Shift words in ymm2/m256 right by imm8 while shifting in sign bits using writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.NDD.512.66.0F.WIG 71 /4 ib</p>
+<p>VPSRAW zmm1 {k1}{z}, zmm2/m512, imm8</p></td>
+<td>FVMI</td>
+<td>V/V</td>
+<td>
+<p>AVX512BW Shift words in zmm2/m512 right by imm8 while</p>
+<p>shifting in sign bits using writemask k1.</p></td></tr>
+<tr>
+<td>
+<p>EVEX.NDS.128.66.0F.W0 E2 /r</p>
+<p>VPSRAD xmm1 {k1}{z}, xmm2, xmm3/m128</p>
+<p>using writemask k1.</p></td>
+<td>M128</td>
+<td>V/V</td>
+<td>Shift doublewords in xmm2 right by amount specified in xmm3/m128 while shifting in sign bits</td></tr>
+<tr>
+<td>
+<p>EVEX.NDS.256.66.0F.W0 E2 /r</p>
+<p>VPSRAD ymm1 {k1}{z}, ymm2, xmm3/m128</p>
+<p>using writemask k1.</p></td>
+<td>M128</td>
+<td>V/V</td>
+<td>Shift doublewords in ymm2 right by amount specified in xmm3/m128 while shifting in sign bits</td></tr>
+<tr>
+<td>
+<p>EVEX.NDS.512.66.0F.W0 E2 /r</p>
+<p>VPSRAD zmm1 {k1}{z}, zmm2, xmm3/m128</p>
+<p>using writemask k1.</p></td>
+<td>M128</td>
+<td>V/V</td>
+<td>Shift doublewords in zmm2 right by amount specified in xmm3/m128 while shifting in sign bits</td></tr>
+<tr>
+<td>
+<p>EVEX.NDD.128.66.0F.W0 72 /4 ib</p>
+<p>VPSRAD xmm1 {k1}{z}, xmm2/m128/m32bcst,</p>
+<p>writemask k1.</p>
+<p>imm8</p></td>
+<td>FVI</td>
+<td>V/V</td>
+<td>Shift doublewords in xmm2/m128/m32bcst right by imm8 while shifting in sign bits using</td></tr>
+<tr>
+<td>
+<p>EVEX.NDD.256.66.0F.W0 72 /4 ib</p>
+<p>VPSRAD ymm1 {k1}{z}, ymm2/m256/m32bcst,</p>
+<p>writemask k1.</p>
+<p>imm8</p></td>
+<td>FVI</td>
+<td>V/V</td>
+<td>Shift doublewords in ymm2/m256/m32bcst right by imm8 while shifting in sign bits using</td></tr>
+<tr>
+<td>
+<p>EVEX.NDD.512.66.0F.W0 72 /4 ib</p>
+<p>VPSRAD zmm1 {k1}{z}, zmm2/m512/m32bcst,</p>
+<p>writemask k1.</p>
+<p>imm8</p></td>
+<td>FVI</td>
+<td>V/V</td>
+<td>Shift doublewords in zmm2/m512/m32bcst right by imm8 while shifting in sign bits using</td></tr>
+<tr>
+<td>
+<p>EVEX.NDS.128.66.0F.W1 E2 /r</p>
+<p>VPSRAQ xmm1 {k1}{z}, xmm2, xmm3/m128</p>
+<p>using writemask k1.</p></td>
+<td>M128</td>
+<td>V/V</td>
+<td>Shift quadwords in xmm2 right by amount specified in xmm3/m128 while shifting in sign bits</td></tr>
+<tr>
+<td>
+<p>EVEX.NDS.256.66.0F.W1 E2 /r</p>
+<p>VPSRAQ ymm1 {k1}{z}, ymm2, xmm3/m128</p>
+<p>using writemask k1.</p></td>
+<td>M128</td>
+<td>V/V</td>
+<td>Shift quadwords in ymm2 right by amount specified in xmm3/m128 while shifting in sign bits</td></tr>
+<tr>
+<td>
+<p>EVEX.NDS.512.66.0F.W1 E2 /r</p>
+<p>VPSRAQ zmm1 {k1}{z}, zmm2, xmm3/m128</p>
+<p>using writemask k1.</p></td>
+<td>M128</td>
+<td>V/V</td>
+<td>Shift quadwords in zmm2 right by amount specified in xmm3/m128 while shifting in sign bits</td></tr>
+<tr>
+<td>
+<p>EVEX.NDD.128.66.0F.W1 72 /4 ib</p>
+<p>VPSRAQ xmm1 {k1}{z}, xmm2/m128/m64bcst,</p>
+<p>k1.</p>
+<p>imm8</p></td>
+<td>FVI</td>
+<td>V/V</td>
+<td>Shift quadwords in xmm2/m128/m64bcst right by imm8 while shifting in sign bits using writemask</td></tr>
+<tr>
+<td>
+<p>EVEX.NDD.256.66.0F.W1 72 /4 ib</p>
+<p>VPSRAQ ymm1 {k1}{z}, ymm2/m256/m64bcst,</p>
+<p>k1.</p>
+<p>imm8</p></td>
+<td>FVI</td>
+<td>V/V</td>
+<td>Shift quadwords in ymm2/m256/m64bcst right by imm8 while shifting in sign bits using writemask</td></tr></table>
+<table>
+<tr>
+<td>
+<p>EVEX.NDD.512.66.0F.W1 72 /4 ib</p>
+<p>VPSRAQ zmm1 {k1}{z}, zmm2/m512/m64bcst, imm8</p></td>
+<td>FVI</td>
+<td>V/V</td>
+<td>AVX512F</td>
+<td>Shift quadwords in zmm2/m512/m64bcst right by imm8 while shifting in sign bits using writemask k1.</td></tr></table>
+<p>NOTES:</p>
+<p>1. See note in Section 2.4, “AVX and SSE Instruction Exception Specification” in the <em>Intel® 64 and IA-32 Architectures Software Developer’s Manual, Volume 2A</em> and Section 22.25.3, “Exception Conditions of Legacy SIMD Instructions Operating on MMX Registers” in the <em>Intel® 64 and IA-32 Architectures Software Developer’s Manual, Volume 3A</em>.</p>
+<h3>Instruction Operand Encoding</h3>
+<table>
+<tr>
+<td>Op/En</td>
+<td>Operand 1</td>
+<td>Operand 2</td>
+<td>Operand 3</td>
+<td>Operand 4</td></tr>
+<tr>
+<td>RM</td>
+<td>ModRM:reg (r, w)</td>
+<td>ModRM:r/m (r)</td>
+<td>NA</td>
+<td>NA</td></tr>
+<tr>
+<td>MI</td>
+<td>ModRM:r/m (r, w)</td>
+<td>imm8</td>
+<td>NA</td>
+<td>NA</td></tr>
+<tr>
+<td>RVM</td>
+<td>ModRM:reg (w)</td>
+<td>VEX.vvvv (r)</td>
+<td>ModRM:r/m (r)</td>
+<td>NA</td></tr>
+<tr>
+<td>VMI</td>
+<td>VEX.vvvv (w)</td>
+<td>ModRM:r/m (r)</td>
+<td>imm8</td>
+<td>NA</td></tr>
+<tr>
+<td>FVMI</td>
+<td>EVEX.vvvv (w)</td>
+<td>ModRM:r/m (R)</td>
+<td>Imm8</td>
+<td>NA</td></tr>
+<tr>
+<td>FVI</td>
+<td>EVEX.vvvv (w)</td>
+<td>ModRM:r/m (R)</td>
+<td>Imm8</td>
+<td>NA</td></tr>
+<tr>
+<td>M128</td>
+<td>ModRM:reg (w)</td>
+<td>EVEX.vvvv (r)</td>
+<td>ModRM:r/m (r)</td>
+<td>NA</td></tr></table>
+<h2>Description</h2>
+<p>Shifts the bits in the individual data elements (words, doublewords or quadwords) in the destination operand (first operand) to the right by the number of bits specified in the count operand (second operand). As the bits in the data elements are shifted right, the empty high-order bits are filled with the initial value of the sign bit of the data element. If the value specified by the count operand is greater than 15 (for words), 31 (for doublewords), or 63 (for quadwords), each destination data element is filled with the initial value of the sign bit of the element. (Figure 4-18 gives an example of shifting words in a 64-bit operand.)</p>
+<svg width="568.799985" viewBox="112.380000 777392.040010 379.199990 104.759990" height="157.139985">
+<text y="777410.806688" x="160.0798" style="font-size:7.991000pt" lengthAdjust="spacingAndGlyphs" textLength="31.0226602">Pre-Shift</text>
+<text y="777419.146888" x="170.58" style="font-size:7.991000pt" lengthAdjust="spacingAndGlyphs" textLength="21.3263808">DEST</text>
+<text y="777432.685488" x="159.0" style="font-size:6.960000pt" lengthAdjust="spacingAndGlyphs" textLength="31.41744">Shift Right</text>
+<text y="777440.005488" x="163.02" style="font-size:6.960000pt" lengthAdjust="spacingAndGlyphs" textLength="27.528192">with Sign</text>
+<text y="777447.805588" x="161.1603" style="font-size:6.960000pt" lengthAdjust="spacingAndGlyphs" textLength="29.386512">Extension</text>
+<text y="777463.666388" x="155.2197" style="font-size:7.991000pt" lengthAdjust="spacingAndGlyphs" textLength="34.5506867">Post-Shift</text>
+<text y="777471.646888" x="169.56" style="font-size:7.991000pt" lengthAdjust="spacingAndGlyphs" textLength="21.3207871">DEST</text>
+<rect y="777403.14" x="194.7" style="fill:rgba(0,0,0,0);stroke:rgb(0,0,0);stroke-width:1pt;" height="18.0" width="62.88"></rect>
+<rect y="777403.14" x="257.58" style="fill:rgba(0,0,0,0);stroke:rgb(0,0,0);stroke-width:1pt;" height="18.0" width="62.88"></rect>
+<rect y="777403.14" x="383.4" style="fill:rgba(0,0,0,0);stroke:rgb(0,0,0);stroke-width:1pt;" height="18.0" width="62.88"></rect>
+<rect y="777456.12" x="257.04" style="fill:rgba(0,0,0,0);stroke:rgb(0,0,0);stroke-width:1pt;" height="18.0" width="62.88"></rect>
+<rect y="777456.12" x="319.92" style="fill:rgba(0,0,0,0);stroke:rgb(0,0,0);stroke-width:1pt;" height="18.0" width="62.88"></rect>
+<rect y="777456.12" x="382.8" style="fill:rgba(0,0,0,0);stroke:rgb(0,0,0);stroke-width:1pt;" height="18.0" width="62.88"></rect>
+<rect y="777456.12" x="194.1" style="fill:rgba(0,0,0,0);stroke:rgb(0,0,0);stroke-width:1pt;" height="18.0" width="62.94"></rect>
+<rect y="777403.14" x="320.46" style="fill:rgba(0,0,0,0);stroke:rgb(0,0,0);stroke-width:1pt;" height="18.0" width="62.94"></rect>
+<path style="stroke:black" d="M194.700000,777402.899990 L194.700000,777403.380000 L257.820000,777403.380000 L257.820000,777402.899990 "></path>
+<path style="stroke:black" d="M257.580000,777402.899990 L257.580000,777403.380000 L320.700000,777403.380000 L320.700000,777402.899990 "></path>
+<path style="stroke:black" d="M320.460000,777402.899990 L320.460000,777403.380000 L383.640000,777403.380000 L383.640000,777402.899990 "></path>
+<path style="stroke:black" d="M383.400000,777402.899990 L383.400000,777403.380000 L446.520000,777403.380000 L446.520000,777402.899990 "></path>
+<path style="stroke:black" d="M194.460000,777402.900000 L194.460000,777421.140000 L194.939980,777421.140000 L194.939980,777402.900000 "></path>
+<path style="stroke:black" d="M257.340000,777402.900000 L257.340000,777421.140000 L257.820010,777421.140000 L257.820010,777402.900000 "></path>
+<path style="stroke:black" d="M320.220000,777402.900000 L320.220000,777421.140000 L320.700010,777421.140000 L320.700010,777402.900000 "></path>
+<path style="stroke:black" d="M383.160000,777402.900000 L383.160000,777421.140000 L383.640010,777421.140000 L383.640010,777402.900000 "></path>
+<path style="stroke:black" d="M257.340000,777403.140000 L257.340000,777421.380000 L257.820010,777421.380000 L257.820010,777403.140000 "></path>
+<path style="stroke:black" d="M320.220000,777403.140000 L320.220000,777421.380000 L320.700010,777421.380000 L320.700010,777403.140000 "></path>
+<path style="stroke:black" d="M383.160000,777403.140000 L383.160000,777421.380000 L383.640010,777421.380000 L383.640010,777403.140000 "></path>
+<path style="stroke:black" d="M446.040000,777403.140000 L446.040000,777421.380000 L446.519980,777421.380000 L446.519980,777403.140000 "></path>
+<path style="stroke:black" d="M194.460000,777420.899990 L194.460000,777421.380000 L257.580000,777421.380000 L257.580000,777420.899990 "></path>
+<path style="stroke:black" d="M257.340000,777420.899990 L257.340000,777421.380000 L320.460000,777421.380000 L320.460000,777420.899990 "></path>
+<path style="stroke:black" d="M320.220000,777420.899990 L320.220000,777421.380000 L383.400000,777421.380000 L383.400000,777420.899990 "></path>
+<path style="stroke:black" d="M383.160000,777420.899990 L383.160000,777421.380000 L446.280000,777421.380000 L446.280000,777420.899990 "></path>
+<path style="stroke:black" d="M212.640000,777421.320000 L212.640000,777436.260000 L213.120000,777436.260000 L213.120000,777421.320000 "></path>
+<path style="stroke:black" d="M276.360000,777421.320000 L276.360000,777436.260000 L276.839980,777436.260000 L276.839980,777421.320000 "></path>
+<path style="stroke:black" d="M394.800000,777421.380000 L394.800000,777436.320000 L395.279980,777436.320000 L395.279980,777421.380000 "></path>
+<path style="stroke:black" d="M333.120000,777421.800000 L333.120000,777436.740000 L333.600010,777436.740000 L333.600010,777421.800000 "></path>
+<path style="stroke:black" d="M212.880000,777435.779990 L212.880000,777436.260000 L238.860000,777436.260000 L238.860000,777435.779990 "></path>
+<path style="stroke:black" d="M276.600000,777435.779990 L276.600000,777436.260000 L302.580000,777436.260000 L302.580000,777435.779990 "></path>
+<path style="stroke:black" d="M395.040000,777435.839990 L395.040000,777436.320000 L421.020000,777436.320000 L421.020000,777435.839990 "></path>
+<path style="stroke:black" d="M238.380000,777436.020000 L238.380000,777448.920000 L238.860010,777448.920000 L238.860010,777436.020000 "></path>
+<path style="stroke:black" d="M302.100000,777436.020000 L302.100000,777448.920000 L302.579980,777448.920000 L302.579980,777436.020000 "></path>
+<path style="stroke:black" d="M420.540000,777436.080000 L420.540000,777448.980000 L421.019980,777448.980000 L421.019980,777436.080000 "></path>
+<path style="stroke:black" d="M333.360000,777436.259990 L333.360000,777436.740000 L359.280000,777436.740000 L359.280000,777436.259990 "></path>
+<path style="stroke:black" d="M358.800000,777436.500000 L358.800000,777449.400000 L359.279980,777449.400000 L359.279980,777436.500000 "></path>
+<path style="stroke:black" d="M302.160000,777449.280000 L303.660000,777448.680000 L304.620000,777448.260000 L302.820000,777454.740000 L302.340000,777456.420000 L301.860000,777454.740000 L300.300000,777449.340000 L300.000000,777448.320000 L300.960000,777448.680000 L301.260000,777449.040000 L302.820000,777454.440000 L301.860000,777454.740000 L301.860000,777454.440000 L303.360000,777449.040000 L304.320000,777449.340000 L304.020000,777449.640000 L302.520000,777450.240000 "></path>
+<path style="stroke:black" d="M238.440000,777449.280000 L239.940000,777448.740000 L240.900000,777448.320000 L240.600000,777449.400000 L239.100000,777454.740000 L238.620000,777456.360000 L238.140000,777454.740000 L236.580000,777449.400000 L236.280000,777448.380000 L237.240000,777448.740000 L237.540000,777449.100000 L239.100000,777454.440000 L238.140000,777454.740000 L238.140000,777454.440000 L239.640000,777449.100000 L240.600000,777449.400000 L240.300000,777449.700000 L238.800000,777450.240000 "></path>
+<path style="stroke:black" d="M420.600000,777449.340000 L422.160000,777448.740000 L423.120000,777448.380000 L422.820000,777449.400000 L421.260000,777454.800000 L420.780000,777456.480000 L420.300000,777454.800000 L418.740000,777449.400000 L418.440000,777448.380000 L419.400000,777448.740000 L419.700000,777449.100000 L421.260000,777454.500000 L420.300000,777454.800000 L420.300000,777454.500000 L421.860000,777449.100000 L422.820000,777449.400000 L422.520000,777449.700000 L420.960000,777450.300000 "></path>
+<path style="stroke:black" d="M238.380000,777448.680000 L238.380000,777449.760000 L238.860010,777449.760000 L238.860010,777448.680000 "></path>
+<path style="stroke:black" d="M300.960000,777448.680000 L302.520000,777449.280000 L302.520000,777450.240000 L302.340000,777450.300000 L302.160000,777450.240000 L300.600000,777449.640000 "></path>
+<path style="stroke:black" d="M302.100000,777448.680000 L302.100000,777449.760000 L302.579980,777449.760000 L302.579980,777448.680000 "></path>
+<path style="stroke:black" d="M237.240000,777448.740000 L238.800000,777449.280000 L238.800000,777450.240000 L238.620000,777450.300000 L238.440000,777450.240000 L236.880000,777449.700000 "></path>
+<path style="stroke:black" d="M419.400000,777448.740000 L420.960000,777449.340000 L420.960000,777450.300000 L420.780000,777450.360000 L420.600000,777450.300000 L419.040000,777449.700000 "></path>
+<path style="stroke:black" d="M420.540000,777448.740000 L420.540000,777449.820000 L421.019980,777449.820000 L421.019980,777448.740000 "></path>
+<path style="stroke:black" d="M358.860000,777449.760000 L360.420000,777449.220000 L361.380000,777448.860000 L361.080000,777449.880000 L359.520000,777455.220000 L359.040000,777456.900000 L358.560000,777455.220000 L357.060000,777449.880000 L356.760000,777448.860000 L357.720000,777449.220000 L358.020000,777449.580000 L359.520000,777454.920000 L358.560000,777455.220000 L358.560000,777454.920000 L360.120000,777449.580000 L361.080000,777449.880000 L360.780000,777450.180000 L359.220000,777450.720000 "></path>
+<path style="stroke:black" d="M302.340000,777449.760000 L303.840000,777449.160000 L302.340000,777454.560000 L300.780000,777449.160000 "></path>
+<path style="stroke:black" d="M358.800000,777449.160000 L358.800000,777450.240000 L359.279980,777450.240000 L359.279980,777449.160000 "></path>
+<path style="stroke:black" d="M238.620000,777449.760000 L240.120000,777449.220000 L238.620000,777454.560000 L237.060000,777449.220000 "></path>
+<path style="stroke:black" d="M357.720000,777449.220000 L359.220000,777449.760000 L359.220000,777450.720000 L359.040000,777450.780000 L358.860000,777450.720000 L357.360000,777450.180000 "></path>
+<path style="stroke:black" d="M420.780000,777449.820000 L422.340000,777449.220000 L420.780000,777454.620000 L419.220000,777449.220000 "></path>
+<path style="stroke:black" d="M359.040000,777450.240000 L360.600000,777449.700000 L359.040000,777455.040000 L357.540000,777449.700000 "></path>
+<path style="stroke:black" d="M194.100000,777455.879990 L194.100000,777456.360000 L257.280000,777456.360000 L257.280000,777455.879990 "></path>
+<path style="stroke:black" d="M257.040000,777455.879990 L257.040000,777456.360000 L320.160000,777456.360000 L320.160000,777455.879990 "></path>
+<path style="stroke:black" d="M319.920000,777455.879990 L319.920000,777456.360000 L383.040000,777456.360000 L383.040000,777455.879990 "></path>
+<path style="stroke:black" d="M382.800000,777455.879990 L382.800000,777456.360000 L445.920000,777456.360000 L445.920000,777455.879990 "></path>
+<path style="stroke:black" d="M193.860000,777455.880000 L193.860000,777474.120000 L194.340000,777474.120000 L194.340000,777455.880000 "></path>
+<path style="stroke:black" d="M256.800000,777455.880000 L256.800000,777474.120000 L257.280010,777474.120000 L257.280010,777455.880000 "></path>
+<path style="stroke:black" d="M319.680000,777455.880000 L319.680000,777474.120000 L320.160010,777474.120000 L320.160010,777455.880000 "></path>
+<path style="stroke:black" d="M382.560000,777455.880000 L382.560000,777474.120000 L383.040010,777474.120000 L383.040010,777455.880000 "></path>
+<path style="stroke:black" d="M256.800000,777456.120000 L256.800000,777474.360000 L257.280010,777474.360000 L257.280010,777456.120000 "></path>
+<path style="stroke:black" d="M319.680000,777456.120000 L319.680000,777474.360000 L320.160010,777474.360000 L320.160010,777456.120000 "></path>
+<path style="stroke:black" d="M382.560000,777456.120000 L382.560000,777474.360000 L383.040010,777474.360000 L383.040010,777456.120000 "></path>
+<path style="stroke:black" d="M445.440000,777456.120000 L445.440000,777474.360000 L445.920010,777474.360000 L445.920010,777456.120000 "></path>
+<path style="stroke:black" d="M193.860000,777473.879990 L193.860000,777474.360000 L257.040000,777474.360000 L257.040000,777473.879990 "></path>
+<path style="stroke:black" d="M256.800000,777473.879990 L256.800000,777474.360000 L319.920000,777474.360000 L319.920000,777473.879990 "></path>
+<path style="stroke:black" d="M319.680000,777473.879990 L319.680000,777474.360000 L382.800000,777474.360000 L382.800000,777473.879990 "></path>
+<path style="stroke:black" d="M382.560000,777473.879990 L382.560000,777474.360000 L445.680000,777474.360000 L445.680000,777473.879990 "></path>
+<text y="777414.887388" x="220.9212" style="font-size:7.991000pt" lengthAdjust="spacingAndGlyphs" textLength="9.7833813">X3</text>
+<text y="777414.887388" x="284.6382376" style="font-size:7.991000pt" lengthAdjust="spacingAndGlyphs" textLength="9.7833813">X2</text>
+<text y="777414.886888" x="407.94" style="font-size:7.991000pt" lengthAdjust="spacingAndGlyphs" textLength="9.7226497">X0</text>
+<text y="777468.646888" x="262.6803" style="font-size:7.991000pt" lengthAdjust="spacingAndGlyphs" textLength="53.6147967">X2 &gt;&gt; COUNT</text>
+<text y="777468.646888" x="325.9205" style="font-size:7.991000pt" lengthAdjust="spacingAndGlyphs" textLength="53.5962174">X1 &gt;&gt; COUNT</text>
+<text y="777468.646388" x="386.5201" style="font-size:7.991000pt" lengthAdjust="spacingAndGlyphs" textLength="12.0008838">X0 &gt;&gt; COUNT</text>
+<text y="777468.646888" x="198.9001" style="font-size:7.991000pt" lengthAdjust="spacingAndGlyphs" textLength="53.6597463">X3 &gt;&gt; COUNT</text>
+<text y="777414.887388" x="345.6543172" style="font-size:7.991000pt" lengthAdjust="spacingAndGlyphs" textLength="9.7833813">X1</text></svg>
+<h3>Figure 4-18.  PSRAW and PSRAD Instruction Operation Using a 64-bit Operand</h3>
+<p>Note that only the first 64-bits of a 128-bit count operand are checked to compute the count. If the second source operand is a memory address, 128 bits are loaded.</p>
+<p>The (V)PSRAW instruction shifts each of the words in the destination operand to the right by the number of bits specified in the count operand, and the (V)PSRAD instruction shifts each of the doublewords in the destination operand.</p>
+<p>In 64-bit mode and not encoded with VEX/EVEX, using a REX prefix in the form of REX.R permits this instruction to access additional registers (XMM8-XMM15).</p>
+<p>Legacy SSE instructions 64-bit operand: The destination operand is an MMX technology register; the count operand can be either an MMX technology register or an 64-bit memory location.</p>
+<p>128-bit Legacy SSE version: The destination and first source operands are XMM registers. Bits (VLMAX-1:128) of the corresponding YMM destination register remain unchanged. The count operand can be either an XMM register or a 128-bit memory location or an 8-bit immediate. If the count operand is a memory address, 128 bits are loaded but the upper 64 bits are ignored.</p>
+<p>VEX.128 encoded version: The destination and first source operands are XMM registers. Bits (VLMAX-1:128) of the destination YMM register are zeroed. The count operand can be either an XMM register or a 128-bit memory loca-tion or an 8-bit immediate. If the count operand is a memory address, 128 bits are loaded but the upper 64 bits are ignored.</p>
+<p>VEX.256 encoded version: The destination operand is a YMM register. The source operand is a YMM register or a memory location. The count operand can come either from an XMM register or a memory location or an 8-bit imme-diate. Bits (MAX_VL-1:256) of the corresponding ZMM register are zeroed.</p>
+<p>EVEX encoded versions: The destination operand is a ZMM register updated according to the writemask. The count operand is either an 8-bit immediate (the immediate count version) or an 8-bit value from an XMM register or a memory location (the variable count version). For the immediate count version, the source operand (the second operand) can be a ZMM register, a 512-bit memory location or a 512-bit vector broadcasted from a 32/64-bit memory location. For the variable count version, the first source operand (the second operand) is a ZMM register, the second source operand (the third operand, 8-bit variable count) can be an XMM register or a memory location.</p>
+<p>Note: In VEX/EVEX encoded versions of shifts with an immediate count, vvvv of VEX/EVEX encode the destination register, and VEX.B/EVEX.B + ModRM.r/m encodes the source register.</p>
+<p>Note: For shifts with an immediate count (VEX.128.66.0F 71-73 /4, EVEX.128.66.0F 71-73 /4), VEX.vvvv/EVEX.vvvv encodes the destination register.</p>
+<h2>Operation</h2>
+<p><strong>PSRAW (with 64-bit operand)</strong></p>
+<pre>    IF (COUNT &gt; 15)
+         THEN COUNT ← 16;
+    FI;
+    DEST[15:0] ← SignExtend(DEST[15:0] &gt;&gt; COUNT);
+    (* Repeat shift operation for 2nd and 3rd words *)
+    DEST[63:48] ← SignExtend(DEST[63:48] &gt;&gt; COUNT);</pre>
+<p><strong>PSRAD (with 64-bit operand)</strong></p>
+<pre>    IF (COUNT &gt; 31)
+         THEN COUNT ← 32;
+    FI;
+    DEST[31:0] ← SignExtend(DEST[31:0] &gt;&gt; COUNT);
+    DEST[63:32] ← SignExtend(DEST[63:32] &gt;&gt; COUNT);
+ARITHMETIC_RIGHT_SHIFT_DWORDS1(SRC, COUNT_SRC)
+COUNT (cid:197) COUNT_SRC[63:0];
+IF (COUNT &gt; 31)
+THEN
+    DEST[31:0] (cid:197) SignBit
+ELSE
+    DEST[31:0] (cid:197) SignExtend(SRC[31:0] &gt;&gt; COUNT);
+FI;
+ARITHMETIC_RIGHT_SHIFT_QWORDS1(SRC, COUNT_SRC)
+COUNT (cid:197) COUNT_SRC[63:0];
+IF (COUNT &gt; 63)
+THEN
+    DEST[63:0] (cid:197) SignBit
+ELSE
+    DEST[63:0] (cid:197) SignExtend(SRC[63:0] &gt;&gt; COUNT);
+FI;
+ARITHMETIC_RIGHT_SHIFT_WORDS_256b(SRC, COUNT_SRC)
+COUNT (cid:197) COUNT_SRC[63:0];
+IF (COUNT &gt; 15)
+    THEN
+              COUNT (cid:197) 16;
+FI;
+DEST[15:0] (cid:197) SignExtend(SRC[15:0] &gt;&gt; COUNT);
+    (* Repeat shift operation for 2nd through 15th words *)
+DEST[255:240] (cid:197) SignExtend(SRC[255:240] &gt;&gt; COUNT);
+ARITHMETIC_RIGHT_SHIFT_DWORDS_256b(SRC, COUNT_SRC)
+COUNT (cid:197) COUNT_SRC[63:0];
+IF (COUNT &gt; 31)
+    THEN
+              COUNT (cid:197) 32;
+FI;
+DEST[31:0] (cid:197) SignExtend(SRC[31:0] &gt;&gt; COUNT);
+    (* Repeat shift operation for 2nd through 7th words *)
+DEST[255:224] (cid:197) SignExtend(SRC[255:224] &gt;&gt; COUNT);
+ARITHMETIC_RIGHT_SHIFT_QWORDS(SRC, COUNT_SRC, VL)
+                                                                                  ; VL: 128b, 256b or 512b
+COUNT (cid:197) COUNT_SRC[63:0];
+IF (COUNT &gt; 63)
+    THEN
+              COUNT (cid:197) 64;
+FI;
+DEST[63:0] (cid:197) SignExtend(SRC[63:0] &gt;&gt; COUNT);
+    (* Repeat shift operation for 2nd through 7th words *)
+DEST[VL-1:VL-64] (cid:197) SignExtend(SRC[VL-1:VL-64] &gt;&gt; COUNT);
+ARITHMETIC_RIGHT_SHIFT_WORDS(SRC, COUNT_SRC)
+COUNT (cid:197) COUNT_SRC[63:0];
+IF (COUNT &gt; 15)
+    THEN
+              COUNT (cid:197) 16;
+FI;
+DEST[15:0] (cid:197) SignExtend(SRC[15:0] &gt;&gt; COUNT);
+    (* Repeat shift operation for 2nd through 7th words *)
+DEST[127:112] (cid:197) SignExtend(SRC[127:112] &gt;&gt; COUNT);
+ARITHMETIC_RIGHT_SHIFT_DWORDS(SRC, COUNT_SRC)
+COUNT (cid:197) COUNT_SRC[63:0];
+IF (COUNT &gt; 31)
+    THEN
+              COUNT (cid:197) 32;
+FI;
+DEST[31:0] (cid:197) SignExtend(SRC[31:0] &gt;&gt; COUNT);
+    (* Repeat shift operation for 2nd through 3rd words *)
+DEST[127:96] (cid:197) SignExtend(SRC[127:96] &gt;&gt; COUNT);</pre>
+<p><strong>VPSRAW (EVEX versions, xmm/m128)</strong></p>
+<pre>(KL, VL) = (8, 128), (16, 256), (32, 512)
+IF VL = 128
+    TMP_DEST[127:0] (cid:197) ARITHMETIC_RIGHT_SHIFT_WORDS_128b(SRC1[127:0], SRC2)
+FI;
+IF VL = 256
+    TMP_DEST[255:0] (cid:197) ARITHMETIC_RIGHT_SHIFT_WORDS_256b(SRC1[255:0], SRC2)
+FI;
+IF VL = 512
+    TMP_DEST[255:0] (cid:197) ARITHMETIC_RIGHT_SHIFT_WORDS_256b(SRC1[255:0], SRC2)
+    TMP_DEST[511:256] (cid:197) ARITHMETIC_RIGHT_SHIFT_WORDS_256b(SRC1[511:256], SRC2)
+FI;
+FOR j (cid:197) 0 TO KL-1
+    i (cid:197) j * 16
+    IF k1[j] OR *no writemask*
+         THEN DEST[i+15:i] (cid:197) TMP_DEST[i+15:i]
+         ELSE
+              IF *merging-masking*
+                                                         ; merging-masking
+                    THEN *DEST[i+15:i] remains unchanged*
+                    ELSE *zeroing-masking*
+                                                              ; zeroing-masking
+                         DEST[i+15:i] = 0
+              FI
+    FI;
+ENDFOR
+DEST[MAX_VL-1:VL] (cid:197) 0</pre>
+<p><strong>VPSRAW (EVEX versions, imm8)</strong></p>
+<pre>(KL, VL) = (8, 128), (16, 256), (32, 512)
+IF VL = 128
+    TMP_DEST[127:0] (cid:197) ARITHMETIC_RIGHT_SHIFT_WORDS_128b(SRC1[127:0], imm8)
+FI;
+IF VL = 256
+    TMP_DEST[255:0] (cid:197) ARITHMETIC_RIGHT_SHIFT_WORDS_256b(SRC1[255:0], imm8)
+FI;
+IF VL = 512
+    TMP_DEST[255:0] (cid:197) ARITHMETIC_RIGHT_SHIFT_WORDS_256b(SRC1[255:0], imm8)
+    TMP_DEST[511:256] (cid:197) ARITHMETIC_RIGHT_SHIFT_WORDS_256b(SRC1[511:256], imm8)
+FI;
+FOR j (cid:197) 0 TO KL-1
+    i (cid:197) j * 16
+    IF k1[j] OR *no writemask*
+         THEN DEST[i+15:i] (cid:197) TMP_DEST[i+15:i]
+         ELSE
+              IF *merging-masking*
+                                                         ; merging-masking
+                    THEN *DEST[i+15:i] remains unchanged*
+                    ELSE *zeroing-masking*
+                                                              ; zeroing-masking
+                         DEST[i+15:i] = 0
+              FI
+    FI;
+ENDFOR
+DEST[MAX_VL-1:VL] (cid:197) 0</pre>
+<p><strong>VPSRAW (ymm, ymm, xmm/m128) - VEX</strong></p>
+<pre>DEST[255:0] (cid:197) ARITHMETIC_RIGHT_SHIFT_WORDS_256b(SRC1, SRC2)
+DEST[MAX_VL-1:256] (cid:197) 0</pre>
+<p><strong>VPSRAW (ymm, imm8) - VEX</strong></p>
+<pre>DEST[255:0] (cid:197) ARITHMETIC_RIGHT_SHIFT_WORDS_256b(SRC1, imm8)
+DEST[MAX_VL-1:256] (cid:197) 0</pre>
+<p><strong>VPSRAW (xmm, xmm, xmm/m128) - VEX</strong></p>
+<pre>DEST[127:0] (cid:197) ARITHMETIC_RIGHT_SHIFT_WORDS(SRC1, SRC2)
+DEST[MAX_VL-1:128] (cid:197) 0</pre>
+<p><strong>VPSRAW (xmm, imm8) - VEX</strong></p>
+<pre>DEST[127:0] (cid:197) ARITHMETIC_RIGHT_SHIFT_WORDS(SRC1, imm8)
+DEST[MAX_VL-1:128] (cid:197) 0</pre>
+<p><strong>PSRAW (xmm, xmm, xmm/m128)</strong></p>
+<pre>DEST[127:0] (cid:197)ARITHMETIC_RIGHT_SHIFT_WORDS(DEST, SRC)
+DEST[MAX_VL-1:128] (Unmodified)</pre>
+<p><strong>PSRAW (xmm, imm8)</strong></p>
+<pre>DEST[127:0] (cid:197)ARITHMETIC_RIGHT_SHIFT_WORDS(DEST, imm8)
+DEST[MAX_VL-1:128] (Unmodified)</pre>
+<p><strong>VPSRAD (EVEX versions, imm8)</strong></p>
+<pre>(KL, VL) = (4, 128), (8, 256), (16, 512)
+FOR j (cid:197) 0 TO KL-1
+    i (cid:197) j * 32
+    IF k1[j] OR *no writemask* THEN
+              IF (EVEX.b = 1) AND (SRC1 *is memory*)
+                    THEN DEST[i+31:i] (cid:197) ARITHMETIC_RIGHT_SHIFT_DWORDS1(SRC1[31:0], imm8)
+                    ELSE DEST[i+31:i] (cid:197) ARITHMETIC_RIGHT_SHIFT_DWORDS1(SRC1[i+31:i], imm8)
+              FI;
+         ELSE
+              IF *merging-masking*
+                                                         ; merging-masking
+                    THEN *DEST[i+31:i] remains unchanged*
+                    ELSE *zeroing-masking*
+                                                              ; zeroing-masking
+                         DEST[i+31:i] (cid:197) 0
+              FI
+    FI;
+ENDFOR
+DEST[MAX_VL-1:VL] (cid:197) 0</pre>
+<p><strong>VPSRAD (EVEX versions, xmm/m128)</strong></p>
+<pre>(KL, VL) = (4, 128), (8, 256), (16, 512)
+IF VL = 128
+    TMP_DEST[127:0] (cid:197) ARITHMETIC_RIGHT_SHIFT_DWORDS_128b(SRC1[127:0], SRC2)
+FI;
+IF VL = 256
+    TMP_DEST[255:0] (cid:197) ARITHMETIC_RIGHT_SHIFT_DWORDS_256b(SRC1[255:0], SRC2)
+FI;
+IF VL = 512
+    TMP_DEST[255:0] (cid:197) ARITHMETIC_RIGHT_SHIFT_DWORDS_256b(SRC1[255:0], SRC2)
+    TMP_DEST[511:256] (cid:197) ARITHMETIC_RIGHT_SHIFT_DWORDS_256b(SRC1[511:256], SRC2)
+FI;
+FOR j (cid:197) 0 TO KL-1
+    i (cid:197) j * 32
+    IF k1[j] OR *no writemask*
+         THEN DEST[i+31:i] (cid:197) TMP_DEST[i+31:i]
+         ELSE
+              IF *merging-masking*
+                                                         ; merging-masking
+                    THEN *DEST[i+31:i] remains unchanged*
+                    ELSE *zeroing-masking*
+                                                              ; zeroing-masking
+                         DEST[i+31:i] (cid:197) 0
+              FI
+    FI;
+ENDFOR
+DEST[MAX_VL-1:VL] (cid:197) 0</pre>
+<p><strong>VPSRAD (ymm, ymm, xmm/m128) - VEX</strong></p>
+<pre>DEST[255:0] (cid:197)ARITHMETIC_RIGHT_SHIFT_DWORDS_256b(SRC1, SRC2)
+DEST[MAX_VL-1:256] (cid:197) 0</pre>
+<p><strong>VPSRAD (ymm, imm8) - VEX</strong></p>
+<pre>DEST[255:0] (cid:197)ARITHMETIC_RIGHT_SHIFT_DWORDS_256b(SRC1, imm8)
+DEST[MAX_VL-1:256] (cid:197) 0</pre>
+<p><strong>VPSRAD (xmm, xmm, xmm/m128) - VEX</strong></p>
+<pre>DEST[127:0] (cid:197)ARITHMETIC_RIGHT_SHIFT_DWORDS(SRC1, SRC2)
+DEST[MAX_VL-1:128] (cid:197)0</pre>
+<p><strong>VPSRAD (xmm, imm8) - VEX</strong></p>
+<pre>DEST[127:0] (cid:197)ARITHMETIC_RIGHT_SHIFT_DWORDS(SRC1, imm8)
+DEST[MAX_VL-1:128] (cid:197)0</pre>
+<p><strong>PSRAD (xmm, xmm, xmm/m128)</strong></p>
+<pre>DEST[127:0] (cid:197)ARITHMETIC_RIGHT_SHIFT_DWORDS(DEST, SRC)
+DEST[MAX_VL-1:128] (Unmodified)</pre>
+<p><strong>PSRAD (xmm, imm8)</strong></p>
+<pre>DEST[127:0] (cid:197)ARITHMETIC_RIGHT_SHIFT_DWORDS(DEST, imm8)
+DEST[MAX_VL-1:128] (Unmodified)</pre>
+<p><strong>VPSRAQ (EVEX versions, imm8)</strong></p>
+<pre>(KL, VL) = (2, 128), (4, 256), (8, 512)
+FOR j (cid:197) 0 TO KL-1
+    i (cid:197) j * 64
+    IF k1[j] OR *no writemask* THEN
+              IF (EVEX.b = 1) AND (SRC1 *is memory*)
+                    THEN DEST[i+63:i] (cid:197) ARITHMETIC_RIGHT_SHIFT_QWORDS1(SRC1[63:0], imm8)
+                    ELSE DEST[i+63:i] (cid:197) ARITHMETIC_RIGHT_SHIFT_QWORDS1(SRC1[i+63:i], imm8)
+              FI;
+         ELSE
+              IF *merging-masking*
+                                                         ; merging-masking
+                    THEN *DEST[i+63:i] remains unchanged*
+                    ELSE *zeroing-masking*
+                                                              ; zeroing-masking
+                         DEST[i+63:i] (cid:197) 0
+              FI
+    FI;
+ENDFOR
+DEST[MAX_VL-1:VL] (cid:197) 0</pre>
+<p><strong>VPSRAQ (EVEX versions, xmm/m128)</strong></p>
+<pre>(KL, VL) = (2, 128), (4, 256), (8, 512)
+TMP_DEST[VL-1:0] (cid:197) ARITHMETIC_RIGHT_SHIFT_QWORDS(SRC1[VL-1:0], SRC2, VL)
+FOR j (cid:197) 0 TO 7
+    i (cid:197) j * 64
+    IF k1[j] OR *no writemask*
+         THEN DEST[i+63:i] (cid:197) TMP_DEST[i+63:i]
+         ELSE
+              IF *merging-masking*
+                                                         ; merging-masking
+                    THEN *DEST[i+63:i] remains unchanged*
+                    ELSE *zeroing-masking*
+                                                              ; zeroing-masking
+                         DEST[i+63:i] (cid:197) 0
+              FI
+    FI;
+ENDFOR
+DEST[MAX_VL-1:VL] (cid:197) 0</pre>
+<h2>Intel C/C++ Compiler Intrinsic Equivalents</h2>
+<p>VPSRAD __m512i _mm512_srai_epi32(__m512i a, unsigned int imm);</p>
+<p>VPSRAD __m512i _mm512_mask_srai_epi32(__m512i s, __mmask16 k, __m512i a, unsigned int imm);</p>
+<p>VPSRAD __m512i _mm512_maskz_srai_epi32( __mmask16 k, __m512i a, unsigned int imm);</p>
+<p>VPSRAD __m256i _mm256_mask_srai_epi32(__m256i s, __mmask8 k, __m256i a, unsigned int imm);</p>
+<p>VPSRAD __m256i _mm256_maskz_srai_epi32( __mmask8 k, __m256i a, unsigned int imm);</p>
+<p>VPSRAD __m128i _mm_mask_srai_epi32(__m128i s, __mmask8 k, __m128i a, unsigned int imm);</p>
+<p>VPSRAD __m128i _mm_maskz_srai_epi32( __mmask8 k, __m128i a, unsigned int imm);</p>
+<p>VPSRAD __m512i _mm512_sra_epi32(__m512i a, __m128i cnt);</p>
+<p>VPSRAD __m512i _mm512_mask_sra_epi32(__m512i s, __mmask16 k, __m512i a, __m128i cnt);</p>
+<p>VPSRAD __m512i _mm512_maskz_sra_epi32( __mmask16 k, __m512i a, __m128i cnt);</p>
+<p>VPSRAD __m256i _mm256_mask_sra_epi32(__m256i s, __mmask8 k, __m256i a, __m128i cnt);</p>
+<p>VPSRAD __m256i _mm256_maskz_sra_epi32( __mmask8 k, __m256i a, __m128i cnt);</p>
+<p>VPSRAD __m128i _mm_mask_sra_epi32(__m128i s, __mmask8 k, __m128i a, __m128i cnt);</p>
+<p>VPSRAD __m128i _mm_maskz_sra_epi32( __mmask8 k, __m128i a, __m128i cnt);</p>
+<p>VPSRAQ __m512i _mm512_srai_epi64(__m512i a, unsigned int imm);</p>
+<p>VPSRAQ __m512i _mm512_mask_srai_epi64(__m512i s, __mmask8 k, __m512i a, unsigned int imm)</p>
+<p>VPSRAQ __m512i _mm512_maskz_srai_epi64( __mmask8 k, __m512i a, unsigned int imm)</p>
+<p>VPSRAQ __m256i _mm256_mask_srai_epi64(__m256i s, __mmask8 k, __m256i a, unsigned int imm);</p>
+<p>VPSRAQ __m256i _mm256_maskz_srai_epi64( __mmask8 k, __m256i a, unsigned int imm);</p>
+<p>VPSRAQ __m128i _mm_mask_srai_epi64(__m128i s, __mmask8 k, __m128i a, unsigned int imm);</p>
+<p>VPSRAQ __m128i _mm_maskz_srai_epi64( __mmask8 k, __m128i a, unsigned int imm);</p>
+<p>VPSRAQ __m512i _mm512_sra_epi64(__m512i a, __m128i cnt);</p>
+<p>VPSRAQ __m512i _mm512_mask_sra_epi64(__m512i s, __mmask8 k, __m512i a, __m128i cnt)</p>
+<p>VPSRAQ __m512i _mm512_maskz_sra_epi64( __mmask8 k, __m512i a, __m128i cnt)</p>
+<p>VPSRAQ __m256i _mm256_mask_sra_epi64(__m256i s, __mmask8 k, __m256i a, __m128i cnt);</p>
+<p>VPSRAQ __m256i _mm256_maskz_sra_epi64( __mmask8 k, __m256i a, __m128i cnt);</p>
+<p>VPSRAQ __m128i _mm_mask_sra_epi64(__m128i s, __mmask8 k, __m128i a, __m128i cnt);</p>
+<p>VPSRAQ __m128i _mm_maskz_sra_epi64( __mmask8 k, __m128i a, __m128i cnt);</p>
+<p>VPSRAW __m512i _mm512_srai_epi16(__m512i a, unsigned int imm);</p>
+<p>VPSRAW __m512i _mm512_mask_srai_epi16(__m512i s, __mmask32 k, __m512i a, unsigned int imm);</p>
+<p>VPSRAW __m512i _mm512_maskz_srai_epi16( __mmask32 k, __m512i a, unsigned int imm);</p>
+<p>VPSRAW __m256i _mm256_mask_srai_epi16(__m256i s, __mmask16 k, __m256i a, unsigned int imm);</p>
+<p>VPSRAW __m256i _mm256_maskz_srai_epi16( __mmask16 k, __m256i a, unsigned int imm);</p>
+<p>VPSRAW __m128i _mm_mask_srai_epi16(__m128i s, __mmask8 k, __m128i a, unsigned int imm);</p>
+<p>VPSRAW __m128i _mm_maskz_srai_epi16( __mmask8 k, __m128i a, unsigned int imm);</p>
+<p>VPSRAW __m512i _mm512_sra_epi16(__m512i a, __m128i cnt);</p>
+<p>VPSRAW __m512i _mm512_mask_sra_epi16(__m512i s, __mmask16 k, __m512i a, __m128i cnt);</p>
+<p>VPSRAW __m512i _mm512_maskz_sra_epi16( __mmask16 k, __m512i a, __m128i cnt);</p>
+<p>VPSRAW __m256i _mm256_mask_sra_epi16(__m256i s, __mmask8 k, __m256i a, __m128i cnt);</p>
+<p>VPSRAW __m256i _mm256_maskz_sra_epi16( __mmask8 k, __m256i a, __m128i cnt);</p>
+<p>VPSRAW __m128i _mm_mask_sra_epi16(__m128i s, __mmask8 k, __m128i a, __m128i cnt);</p>
+<p>VPSRAW __m128i _mm_maskz_sra_epi16( __mmask8 k, __m128i a, __m128i cnt);</p>
+<p>PSRAW:__m64 _mm_srai_pi16 (__m64 m, int count)</p>
+<p>PSRAW:__m64 _mm_sra_pi16 (__m64 m, __m64 count)</p>
+<p>(V)PSRAW:__m128i _mm_srai_epi16(__m128i m, int  count)</p>
+<p>(V)PSRAW:__m128i _mm_sra_epi16(__m128i m, __m128i count)</p>
+<p>VPSRAW:__m256i _mm256_srai_epi16 (__m256i m, int count)</p>
+<p>VPSRAW:__m256i _mm256_sra_epi16 (__m256i m, __m128i count)</p>
+<p>PSRAD:__m64 _mm_srai_pi32 (__m64 m, int count)</p>
+<p>PSRAD:__m64 _mm_sra_pi32 (__m64 m, __m64 count)</p>
+<p>(V)PSRAD:__m128i _mm_srai_epi32 (__m128i m, int  count)</p>
+<p>(V)PSRAD:__m128i _mm_sra_epi32 (__m128i m, __m128i count)</p>
+<p>VPSRAD:__m256i _mm256_srai_epi32 (__m256i m, int count)</p>
+<p>VPSRAD:__m256i _mm256_sra_epi32 (__m256i m, __m128i count)</p>
+<h2>Flags Affected</h2>
+<p>None.</p>
+<h2>Numeric Exceptions</h2>
+<p>None.</p>
+<h2>Other Exceptions</h2>
+<table class="exception-table">
+<tr>
+<td>VEX-encoded instructions:</td></tr>
+<tr>
+<td>Syntax with RM/RVM operand encoding, see Exceptions Type 4.</td></tr>
+<tr>
+<td>Syntax with MI/VMI operand encoding, see Exceptions Type 7.</td></tr>
+<tr>
+<td>EVEX-encoded VPSRAW, see Exceptions Type E4NF.nb.</td></tr>
+<tr>
+<td>EVEX-encoded VPSRAD/Q:</td></tr>
+<tr>
+<td>Syntax with M128 operand encoding, see Exceptions Type E4NF.nb.</td></tr>
+<tr>
+<td>Syntax with FVI operand encoding, see Exceptions Type E4.</td></tr></table></body></html>

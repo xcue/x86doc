@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="style.css" type="text/css" rel="stylesheet">
+<title>VPMOVQD/VPMOVSQD/VPMOVUSQD—Down Convert QWord to DWord </title></head>
+<body>
+<h1>VPMOVQD/VPMOVSQD/VPMOVUSQD—Down Convert QWord to DWord</h1>
+<table>
+<tr>
+<th>Opcode/Instruction</th>
+<th>Op /En</th>
+<th>64/32 bit Mode Support</th>
+<th>CPUID Feature Flag</th>
+<th>Description</th></tr>
+<tr>
+<td>
+<p>EVEX.128.F3.0F38.W0 35 /<em>r</em></p>
+<p>VPMOVQD <em>xmm1/m128 {k1}{z}, xmm2</em></p></td>
+<td>A</td>
+<td>V/V</td>
+<td>
+<p>AVX512VL</p>
+<p>AVX512F</p></td>
+<td>Converts 2 packed quad-word integers from <em>xmm2 </em>into 2 packed double-word integers in <em>xmm1/m128 </em>with truncation subject to writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.128.F3.0F38.W0 25 /<em>r</em></p>
+<p>VPMOVSQD <em>xmm1/m64 {k1}{z}, xmm2</em></p></td>
+<td>A</td>
+<td>V/V</td>
+<td>
+<p>AVX512VL</p>
+<p>AVX512F</p></td>
+<td>Converts 2 packed signed quad-word integers from <em>xmm2</em> into 2 packed signed double-word integers in <em>xmm1/m64 </em>using<em> </em>signed saturation subject to writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.128.F3.0F38.W0 15 /<em>r</em></p>
+<p>VPMOVUSQD <em>xmm1/m64 {k1}{z}, xmm2</em></p></td>
+<td>A</td>
+<td>V/V</td>
+<td>
+<p>AVX512VL</p>
+<p>AVX512F</p></td>
+<td>Converts 2 packed unsigned quad-word integers from <em>xmm2</em> into 2 packed unsigned double-word integers in <em>xmm1/m64 </em>using<em> </em>unsigned saturation subject to writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.256.F3.0F38.W0 35 /<em>r</em></p>
+<p>VPMOVQD <em>xmm1/m128 {k1}{z}, ymm2</em></p></td>
+<td>A</td>
+<td>V/V</td>
+<td>
+<p>AVX512VL</p>
+<p>AVX512F</p></td>
+<td>Converts 4 packed quad-word integers from <em>ymm2 </em>into 4 packed double-word integers in <em>xmm1/m128 </em>with truncation subject to writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.256.F3.0F38.W0 25 /<em>r</em></p>
+<p>VPMOVSQD <em>xmm1/m128 {k1}{z}, ymm2</em></p></td>
+<td>A</td>
+<td>V/V</td>
+<td>
+<p>AVX512VL</p>
+<p>AVX512F</p></td>
+<td>Converts 4 packed signed quad-word integers from <em>ymm2</em> into 4 packed signed double-word integers in <em>xmm1/m128 </em>using<em> </em>signed saturation subject to writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.256.F3.0F38.W0 15 /<em>r</em></p>
+<p>VPMOVUSQD <em>xmm1/m128 {k1}{z}, ymm2</em></p></td>
+<td>A</td>
+<td>V/V</td>
+<td>
+<p>AVX512VL</p>
+<p>AVX512F</p></td>
+<td>Converts 4 packed unsigned quad-word integers from y<em>mm2</em> into 4 packed unsigned double-word integers in <em>xmm1/m128 </em>using<em> </em>unsigned saturation subject to writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.512.F3.0F38.W0 35 /<em>r</em></p>
+<p>VPMOVQD <em>ymm1/m256 {k1}{z}, zmm2</em></p></td>
+<td>HVM</td>
+<td>V/V</td>
+<td>AVX512F</td>
+<td>Converts 8 packed quad-word integers from <em>zmm2 </em>into 8 packed double-word integers in <em>ymm1/m256 </em>with truncation subject to writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.512.F3.0F38.W0 25 /<em>r</em></p>
+<p>VPMOVSQD <em>ymm1/m256 {k1}{z}, zmm2</em></p></td>
+<td>HVM</td>
+<td>V/V</td>
+<td>AVX512F</td>
+<td>Converts 8 packed signed quad-word integers from <em>zmm2</em> into 8 packed signed double-word integers in <em>ymm1/m256 </em>using<em> </em>signed saturation subject to writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.512.F3.0F38.W0 15 /<em>r</em></p>
+<p>VPMOVUSQD <em>ymm1/m256 {k1}{z}, zmm2</em></p></td>
+<td>HVM</td>
+<td>V/V</td>
+<td>AVX512F</td>
+<td>Converts 8 packed unsigned quad-word integers from <em>zmm2</em> into 8 packed unsigned double-word integers in <em>ymm1/m256 </em>using<em> </em>unsigned saturation subject to writemask k1.</td></tr></table>
+<h3>Instruction Operand Encoding</h3>
+<table>
+<tr>
+<td>Op/En</td>
+<td>Operand 1</td>
+<td>Operand 2</td>
+<td>Operand 3</td>
+<td>Operand 4</td></tr>
+<tr>
+<td>HVM</td>
+<td>ModRM:r/m (w)</td>
+<td>ModRM:reg (r)</td>
+<td>NA</td>
+<td>NA</td></tr></table>
+<p><strong>Description</strong></p>
+<p>VPMOVQW down converts 64-bit integer elements in the source operand (the second operand) into packed double-words using truncation. VPMOVSQW converts signed 64-bit integers into packed signed doublewords using signed saturation. VPMOVUSQW convert unsigned quad-word values into unsigned double-word values using unsigned saturation.</p>
+<p>The source operand is a ZMM/YMM/XMM register. The destination operand is a YMM/XMM/XMM register or a 256/128/64-bit memory location.</p>
+<p>Down-converted doubleword elements are written to the destination operand (the first operand) from the least-significant doubleword. Doubleword elements of the destination operand are updated according to the writemask. Bits (MAX_VL-1:256/128/64) of the register destination are zeroed.</p>
+<p>EVEX.vvvv is reserved and must be 1111b otherwise instructions will #UD.</p>
+<p><strong>Operation</strong></p>
+<p><strong>VPMOVQD instruction (EVEX encoded version) reg-reg form</strong></p>
+<p>(KL, VL) = (2, 128), (4, 256), (8, 512)</p>
+<p>FOR j (cid:197) 0 TO KL-1</p>
+<p>i (cid:197) j * 32</p>
+<p>m (cid:197) j * 64</p>
+<p>IF k1[j] OR *no writemask*</p>
+<p>THEN DEST[i+31:i] (cid:197) TruncateQuadWordToDWord (SRC[m+63:m])</p>
+<p>ELSE *zeroing-masking*</p>
+<p>; zeroing-masking</p>
+<p>DEST[i+31:i] (cid:197) 0</p>
+<p>FI</p>
+<p>FI;</p>
+<p>ENDFOR</p>
+<p>DEST[MAX_VL-1:VL/2] (cid:197) 0;</p>
+<p><strong>VPMOVQD instruction (EVEX encoded version) memory form</strong></p>
+<p>(KL, VL) = (2, 128), (4, 256), (8, 512)</p>
+<p>FOR j (cid:197) 0 TO KL-1</p>
+<p>i (cid:197) j * 32</p>
+<p>m (cid:197) j * 64</p>
+<p>IF k1[j] OR *no writemask*</p>
+<p>THEN DEST[i+31:i] (cid:197) TruncateQuadWordToDWord (SRC[m+63:m])</p>
+<p>ELSE *DEST[i+31:i] remains unchanged*</p>
+<p>; merging-masking</p>
+<p>FI;</p>
+<p>ENDFOR</p>
+<p><strong>VPMOVSQD instruction (EVEX encoded version) reg-reg form</strong></p>
+<p>(KL, VL) = (2, 128), (4, 256), (8, 512)</p>
+<p>FOR j (cid:197) 0 TO KL-1</p>
+<p>i (cid:197) j * 32</p>
+<p>m (cid:197) j * 64</p>
+<p>IF k1[j] OR *no writemask*</p>
+<p>THEN DEST[i+31:i] (cid:197) SaturateSignedQuadWordToDWord (SRC[m+63:m])</p>
+<p>ELSE</p>
+<p>IF *merging-masking*</p>
+<p>; merging-masking</p>
+<p>THEN *DEST[i+31:i] remains unchanged*</p>
+<p>ELSE *zeroing-masking*</p>
+<p>; zeroing-masking</p>
+<p>DEST[i+31:i] (cid:197) 0</p>
+<p>FI</p>
+<p>FI;</p>
+<p>ENDFOR</p>
+<p>DEST[MAX_VL-1:VL/2] (cid:197) 0;</p>
+<p><strong>VPMOVSQD instruction (EVEX encoded version) memory form</strong></p>
+<p>(KL, VL) = (2, 128), (4, 256), (8, 512)</p>
+<p>FOR j (cid:197) 0 TO KL-1</p>
+<p>i (cid:197) j * 32</p>
+<p>m (cid:197) j * 64</p>
+<p>IF k1[j] OR *no writemask*</p>
+<p>THEN DEST[i+31:i] (cid:197) SaturateSignedQuadWordToDWord (SRC[m+63:m])</p>
+<p>ELSE *DEST[i+31:i] remains unchanged*</p>
+<p>; merging-masking</p>
+<p>FI;</p>
+<p>ENDFOR</p>
+<p><strong>VPMOVUSQD instruction (EVEX encoded version) reg-reg form</strong></p>
+<p>(KL, VL) = (2, 128), (4, 256), (8, 512)</p>
+<p>FOR j (cid:197) 0 TO KL-1</p>
+<p>i (cid:197) j * 32</p>
+<p>m (cid:197) j * 64</p>
+<p>IF k1[j] OR *no writemask*</p>
+<p>THEN DEST[i+31:i] (cid:197) SaturateUnsignedQuadWordToDWord (SRC[m+63:m])</p>
+<p>ELSE</p>
+<p>IF *merging-masking*</p>
+<p>; merging-masking</p>
+<p>THEN *DEST[i+31:i] remains unchanged*</p>
+<p>ELSE *zeroing-masking*</p>
+<p>; zeroing-masking</p>
+<p>DEST[i+31:i] (cid:197) 0</p>
+<p>FI</p>
+<p>FI;</p>
+<p>ENDFOR</p>
+<p>DEST[MAX_VL-1:VL/2] (cid:197) 0;</p>
+<p><strong>VPMOVUSQD instruction (EVEX encoded version) memory form</strong></p>
+<p>(KL, VL) = (2, 128), (4, 256), (8, 512)</p>
+<p>FOR j (cid:197) 0 TO KL-1</p>
+<p>i (cid:197) j * 32</p>
+<p>m (cid:197) j * 64</p>
+<p>IF k1[j] OR *no writemask*</p>
+<p>THEN DEST[i+31:i] (cid:197) SaturateUnsignedQuadWordToDWord (SRC[m+63:m])</p>
+<p>ELSE *DEST[i+31:i] remains unchanged*</p>
+<p>; merging-masking</p>
+<p>FI;</p>
+<p>ENDFOR</p>
+<p><strong>Intel C/C++ Compiler Intrinsic Equivalents</strong></p>
+<p>VPMOVQD __m256i _mm512_cvtepi64_epi32( __m512i a);</p>
+<p>VPMOVQD __m256i _mm512_mask_cvtepi64_epi32(__m256i s, __mmask8 k, __m512i a);</p>
+<p>VPMOVQD __m256i _mm512_maskz_cvtepi64_epi32( __mmask8 k, __m512i a);</p>
+<p>VPMOVQD void _mm512_mask_cvtepi64_storeu_epi32(void * d, __mmask8 k, __m512i a);</p>
+<p>VPMOVSQD __m256i _mm512_cvtsepi64_epi32( __m512i a);</p>
+<p>VPMOVSQD __m256i _mm512_mask_cvtsepi64_epi32(__m256i s, __mmask8 k, __m512i a);</p>
+<p>VPMOVSQD __m256i _mm512_maskz_cvtsepi64_epi32( __mmask8 k, __m512i a);</p>
+<p>VPMOVSQD void _mm512_mask_cvtsepi64_storeu_epi32(void * d, __mmask8 k, __m512i a);</p>
+<p>VPMOVUSQD __m256i _mm512_cvtusepi64_epi32( __m512i a);</p>
+<p>VPMOVUSQD __m256i _mm512_mask_cvtusepi64_epi32(__m256i s, __mmask8 k, __m512i a);</p>
+<p>VPMOVUSQD __m256i _mm512_maskz_cvtusepi64_epi32( __mmask8 k, __m512i a);</p>
+<p>VPMOVUSQD void _mm512_mask_cvtusepi64_storeu_epi32(void * d, __mmask8 k, __m512i a);</p>
+<p>VPMOVUSQD __m128i _mm256_cvtusepi64_epi32(__m256i a);</p>
+<p>VPMOVUSQD __m128i _mm256_mask_cvtusepi64_epi32(__m128i a, __mmask8 k, __m256i b);</p>
+<p>VPMOVUSQD __m128i _mm256_maskz_cvtusepi64_epi32( __mmask8 k, __m256i b);</p>
+<p>VPMOVUSQD void _mm256_mask_cvtusepi64_storeu_epi32(void * , __mmask8 k, __m256i b);</p>
+<p>VPMOVUSQD __m128i _mm_cvtusepi64_epi32(__m128i a);</p>
+<p>VPMOVUSQD __m128i _mm_mask_cvtusepi64_epi32(__m128i a, __mmask8 k, __m128i b);</p>
+<p>VPMOVUSQD __m128i _mm_maskz_cvtusepi64_epi32( __mmask8 k, __m128i b);</p>
+<p>VPMOVUSQD void _mm_mask_cvtusepi64_storeu_epi32(void * , __mmask8 k, __m128i b);</p>
+<p>VPMOVSQD __m128i _mm256_cvtsepi64_epi32(__m256i a);</p>
+<p>VPMOVSQD __m128i _mm256_mask_cvtsepi64_epi32(__m128i a, __mmask8 k, __m256i b);</p>
+<p>VPMOVSQD __m128i _mm256_maskz_cvtsepi64_epi32( __mmask8 k, __m256i b);</p>
+<p>VPMOVSQD void _mm256_mask_cvtsepi64_storeu_epi32(void * , __mmask8 k, __m256i b);</p>
+<p>VPMOVSQD __m128i _mm_cvtsepi64_epi32(__m128i a);</p>
+<p>VPMOVSQD __m128i _mm_mask_cvtsepi64_epi32(__m128i a, __mmask8 k, __m128i b);</p>
+<p>VPMOVSQD __m128i _mm_maskz_cvtsepi64_epi32( __mmask8 k, __m128i b);</p>
+<p>VPMOVSQD void _mm_mask_cvtsepi64_storeu_epi32(void * , __mmask8 k, __m128i b);</p>
+<p>VPMOVQD __m128i _mm256_cvtepi64_epi32(__m256i a);</p>
+<p>VPMOVQD __m128i _mm256_mask_cvtepi64_epi32(__m128i a, __mmask8 k, __m256i b);</p>
+<p>VPMOVQD __m128i _mm256_maskz_cvtepi64_epi32( __mmask8 k, __m256i b);</p>
+<p>VPMOVQD void _mm256_mask_cvtepi64_storeu_epi32(void * , __mmask8 k, __m256i b);</p>
+<p>VPMOVQD __m128i _mm_cvtepi64_epi32(__m128i a);</p>
+<p>VPMOVQD __m128i _mm_mask_cvtepi64_epi32(__m128i a, __mmask8 k, __m128i b);</p>
+<p>VPMOVQD __m128i _mm_maskz_cvtepi64_epi32( __mmask8 k, __m128i b);</p>
+<p>VPMOVQD void _mm_mask_cvtepi64_storeu_epi32(void * , __mmask8 k, __m128i b);</p>
+<p><strong>SIMD Floating-Point Exceptions</strong></p>
+<p>None</p>
+<p><strong>Other Exceptions</strong></p>
+<table>
+<tr>
+<td>EVEX-encoded instruction, see Exceptions Type E6.</td></tr>
+<tr>
+<td>If EVEX.vvvv != 1111B.</td></tr></table></body></html>

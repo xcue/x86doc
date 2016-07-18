@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="style.css" type="text/css" rel="stylesheet">
+<title>VGATHERPF1DPS/VGATHERPF1QPS/VGATHERPF1DPD/VGATHERPF1QPD—Sparse Prefetch Packed SP/DP Data Values with Signed Dword, Signed Qword Indices Using T1 Hint </title></head>
+<body>
+<h1>VGATHERPF1DPS/VGATHERPF1QPS/VGATHERPF1DPD/VGATHERPF1QPD—Sparse Prefetch Packed SP/DP Data Values with Signed Dword, Signed Qword Indices Using T1 Hint</h1>
+<table>
+<tr>
+<th>Opcode/Instruction</th>
+<th>Op/En</th>
+<th>64/32 bit Mode Support</th>
+<th>CPUID Feature Flag</th>
+<th>Description</th></tr>
+<tr>
+<td>
+<p>EVEX.512.66.0F38.W0 C6 /2 /vsib</p>
+<p>VGATHERPF1DPS vm32z {k1}</p></td>
+<td>T1S</td>
+<td>V/V</td>
+<td>AVX512PF</td>
+<td>Using signed dword indices, prefetch sparse byte memory locations containing single-precision data using opmask k1 and T1 hint.</td></tr>
+<tr>
+<td>
+<p>EVEX.512.66.0F38.W0 C7 /2 /vsib</p>
+<p>VGATHERPF1QPS vm64z {k1}</p></td>
+<td>T1S</td>
+<td>V/V</td>
+<td>AVX512PF</td>
+<td>Using signed qword indices, prefetch sparse byte memory locations containing single-precision data using opmask k1 and T1 hint.</td></tr>
+<tr>
+<td>
+<p>EVEX.512.66.0F38.W1 C6 /2 /vsib</p>
+<p>VGATHERPF1DPD vm32y {k1}</p></td>
+<td>T1S</td>
+<td>V/V</td>
+<td>AVX512PF</td>
+<td>Using signed dword indices, prefetch sparse byte memory locations containing double-precision data using opmask k1 and T1 hint.</td></tr>
+<tr>
+<td>
+<p>EVEX.512.66.0F38.W1 C7 /2 /vsib</p>
+<p>VGATHERPF1QPD vm64z {k1}</p></td>
+<td>T1S</td>
+<td>V/V</td>
+<td>AVX512PF</td>
+<td>Using signed qword indices, prefetch sparse byte memory locations containing double-precision data using opmask k1 and T1 hint.</td></tr></table>
+<h3>Instruction Operand Encoding</h3>
+<table>
+<tr>
+<td>Op/En</td>
+<td>Operand 1</td>
+<td>Operand 2</td>
+<td>Operand 3</td>
+<td>Operand 4</td></tr>
+<tr>
+<td>T1S</td>
+<td>
+<p>BaseReg (R): VSIB:base,</p>
+<p>VectorReg(R): VSIB:index</p></td>
+<td>NA</td>
+<td>NA</td>
+<td>NA</td></tr></table>
+<p><strong>Description</strong></p>
+<p>The instruction conditionally prefetches up to sixteen 32-bit or eight 64-bit integer byte data elements. The elements are specified via the VSIB (i.e., the index register is an zmm, holding packed indices). Elements will only be prefetched if their corresponding mask bit is one.</p>
+<p>Lines prefetched are loaded into to a location in the cache hierarchy specified by a locality hint (T1):</p>
+<p>[PS data] For dword indices, the instruction will prefetch sixteen memory locations. For qword indices, the instruc-tion will prefetch eight values.</p>
+<p>[PD data] For dword and qword indices, the instruction will prefetch eight memory locations.</p>
+<p>Note that:</p>
+<p>(1) The prefetches may happen in any order (or not at all). The instruction is a hint.</p>
+<p>(2) The mask is left unchanged.</p>
+<p>(3) Not valid with 16-bit effective addresses. Will deliver a #UD fault.</p>
+<p>(4) No FP nor memory faults may be produced by this instruction.</p>
+<p>(5) Prefetches do not handle cache line splits</p>
+<p>(6) A #UD is signaled if the memory operand is encoded without the SIB byte.</p>
+<p><strong>Operation</strong></p>
+<p>BASE_ADDR stands for the memory operand base address (a GPR); may not exist</p>
+<p>VINDEX stands for the memory operand vector of indices (a vector register)</p>
+<p>SCALE stands for the memory operand scalar (1, 2, 4 or 8)</p>
+<p>DISP is the optional 1, 2 or 4 byte displacement</p>
+<p>PREFETCH(mem, Level, State) Prefetches a byte memory location pointed by ‘mem’ into the cache level specified by ‘Level’; a request for exclusive/ownership is done if ‘State’ is 1. Note that the memory location ignore cache line splits. This operation is considered a hint for the processor and may be skipped depending on implementation.</p>
+<p><strong>VGATHERPF1DPS (EVEX encoded version)</strong></p>
+<p>(KL, VL) = (16, 512)</p>
+<p>FOR j (cid:197) 0 TO KL-1</p>
+<p>i (cid:197) j * 32</p>
+<p>IF k1[j]</p>
+<p>Prefetch( [BASE_ADDR + SignExtend(VINDEX[i+31:i]) * SCALE + DISP], Level=1, RFO = 0)</p>
+<p>FI;</p>
+<p>ENDFOR</p>
+<p><strong>VGATHERPF1DPD (EVEX encoded version)</strong></p>
+<p>(KL, VL) = (8, 512)</p>
+<p>FOR j (cid:197) 0 TO KL-1</p>
+<p>i (cid:197) j * 64</p>
+<p>k (cid:197) j * 32</p>
+<p>IF k1[j]</p>
+<p>Prefetch( [BASE_ADDR + SignExtend(VINDEX[k+31:k]) * SCALE + DISP], Level=1, RFO = 0)</p>
+<p>FI;</p>
+<p>ENDFOR</p>
+<p><strong>VGATHERPF1QPS (EVEX encoded version)</strong></p>
+<p>(KL, VL) = (8, 256)</p>
+<p>FOR j (cid:197) 0 TO KL-1</p>
+<p>i (cid:197) j * 64</p>
+<p>IF k1[j]</p>
+<p>Prefetch( [BASE_ADDR + SignExtend(VINDEX[i+63:i]) * SCALE + DISP], Level=1, RFO = 0)</p>
+<p>FI;</p>
+<p>ENDFOR</p>
+<p><strong>VGATHERPF1QPD (EVEX encoded version)</strong></p>
+<p>(KL, VL) = (8, 512)</p>
+<p>FOR j (cid:197) 0 TO KL-1</p>
+<p>i (cid:197) j * 64</p>
+<p>k (cid:197) j * 64</p>
+<p>IF k1[j]</p>
+<p>Prefetch( [BASE_ADDR + SignExtend(VINDEX[k+63:k]) * SCALE + DISP], Level=1, RFO = 0)</p>
+<p>FI;</p>
+<p>ENDFOR</p>
+<p><strong>Intel C/C++ Compiler Intrinsic Equivalent</strong></p>
+<p>VGATHERPF1DPD void _mm512_mask_prefetch_i32gather_pd(__m256i vdx, __mmask8 m, void * base, int scale, int hint);</p>
+<p>VGATHERPF1DPS void _mm512_mask_prefetch_i32gather_ps(__m512i vdx, __mmask16 m, void * base, int scale, int hint);</p>
+<p>VGATHERPF1QPD void _mm512_mask_prefetch_i64gather_pd(__m512i vdx, __mmask8 m, void * base, int scale, int hint);</p>
+<p>VGATHERPF1QPS void _mm512_mask_prefetch_i64gather_ps(__m512i vdx, __mmask8 m, void * base, int scale, int hint);</p>
+<p><strong>SIMD Floating-Point Exceptions</strong></p>
+<p>None</p>
+<p><strong>Other Exceptions</strong></p>
+<p>See Exceptions Type E12NP.</p></body></html>

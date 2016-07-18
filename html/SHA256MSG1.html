@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="style.css" type="text/css" rel="stylesheet">
+<title>SHA256MSG1—Perform an Intermediate Calculation for the Next Four SHA256 Message Dwords </title></head>
+<body>
+<h1>SHA256MSG1—Perform an Intermediate Calculation for the Next Four SHA256 Message Dwords</h1>
+<table>
+<tr>
+<th>Opcode/Instruction</th>
+<th>Op/En</th>
+<th>64/32 bit Mode Support</th>
+<th>CPUID Feature Flag</th>
+<th>Description</th></tr>
+<tr>
+<td>
+<p>0F 38 CC /r</p>
+<p>SHA256MSG1 xmm1, xmm2/m128</p></td>
+<td>RM</td>
+<td>V/V</td>
+<td>SHA</td>
+<td>Performs an intermediate calculation for the next four SHA256 message dwords using previous message dwords from xmm1 and xmm2/m128, storing the result in xmm1.</td></tr></table>
+<h3>Instruction Operand Encoding</h3>
+<table>
+<tr>
+<td>Op/En</td>
+<td>Operand 1</td>
+<td>Operand 2</td>
+<td>Operand 3</td></tr>
+<tr>
+<td>RM</td>
+<td>ModRM:reg (r, w)</td>
+<td>ModRM:r/m (r)</td>
+<td>NA</td></tr></table>
+<p><strong>Description</strong></p>
+<p>The SHA256MSG1 instruction is one of two SHA256 message scheduling instructions. The instruction performs an intermediate calculation for the next four SHA256 message dwords.</p>
+<p><strong>Operation</strong></p>
+<p><strong>SHA256MSG1</strong></p>
+<p>W4 (cid:197) SRC2[31: 0] ;</p>
+<p>W3 (cid:197) SRC1[127:96] ;</p>
+<p>W2 (cid:197) SRC1[95:64] ;</p>
+<p>W1 (cid:197) SRC1[63: 32] ;</p>
+<p>W0 (cid:197) SRC1[31: 0] ;</p>
+<p>DEST[127:96] (cid:197) W3 + σ<sub>0</sub>( W4);</p>
+<p>DEST[95:64] (cid:197) W2 + σ<sub>0</sub>( W3);</p>
+<p>DEST[63:32] (cid:197) W1 + σ<sub>0</sub>( W2);</p>
+<p>DEST[31:0] (cid:197) W0 + σ<sub>0</sub>( W1);</p>
+<p><strong>Intel C/C++ Compiler Intrinsic Equivalent</strong></p>
+<p>SHA256MSG1: __m128i _mm_sha256msg1_epu32(__m128i, __m128i);</p>
+<p><strong>Flags Affected</strong></p>
+<p>None</p>
+<p><strong>SIMD Floating-Point Exceptions</strong></p>
+<p>None</p>
+<p><strong>Other Exceptions</strong></p>
+<p>See Exceptions Type 4.</p></body></html>

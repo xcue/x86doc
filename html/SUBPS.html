@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="style.css" type="text/css" rel="stylesheet">
+<title>SUBPS—Subtract Packed Single-Precision Floating-Point Values </title></head>
+<body>
+<h1>SUBPS—Subtract Packed Single-Precision Floating-Point Values</h1>
+<table>
+<tr>
+<th>Opcode/Instruction</th>
+<th>Op/En</th>
+<th>64/32 bit Mode Support</th>
+<th>CPUID Feature Flag</th>
+<th>Description</th></tr>
+<tr>
+<td>
+<p>0F 5C /r</p>
+<p>SUBPS xmm1, xmm2/m128</p></td>
+<td>RM</td>
+<td>V/V</td>
+<td>SSE</td>
+<td>Subtract packed single-precision floating-point values in xmm2/mem from xmm1 and store result in xmm1.</td></tr>
+<tr>
+<td>
+<p>VEX.NDS.128.0F.WIG 5C /r</p>
+<p>VSUBPS xmm1,xmm2, xmm3/m128</p></td>
+<td>RVM</td>
+<td>V/V</td>
+<td>AVX</td>
+<td>Subtract packed single-precision floating-point values in xmm3/mem from xmm2 and stores result in xmm1.</td></tr>
+<tr>
+<td>
+<p>VEX.NDS.256.0F.WIG 5C /r</p>
+<p>VSUBPS ymm1, ymm2, ymm3/m256</p></td>
+<td>RVM</td>
+<td>V/V</td>
+<td>AVX</td>
+<td>Subtract packed single-precision floating-point values in ymm3/mem from ymm2 and stores result in ymm1.</td></tr>
+<tr>
+<td>
+<p>EVEX.NDS.128.0F.W0 5C /r</p>
+<p>VSUBPS xmm1 {k1}{z}, xmm2, xmm3/m128/m32bcst</p></td>
+<td>FV</td>
+<td>V/V</td>
+<td>AVX512VL AVX512F</td>
+<td>Subtract packed single-precision floating-point values from xmm3/m128/m32bcst to xmm2 and stores result in xmm1 with writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.NDS.256.0F.W0 5C /r</p>
+<p>VSUBPS ymm1 {k1}{z}, ymm2, ymm3/m256/m32bcst</p></td>
+<td>FV</td>
+<td>V/V</td>
+<td>AVX512VL AVX512F</td>
+<td>Subtract packed single-precision floating-point values from ymm3/m256/m32bcst to ymm2 and stores result in ymm1 with writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.NDS.512.0F.W0 5C /r</p>
+<p>VSUBPS zmm1 {k1}{z}, zmm2, zmm3/m512/m32bcst{er}</p></td>
+<td>FV</td>
+<td>V/V</td>
+<td>AVX512F</td>
+<td>Subtract packed single-precision floating-point values in zmm3/m512/m32bcst from zmm2 and stores result in zmm1 with writemask k1.</td></tr></table>
+<h3>Instruction Operand Encoding</h3>
+<table>
+<tr>
+<td>Op/En</td>
+<td>Operand 1</td>
+<td>Operand 2</td>
+<td>Operand 3</td>
+<td>Operand 4</td></tr>
+<tr>
+<td>RM</td>
+<td>ModRM:reg (r, w)</td>
+<td>ModRM:r/m (r)</td>
+<td>NA</td>
+<td>NA</td></tr>
+<tr>
+<td>RVM</td>
+<td>ModRM:reg (w)</td>
+<td>VEX.vvvv (r)</td>
+<td>ModRM:r/m (r)</td>
+<td>NA</td></tr>
+<tr>
+<td>FV</td>
+<td>ModRM:reg (w)</td>
+<td>EVEX.vvvv (r)</td>
+<td>ModRM:r/m (r)</td>
+<td>NA</td></tr></table>
+<p><strong>Description</strong></p>
+<p>Performs a SIMD subtract of the packed single-precision floating-point values in the second Source operand from the First Source operand, and stores the packed single-precision floating-point results in the destination operand.</p>
+<p>VEX.128 and EVEX.128 encoded versions: The second source operand is an XMM register or an 128-bit memory location. The first source operand and destination operands are XMM registers. Bits (MAX_VL-1:128) of the corre-sponding destination register are zeroed.</p>
+<p>VEX.256 and EVEX.256 encoded versions: The second source operand is an YMM register or an 256-bit memory location. The first source operand and destination operands are YMM registers. Bits (MAX_VL-1:256) of the corre-sponding destination register are zeroed.</p>
+<p>EVEX.512 encoded version: The second source operand is a ZMM register, a 512-bit memory location or a 512-bit vector broadcasted from a 32-bit memory location. The first source operand and destination operands are ZMM registers. The destination operand is conditionally updated according to the writemask.</p>
+<p>128-bit Legacy SSE version: The second source can be an XMM register or an 128-bit memory location. The desti-nation is not distinct from the first source XMM register and the upper Bits (MAX_VL-1:128) of the corresponding register destination are unmodified.</p>
+<p><strong>Operation</strong></p>
+<p><strong>VSUBPS (EVEX encoded versions) when src2 operand is a vector register</strong></p>
+<p>(KL, VL) = (4, 128), (8, 256), (16, 512)</p>
+<p>IF (VL = 512) AND (EVEX.b = 1)</p>
+<p>THEN</p>
+<p>SET_RM(EVEX.RC);</p>
+<p>ELSE</p>
+<p>SET_RM(MXCSR.RM);</p>
+<p>FI;</p>
+<p>FOR j (cid:197) 0 TO KL-1</p>
+<p>i (cid:197) j * 32</p>
+<p>IF k1[j] OR *no writemask*</p>
+<p>THEN DEST[i+31:i] (cid:197) SRC1[i+31:i] - SRC2[i+31:i]</p>
+<p>ELSE</p>
+<p>IF *merging-masking*</p>
+<p>; merging-masking</p>
+<p>THEN *DEST[31:0] remains unchanged*</p>
+<p>ELSE</p>
+<p>; zeroing-masking</p>
+<p>DEST[31:0] (cid:197) 0</p>
+<p>FI;</p>
+<p>FI;</p>
+<p>ENDFOR;</p>
+<p>DEST[MAX_VL-1:VL] (cid:197) 0</p>
+<p><strong>VSUBPS (EVEX encoded versions) when src2 operand is a memory source</strong></p>
+<p>(KL, VL) = (4, 128), (8, 256),(16, 512)</p>
+<p>FOR j (cid:197) 0 TO KL-1</p>
+<p>i (cid:197)j * 32</p>
+<p>IF k1[j] OR *no writemask* THEN</p>
+<p>IF (EVEX.b = 1)</p>
+<p>THEN</p>
+<p>DEST[i+31:i] (cid:197) SRC1[i+31:i] - SRC2[31:0];</p>
+<p>ELSE</p>
+<p>DEST[i+31:i] (cid:197) SRC1[i+31:i] - SRC2[i+31:i];</p>
+<p>FI;</p>
+<p>ELSE</p>
+<p>IF *merging-masking*</p>
+<p>; merging-masking</p>
+<p>THEN *DEST[31:0] remains unchanged*</p>
+<p>ELSE</p>
+<p>; zeroing-masking</p>
+<p>DEST[31:0] (cid:197) 0</p>
+<p>FI;</p>
+<p>FI;</p>
+<p>ENDFOR;</p>
+<p>DEST[MAX_VL-1:VL] (cid:197) 0</p>
+<p><strong>VSUBPS (VEX.256 encoded version)</strong></p>
+<p>DEST[31:0] (cid:197) SRC1[31:0] - SRC2[31:0]</p>
+<p>DEST[63:32] (cid:197) SRC1[63:32] - SRC2[63:32]</p>
+<p>DEST[95:64] (cid:197) SRC1[95:64] - SRC2[95:64]</p>
+<p>DEST[127:96] (cid:197) SRC1[127:96] - SRC2[127:96]</p>
+<p>DEST[159:128] (cid:197) SRC1[159:128] - SRC2[159:128]</p>
+<p>DEST[191:160](cid:197) SRC1[191:160] - SRC2[191:160]</p>
+<p>DEST[223:192] (cid:197) SRC1[223:192] - SRC2[223:192]</p>
+<p>DEST[255:224] (cid:197) SRC1[255:224] - SRC2[255:224].</p>
+<p>DEST[MAX_VL-1:256] (cid:197) 0</p>
+<p><strong>VSUBPS (VEX.128 encoded version)</strong></p>
+<p>DEST[31:0] (cid:197) SRC1[31:0] - SRC2[31:0]</p>
+<p>DEST[63:32] (cid:197) SRC1[63:32] - SRC2[63:32]</p>
+<p>DEST[95:64] (cid:197) SRC1[95:64] - SRC2[95:64]</p>
+<p>DEST[127:96] (cid:197) SRC1[127:96] - SRC2[127:96]</p>
+<p>DEST[MAX_VL-1:128] (cid:197) 0</p>
+<p><strong>SUBPS (128-bit Legacy SSE version)</strong></p>
+<p>DEST[31:0] (cid:197) SRC1[31:0] - SRC2[31:0]</p>
+<p>DEST[63:32] (cid:197) SRC1[63:32] - SRC2[63:32]</p>
+<p>DEST[95:64] (cid:197) SRC1[95:64] - SRC2[95:64]</p>
+<p>DEST[127:96] (cid:197) SRC1[127:96] - SRC2[127:96]</p>
+<p>DEST[MAX_VL-1:128] (Unmodified)</p>
+<p><strong>Intel C/C++ Compiler Intrinsic Equivalent</strong></p>
+<p>VSUBPS __m512 _mm512_sub_ps (__m512 a, __m512 b);</p>
+<p>VSUBPS __m512 _mm512_mask_sub_ps (__m512 s, __mmask16 k, __m512 a, __m512 b);</p>
+<p>VSUBPS __m512 _mm512_maskz_sub_ps (__mmask16 k, __m512 a, __m512 b);</p>
+<p>VSUBPS __m512 _mm512_sub_round_ps (__m512 a, __m512 b, int);</p>
+<p>VSUBPS __m512 _mm512_mask_sub_round_ps (__m512 s, __mmask16 k, __m512 a, __m512 b, int);</p>
+<p>VSUBPS __m512 _mm512_maskz_sub_round_ps (__mmask16 k, __m512 a, __m512 b, int);</p>
+<p>VSUBPS __m256 _mm256_sub_ps (__m256 a, __m256 b);</p>
+<p>VSUBPS __m256 _mm256_mask_sub_ps (__m256 s, __mmask8 k, __m256 a, __m256 b);</p>
+<p>VSUBPS __m256 _mm256_maskz_sub_ps (__mmask16 k, __m256 a, __m256 b);</p>
+<p>SUBPS __m128 _mm_sub_ps (__m128 a, __m128 b);</p>
+<p>VSUBPS __m128 _mm_mask_sub_ps (__m128 s, __mmask8 k, __m128 a, __m128 b);</p>
+<p>VSUBPS __m128 _mm_maskz_sub_ps (__mmask16 k, __m128 a, __m128 b);</p>
+<p><strong>SIMD Floating-Point Exceptions</strong></p>
+<p>Overflow, Underflow, Invalid, Precision, Denormal</p>
+<p><strong>Other Exceptions</strong></p>
+<table>
+<tr>
+<td>VEX-encoded instructions, see Exceptions Type 2.</td></tr>
+<tr>
+<td>EVEX-encoded instructions, see Exceptions Type E2.</td></tr></table></body></html>
