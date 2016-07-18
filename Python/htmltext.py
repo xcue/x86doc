@@ -50,11 +50,14 @@ class HtmlText(object):
 		for t in self.tokens:
 			if self.__is_open(t) and not t.self_closes: close_stack.append(t)
 			elif self.__is_close(t):
+				
 				if not (close_stack[-1].tag == t.tag):
-					print close_stack
-					print self.tokens
-					raise Exception("autoclose mismatch")
-				close_stack.pop()
+					print "autoclose mismatch"
+					#print close_stack
+					#print self.tokens
+					#raise Exception("autoclose mismatch")
+				else:
+					close_stack.pop()
 		
 		while len(close_stack) > 0:
 			self.append(CloseTag(close_stack.pop().tag))
@@ -67,8 +70,9 @@ class HtmlText(object):
 					prev.closed_by = token
 					break
 			else:
+				print "No matching OpenTag for %s found!" % token.tag
 				print self.tokens
-				raise Exception("No matching OpenTag for %s found!" % token.tag)
+				#raise Exception("No matching OpenTag for %s found!" % token.tag)
 		elif len(self.tokens) > 0 and self.__is_open(token):
 			for i in xrange(-1, -len(self.tokens), -1):
 				last = self.tokens[i]
@@ -114,7 +118,11 @@ class HtmlText(object):
 				while close_it.tag != token.tag:
 					result += close_it.close()
 					reopen_it.append(close_it)
-					close_it = tag_stack.pop()
+					if (len(tag_stack) > 0):
+						close_it = tag_stack.pop()
+					else:
+						print "htmltext.py: line124"
+						break
 				result += close_it.close()
 				for tag in reversed(reopen_it):
 					tag_stack.append(tag)

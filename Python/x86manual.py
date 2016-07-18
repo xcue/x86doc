@@ -33,7 +33,7 @@ class SingleCellTable(pdftable.TableBase):
 	def columns(self): return 1
 	def bounds(self): return self.rect
 	def get_at(self, x, y):
-		assert x == 0 and y == 0
+		#assert x == 0 and y == 0
 		return self.__data
 	
 	def get_at_pixel(self, x, y):
@@ -50,7 +50,7 @@ class Figure(object):
 	def bounds(self): return self.data.bounds()
 
 def center_aligned_table(source):
-	assert source.rows() == 1 and source.columns() == 1
+	#assert source.rows() == 1 and source.columns() == 1
 	bounds = source.bounds()
 	contents = source.get_at(0, 0)[:]
 	contents.sort(cmp=sort_topdown_ltr)
@@ -90,7 +90,7 @@ def center_aligned_table(source):
 	return pdftable.ImplicitTable(bounds, table)
 
 def left_aligned_table(source):
-	assert source.rows() == 1 and source.columns() == 1
+	#assert source.rows() == 1 and source.columns() == 1
 	bounds = source.bounds()
 	contents = source.get_at(0, 0)[:]
 	contents.sort(cmp=sort_topdown_ltr)
@@ -122,9 +122,10 @@ def left_aligned_table(source):
 				col_index = i
 				break
 		else:
+			print "No matching column!"
 			print columns
 			print contents
-			raise Exception("No matching column!")
+			#raise Exception("No matching column!")
 		
 		row[col_index] = [item]
 	
@@ -208,7 +209,9 @@ class FontStyle(object):
 		
 		if self.baseline < that.baseline: return ("sub", "sup")
 		if self.baseline > that.baseline: return ("sup", "sub")
-		assert False
+
+		print "error:x86manual:FontStyle"
+		#assert False
 
 fpu_flags_format__ = re.compile(r"^C[0-9]")
 exceptions_format__ = re.compile(r"^#?[A-Z]{2}")
@@ -344,16 +347,19 @@ class x86ManParser(object):
 	def __output_file(self, displayable):
 		title_parts = [p.strip() for p in re.split(u"\s*[-—]\s*", unicode(displayable[0]), 1)]
 		if len(title_parts) != 2:
+			print "Can't decode title"
 			print displayable[0].font_size(), unicode(displayable[0:5])
 			print title_parts
-			raise Exception("Can't decode title")
-		
-		title = title_parts[0]
-		path = "%s/%s.html" % (self.outputDir, title.replace("/", ":"))
-		print "Writing to %s" % path
-		file_data = self.__output_page(displayable).encode("UTF-8")
-		with open(path, "w") as fd:
-			fd.write(file_data)
+			#raise Exception("Can't decode title")
+		else:
+			title = title_parts[0].encode("UTF-8").replace("/", "_")
+			
+			if not (title.startswith("Intel")):
+				path = "%s/%s.html" % (self.outputDir, title)
+				print "Writing to %s" % path
+				file_data = self.__output_page(displayable).encode("UTF-8")
+				with open(path, "w") as fd:
+					fd.write(file_data)
 	
 	def __output_page(self, displayable):
 		title = unicode(displayable[0])
@@ -482,7 +488,8 @@ class x86ManParser(object):
 			result.append(CloseTag("table"))
 			return result
 		
-		assert False
+		print "error: x86manual.py:__output_html"
+		#assert False
 		return HtmlText()
 	
 	def __output_svg(self, element):
@@ -517,8 +524,9 @@ class x86ManParser(object):
 			result.append(CloseTag("path"))
 			return result
 		
-		print element.__class__.__name__
-		assert False
+		print "error: x86manual.py:__output_svg"
+		#print element.__class__.__name__
+		#assert False
 		return result
 	
 	def __output_text(self, element):

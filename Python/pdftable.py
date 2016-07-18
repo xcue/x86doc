@@ -98,7 +98,7 @@ def pretty_much_equal(a, b, threshold = 2):
 
 class Curve(object):
 	def __init__(self, points):
-		assert len(points) > 1
+		#assert len(points) > 1
 		x = [float("inf"), float("-inf")]
 		y = x[:]
 		for p in points:
@@ -113,7 +113,7 @@ class Curve(object):
 
 class List(object):
 	def __init__(self, items):
-		assert len(items) > 0
+		#assert len(items) > 0
 		self.items = items
 		self.rect = items[0].bounds()
 		for i in items[1:]:
@@ -159,8 +159,8 @@ class ImplicitTable(TableBase):
 	def bounds(self): return self.__bounds
 	
 	def cell_size(self, x, y):
-		assert x >= 0 and x < self.columns()
-		assert y >= 0 and y < self.rows()
+		#assert x >= 0 and x < self.columns()
+		#assert y >= 0 and y < self.rows()
 		return (1, 1)
 	
 	def data_index(self, x, y): return y * self.columns() + x
@@ -185,8 +185,8 @@ class Table(TableBase):
 		for line in group:
 			(ver if line.vertical() else hor).append(line)
 		
-		assert len(ver) >= 2
-		assert len(hor) >= 2
+		#assert len(ver) >= 2
+		#assert len(hor) >= 2
 		
 		self.__columns = self.__identify_dimension(ver, Rect.xmid)
 		self.__rows = self.__identify_dimension(hor, Rect.ymid)
@@ -197,7 +197,7 @@ class Table(TableBase):
 			missingC.sort(key=sort_rect_by_position(Rect.y1, Rect.xmid, self.__columns[-1]))
 			for missing in missingC:
 				rightColumn = self.__data_col_index(missing.xmid())
-				assert rightColumn != 0 and rightColumn != len(self.__columns)
+				#assert rightColumn != 0 and rightColumn != len(self.__columns)
 				leftColumn = rightColumn - 1
 				beginIndex = self.__data_row_index(missing.y1())
 				endIndex = self.__data_row_index(missing.y2())
@@ -209,7 +209,7 @@ class Table(TableBase):
 			missingR.sort(key=sort_rect_by_position(Rect.x1, Rect.ymid, self.__rows[-1]))
 			for missing in missingR:
 				topRow = self.__data_row_index(missing.ymid())
-				assert topRow != 0 and topRow != len(self.__rows) - 1
+				#assert topRow != 0 and topRow != len(self.__rows) - 1
 				bottomRow = topRow - 1
 				beginIndex = self.__data_col_index(missing.x1())
 				endIndex = self.__data_col_index(missing.x2())
