@@ -25,6 +25,7 @@ public class Main {
 		new Main().convertHtml_toTabSeparated();
 	}
 
+	@SuppressWarnings("unused")
 	private void convertHtml_toTabSeparated() {
 		
 		final File folder = new File(sourcePath);
@@ -43,7 +44,7 @@ public class Main {
 			} else if (fileEntry.getName().equalsIgnoreCase("style.css")) {
 				// do nothing
 			} else {
-				final String ref = "./html/"+fileEntry.getName();
+				final String ref = fileEntry.getName();
 				try {
 					final String fileContent = new String(Files.readAllBytes(Paths.get(fileEntry.getAbsolutePath()))).replace("\r", " ").replace("\n", " ");
 					final String general_description_string = this.extractGeneralDescription(fileContent);
@@ -52,7 +53,7 @@ public class Main {
 
 					for (final String instruction : instructions) {
 						sb.append("GENERAL\t"+ instruction+'\t'+general_description_string+'\t'+ref +"\n");
-						indexFileContent.append("<li><a href=\""+ref +"\">"+instruction+"</a><p> "+general_description_string+"</li>\n");
+						indexFileContent.append("<li><a href=\"./html/" + ref +"\">"+instruction+"</a> - "+general_description_string+"</li>\n");
 					}
 					
 					final List<Signature> firstTable = this.getSignatures(fileContent, instructions);
