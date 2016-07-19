@@ -3,3 +3,4 @@
 *.pyc
 *.pyo
 pdfminer/*
+Java/SignatureGenerator/target/**
