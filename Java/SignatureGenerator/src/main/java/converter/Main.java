@@ -19,7 +19,7 @@ public class Main {
 	static final Logger log = LoggerFactory.getLogger(Main.class);
 	static final String filenameOut = ".\\target\\signature-june2016.txt";
 	static final String indexFileOut = ".\\target\\index.html";
-	static final String sourcePath = "..\\html";
+	static final String sourcePath = "..\\..\\html";
 	
 	public static void main(String[] args) {
 		new Main().convertHtml_toTabSeparated();
@@ -39,6 +39,8 @@ public class Main {
 		
 		for (final File fileEntry : folder.listFiles()) {
 			if (fileEntry.isDirectory()) {
+				// do nothing
+			} else if (fileEntry.getName().equalsIgnoreCase("style.css")) {
 				// do nothing
 			} else {
 				final String ref = "./html/"+fileEntry.getName();
@@ -82,13 +84,14 @@ public class Main {
 			}
 		}
 
-		for (final String arch : archs) {
-			log.info("arch "+arch);
+		if (false) {
+			for (final String arch : archs) {
+				log.info("arch "+arch);
+			}
+			for (final String operandType : operandTypes) {
+				log.info("operandType "+operandType);
+			}
 		}
-		for (final String operandType : operandTypes) {
-			log.info("operandType "+operandType);
-		}
-		
 		try {
 			PrintWriter out = new PrintWriter(indexFileOut);
 			out.print(indexFileContent);
