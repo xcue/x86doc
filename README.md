@@ -5,6 +5,10 @@ I needed a complete and recent list of all x86 instruction with their signatures
 
 The set is also available online at [https://hjlebbink.github.io/x86doc/][4].
 
+---
+Update:
+* Updated with Intel's documentation of June 2016
+
   [1]: https://github.com/HJLebbink/asm-dude
   [2]: http://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-instruction-set-reference-manual-325383.pdf
   [3]: https://github.com/zneak/x86doc
