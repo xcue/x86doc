@@ -6,9 +6,12 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,7 +27,7 @@ public class Main {
 	public static void main(String[] args) {
 		new Main().convertHtml_toTabSeparated();
 	}
-
+	
 	@SuppressWarnings("unused")
 	private void convertHtml_toTabSeparated() {
 		
@@ -34,6 +37,10 @@ public class Main {
 		final Collection<Signature> allSignatures = new TreeSet<Signature>();
 		
 		final StringBuilder sb = new StringBuilder();
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		sb.append("; This file is machine generated at "+dateFormat.format(new Date())+"\n;\n");
+		
 		final StringBuilder indexFileContent = new StringBuilder();
 		
 		indexFileContent.append("<!DOCTYPE html><html><head><title>x86 Assembly Documentation</title></head><body><h1>x86 Assembly Documentation</h1><p>Html pages generated with <a href=\"https://github.com/HJLebbink/x86doc\">x86doc</a></p><ul>\n");
@@ -73,9 +80,11 @@ public class Main {
 		
 		final SortedSet<String> archs = new TreeSet<String>();
 		final SortedSet<String> operandTypes = new TreeSet<String>();
-
+		
 		for (final Signature entry : allSignatures) {
-			sb.append(entry.mnemonic+'\t'+ entry.operands+'\t'+entry.cpuFlags+'\t'+entry.mnemonic + " " + entry.operandsDoc+'\t'+ cleanupDescription(entry.description) +"\n");
+			
+			final String cpuFlags = entry.cpuFlags;
+			sb.append(entry.mnemonic+'\t'+ entry.operands+'\t'+cpuFlags+'\t'+entry.mnemonic + " " + entry.operandsDoc+'\t'+ cleanupDescription(entry.description) +"\n");
 			
 			for (final String arch : entry.cpuFlags.split(",")) {
 				archs.add(arch);
@@ -107,6 +116,8 @@ public class Main {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		log.info("DONE");
 	}
 
 	private List<Signature> getSignatures(final String str, final Set<String> mnemonics) {
@@ -281,6 +292,24 @@ public class Main {
 		}
 	}
 	
+	private String cleanupOperand(final String str) {
+		final StringBuilder sb = new StringBuilder();
+		for (final String word : str.toUpperCase().split(",")) {
+			String word2 = word.trim();
+			if (word2.equals("R32/M161")) {
+				word2 = "R32/M16"; // get rid of silly footnote
+			}
+			word2 = word2.replaceAll("MM128", "M128");
+			if (word2.equals("M")) { 
+				word2 = "MEM";
+			}
+			sb.append(word2);
+			sb.append(",");
+		}
+		if (sb.length() > 0) sb.setLength(sb.length() - 1);
+		return sb.toString();
+	}
+	
 	private List<String> splitInstruction(final String str, final Set<String> instructions) {
 		
 		List<String> list = new ArrayList<String>();
@@ -289,19 +318,17 @@ public class Main {
 			String[] words = str.split(" ");
 			for (int i=0; i<words.length; ++i) {
 				if (words[i].equalsIgnoreCase(instruction)) {
-
-					StringBuilder operand = new StringBuilder();
-					for (int j=i+1; j<words.length; ++j) {
-						operand.append(words[j]+" ");
-					}
 					list.add(instruction);
+
+					final StringBuilder operand = new StringBuilder();
+					for (int j=i+1; j<words.length; ++j) {
+						operand.append(this.cleanupOperand(words[j])+" ");
+					}
 					list.add(operand.toString());
 					return list;
 				}
 			}
 		}
-		// could not find an instruction in the provided str, assuming it is the first word.
-		//log.warn("splitInstruction: could not find a instruction "+instructions.iterator().next()+" in the provided str="+str);
 		list.add("");
 		list.add("");
 		return list;
@@ -319,77 +346,100 @@ public class Main {
 	}
 
 	private static String makeArch(final String arch) {
-		if (arch.equalsIgnoreCase("AVX512B W")) return "AVX512B,AVX512W";
-		if (arch.startsWith("AVX512VL AVX512BW AVX512BW")) return "AVX512VL,AVX512BW";
 
+		//TODO
+		if (arch.startsWith("AVX512VL AVX512BW AVX512BW")) return "AVX512VL,AVX512BW";
 		if (arch.equalsIgnoreCase("AVX AVX512BW Insert a word integer value from r32/m16 and")) return "AVX,AVX512BW";
-		if (arch.equalsIgnoreCase("Both PCL-MULQDQ and AVX flags")) return "PCL-MULQDQ,AVX";
+		
+		if (arch.equalsIgnoreCase("Both PCL-MULQDQ and AVX flags")) return "PCLMULQDQ,AVX";
+		if (arch.equalsIgnoreCase("AVX512B W")) return "AVX512BW";
 		if (arch.equalsIgnoreCase("AVX512V L AVX512B W")) return "AVX512VL,AVX512BW";
 		if (arch.equalsIgnoreCase("AVX512V L AVX512F")) return "AVX512VL,AVX512F";
 		if (arch.equalsIgnoreCase("AVX512D Q")) return "AVX512DQ";
 		if (arch.equalsIgnoreCase("Both AES and AVX flags")) return "AES,AVX";
 		if (arch.equalsIgnoreCase("N.E.")) return "";
-		if (arch.equalsIgnoreCase("HLE or RTM")) return "HLE,RTM";
 		if (arch.equalsIgnoreCase("Valid")) return "";
-		if (arch.equalsIgnoreCase("PCLMUL-QDQ")) return "";
+		if (arch.equalsIgnoreCase("PCLMUL-QDQ")) return "PCLMULQDQ";
+		if (arch.equalsIgnoreCase("HLE1")) return "HLE";
+		if (arch.equalsIgnoreCase("HLE or RTM")) return "HLE,RTM";
 		return arch.replaceAll(" ", ",");
 	}
 	
 	private static String makeSignatureDoc(final String str) {
-		String str2 = str.toUpperCase().trim();
-		String str3 = str2.
-				replaceAll("&LT;XMM0&GT;","XMM_ZERO").
-				replace("M16&AMP;","M16&").
-				replace("M32&AMP;","M32&").
-				replace(".M256","M256").
-				replace("/ M128","/M128").
-				replace(" /M256","/M256").
-				replace(" {","{");
-//		return str3;
-		return str3.split(" ")[0].trim();
+		final StringBuilder sb = new StringBuilder();
+		final String str2 = str.toUpperCase().trim();
+		
+		for (final String element : str2.split(",")) {
+			final String str3 = element.trim();
+			String str4 = str3.replaceAll("&LT;XMM0&GT;","XMM_ZERO").
+					replace("M16&AMP;","M16&").
+					replace("M32&AMP;","M32&").
+					replace(".M256","M256").
+					replace("/ M128","/M128").
+					replace(" /M256","/M256").
+					replace(" {","{");
+			
+			
+			if (str4.equals("IMM6")) { // fix a bug
+				str4 = "IMM16";
+			}
+			sb.append(str4);
+			sb.append(",");
+		}
+		if (sb.length() > 0) sb.setLength(sb.length()-1);
+
+		final String str5 = sb.toString();
+		//log.info("makeSignatureDoc: str "+str5);
+//		return str5;
+		return str5.split(" ")[0].trim();
 	}
 	
 	private static String makeOperand(final String str) {
 		//log.info("makeOperand "+str);
 		
-		if (str.equalsIgnoreCase("M")) return "MEM";
-		if (str.equalsIgnoreCase("R16,M")) return "R16,MEM";
-		if (str.equalsIgnoreCase("R32,M")) return "R32,MEM";
-		if (str.equalsIgnoreCase("R64,M")) return "R64,MEM";
+		final StringBuilder sb = new StringBuilder();
 		
-		return str.
-				
-				replaceAll("K1", "K").
-				replaceAll("K2", "K").
-				replaceAll("K3", "K").
-				replaceAll("BND1", "BND").
-				replaceAll("BND2", "BND").
-				
-				replaceAll("R32A", "R32").
-				replaceAll("R32B", "R32").
-				replaceAll("R64A", "R64").
-				replaceAll("R64B", "R64").
-				
-				replaceAll("MM1", "MM").
-				replaceAll("MM2", "MM").
-				
-				replaceAll("XMM0", "XMM").
-				replaceAll("XMM1", "XMM").
-				replaceAll("XMM2", "XMM").
-				replaceAll("XMM3", "XMM").
-				replaceAll("XMM4", "XMM").
+		for (final String operand : str.toUpperCase().split(",")) {
+			
+			String str2 = operand.
+					replaceAll("K1", "K").
+					replaceAll("K2", "K").
+					replaceAll("K3", "K").
+					replaceAll("BND1", "BND").
+					replaceAll("BND2", "BND").
+					
+					replaceAll("R32A", "R32").
+					replaceAll("R32B", "R32").
+					replaceAll("R64A", "R64").
+					replaceAll("R64B", "R64").
+					
+					replaceAll("XMM0", "XMM").
+					replaceAll("XMM1", "XMM").
+					replaceAll("XMM2", "XMM").
+					replaceAll("XMM3", "XMM").
+					replaceAll("XMM4", "XMM").
 
-				replaceAll("YMM0", "YMM").
-				replaceAll("YMM1", "YMM").
-				replaceAll("YMM2", "YMM").
-				replaceAll("YMM3", "YMM").
-				replaceAll("YMM4", "YMM").
-				
-				replaceAll("ZMM0", "ZMM").
-				replaceAll("ZMM1", "ZMM").
-				replaceAll("ZMM2", "ZMM").
-				replaceAll("ZMM3", "ZMM").
-				replaceAll("ZMM4", "ZMM");
+					replaceAll("YMM0", "YMM").
+					replaceAll("YMM1", "YMM").
+					replaceAll("YMM2", "YMM").
+					replaceAll("YMM3", "YMM").
+					replaceAll("YMM4", "YMM").
+					
+					replaceAll("ZMM0", "ZMM").
+					replaceAll("ZMM1", "ZMM").
+					replaceAll("ZMM2", "ZMM").
+					replaceAll("ZMM3", "ZMM").
+					replaceAll("ZMM4", "ZMM");
+
+			if (str2.equals("MM1")) str2 = "MM";
+			if (str2.equals("MM2")) str2 = "MM";
+			if (str2.equals("MM2/M64")) str2 = "MM/M64";
+			sb.append(str2);
+			sb.append(",");
+			
+		}
+		if (sb.length() > 0) sb.setLength(sb.length()-1);
+		return sb.toString();
 	}
 	
 	private String extractGeneralDescription(final String fileContent) {
@@ -511,6 +561,6 @@ public class Main {
 	}
 	
 	private String cleanupDescription(final String str) {
-		return str.replaceAll("val-ues", "values").replaceAll("writ-ten", "written").replaceAll(",", ", ");
+		return str.replaceAll("val-ues", "values").replaceAll("writ-ten", "written").replaceAll(",", ", ").replaceAll(" // ", "//");
 	}
 }
