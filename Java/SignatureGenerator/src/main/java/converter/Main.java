@@ -15,7 +15,9 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedMap;
 import java.util.SortedSet;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class Main {
@@ -37,13 +39,11 @@ public class Main {
 		final Collection<Signature> allSignatures = new TreeSet<Signature>();
 		
 		final StringBuilder sb = new StringBuilder();
-		
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		final DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		sb.append("; This file is machine generated at "+dateFormat.format(new Date())+"\n;\n");
 		
-		final StringBuilder indexFileContent = new StringBuilder();
+		final SortedMap<String, String> indexContent = new TreeMap<String, String>();
 		
-		indexFileContent.append("<!DOCTYPE html><html><head><title>x86 Assembly Documentation</title></head><body><h1>x86 Assembly Documentation</h1><p>Html pages generated with <a href=\"https://github.com/HJLebbink/x86doc\">x86doc</a></p><ul>\n");
 		
 		for (final File fileEntry : folder.listFiles()) {
 			if (fileEntry.isDirectory()) {
@@ -54,29 +54,49 @@ public class Main {
 				final String ref = fileEntry.getName();
 				try {
 					final String fileContent = new String(Files.readAllBytes(Paths.get(fileEntry.getAbsolutePath()))).replace("\r", " ").replace("\n", " ");
-					final String general_description_string = this.extractGeneralDescription(fileContent);
-
 					final Set<String> instructions = this.retieveInstructions(stripExtension(fileEntry.getName()), fileContent);
 
-					for (final String instruction : instructions) {
-						sb.append("GENERAL\t"+ instruction+'\t'+general_description_string+'\t'+ref +"\n");
-						indexFileContent.append("<li><a href=\"./html/" + ref +"\">"+instruction+"</a> - "+general_description_string+"</li>\n");
-					}
+					final SortedSet<String> archs = new TreeSet<String>();
 					
-					final List<Signature> firstTable = this.getSignatures(fileContent, instructions);
-					//log.info("fileEntry="+fileEntry.getName()+" has "+firstTable.size() +" entries");
-					
-					for (final Signature entry : firstTable) {
+					for (final Signature entry : this.getSignatures(fileContent, instructions)) {
 						//log.info("instruction="+entry.mnemonic+"("+entry.signature +") ["+entry.cpuFlags+"] description="+entry.description);
 						allSignatures.add(entry);
+						for (final String arch : entry.cpuFlags.split(",")) {
+							archs.add(arch.trim());
+						}
 					}
+
+					final String general_description_string = this.extractGeneralDescription(fileContent);
+					for (final String instruction : instructions) {
+						sb.append("GENERAL\t"+ instruction+'\t'+general_description_string+'\t'+ref +"\n");
+						
+						final StringBuilder arch = new StringBuilder();
+						for (String str : archs) {
+							arch.append(str);
+							arch.append(", ");
+						}
+						if (arch.length() > 1) arch.setLength(arch.length() - 2);
+						
+						indexContent.put(instruction, "<tr><td><a href=\"./html/" + ref +"\">"+instruction+"</a></td><td>"+general_description_string+"</td><td>"+arch+"</td></tr>");
+					}
+					
+
+				
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
 		}
 
-		indexFileContent.append("</ul></body></html>");
+		final StringBuilder indexFileContent = new StringBuilder();
+		
+		indexFileContent.append("<!DOCTYPE html><html><head><title>x86 Assembly Documentation</title></head>\n");
+		indexFileContent.append("<body><h1>x86 Assembly Documentation</h1><p>Html pages generated with <a href=\"https://github.com/HJLebbink/x86doc\">x86doc</a></p>\n");
+		indexFileContent.append("<table>\n");
+		for (final String mnemonic : indexContent.keySet()) {
+			indexFileContent.append(indexContent.get(mnemonic)+"\n");
+		}
+		indexFileContent.append("</table></body></html>");
 		
 		final SortedSet<String> archs = new TreeSet<String>();
 		final SortedSet<String> operandTypes = new TreeSet<String>();
@@ -282,8 +302,8 @@ public class Main {
 						if (mnemonic.equals("")) {
 							// do nothing
 						} else {
-							String operandsDoc2 = makeSignatureDoc(operandsDoc);
-							list.add(new Signature(mnemonic, makeOperand(operandsDoc2), makeArch(arch), operandsDoc2, description));
+							String operandsDoc2 = sanitize_SignatureDoc(operandsDoc);
+							list.add(new Signature(mnemonic, makeOperand(operandsDoc2), sanitize_Arch(arch), operandsDoc2, description));
 						}
 					}
 				}
@@ -345,7 +365,7 @@ public class Main {
 				replaceAll("</sub>", "");
 	}
 
-	private static String makeArch(final String arch) {
+	private static String sanitize_Arch(final String arch) {
 
 		//TODO
 		if (arch.startsWith("AVX512VL AVX512BW AVX512BW")) return "AVX512VL,AVX512BW";
@@ -365,7 +385,7 @@ public class Main {
 		return arch.replaceAll(" ", ",");
 	}
 	
-	private static String makeSignatureDoc(final String str) {
+	private static String sanitize_SignatureDoc(final String str) {
 		final StringBuilder sb = new StringBuilder();
 		final String str2 = str.toUpperCase().trim();
 		
@@ -487,7 +507,11 @@ public class Main {
 		
 		if (filename.equalsIgnoreCase("REP_REPE_REPZ_REPNE_REPNZ")) {
 			result = Arrays.asList("REP INS", "REP MOVS", "REP OUTS","REP LODS","REP STOS", "REPE CMPS", "REPE SCAS", "REPNE CMPS", "REPNE SCAS");
-			
+		} else if (filename.equalsIgnoreCase("MOV-1")) {
+			result = Arrays.asList("MOV");
+		} else if (filename.equalsIgnoreCase("MOV-2")) {
+			result = Arrays.asList("MOV");
+		
 		} else if (filename.equalsIgnoreCase("VPERMI2W_D_Q_PS_PD")) {
 			result = Arrays.asList("VPERMI2W", "VPERMI2D", "VPERMI2Q","VPERMI2PS","VPERMI2PD");
 		} else if (filename.equalsIgnoreCase("VPTESTNMB_W_D_Q")) {
@@ -545,6 +569,10 @@ public class Main {
 			result = Arrays.asList("JA", "JAE", "JB", "JBE", "JC", "JE", "JG", "JGE", "JL", "JLE", "JNA", "JNAE", "JNB", "JNBE", "JNC", "JNE", "JNG", "JNGE", "JNL", "JNLE", "JNO", "JNP", "JNS", "JNZ", "JO", "JP", "JPE", "JPO", "JS", "JZ", "JA", "JCXZ", "JECXZ", "JRCXZ");
 		} else if (filename.equalsIgnoreCase("SETcc")) {
 			result = Arrays.asList("SETA", "SETAE", "SETB", "SETBE", "SETC", "SETE", "SETG", "SETGE", "SETL", "SETLE", "SETNA", "SETNAE", "SETNB", "SETNBE", "SETNC", "SETNE", "SETNG", "SETNGE", "SETNL", "SETLE", "SETNO", "SETNP", "SETNS", "SETNZ", "SETO", "SETP", "SETPE", "SETPO", "SETS", "SETZ", "SETA");
+		} else if (filename.equalsIgnoreCase("LOOP_LOOPcc")) {
+			result = Arrays.asList("LOOP", "LOOPE", "LOOPZ", "LOOPNE", "LOOPNZ");
+		} else if (filename.equalsIgnoreCase("INT n_INTO_INT 3")) {
+			result = Arrays.asList("INT 3", "INT", "INTO");
 		} else {
 			result =  Arrays.asList(filename.split("_"));
 		}
