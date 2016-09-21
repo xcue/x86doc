@@ -14,8 +14,8 @@ The set is also available online at [https://hjlebbink.github.io/x86doc/][4].
   [4]: https://hjlebbink.github.io/x86doc/
 ---
 <table>
-<tr><td><a href="./html/AAA.html">AAA</a></td><td>ASCII Adjust After Addition</td><td></td></tr>
-<tr><td><a href="./html/AAD.html">AAD</a></td><td>ASCII Adjust AX Before Division</td><td></td></tr>
+<tr><td><a href="https://hjlebbink.github.io/x86doc/html/AAA.html">AAA</a></td><td>ASCII Adjust After Addition</td><td></td></tr>
+<tr><td><a href="https://hjlebbink.github.io/x86doc/html/AAD.html">AAD</a></td><td>ASCII Adjust AX Before Division</td><td></td></tr>
 <tr><td><a href="./html/AAM.html">AAM</a></td><td>ASCII Adjust AX After Multiply</td><td></td></tr>
 <tr><td><a href="./html/AAS.html">AAS</a></td><td>ASCII Adjust AL After Subtraction</td><td></td></tr>
 <tr><td><a href="./html/ADC.html">ADC</a></td><td>Add with Carry</td><td></td></tr>
