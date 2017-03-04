@@ -380,121 +380,129 @@ class x86ManParser(object):
 		text.append(CloseTag("head"))
 		text.append(OpenTag("body"))
 
-		for element in displayable:
-			text.append(self.__output_html(element))
+		text.extend(self.__output_html_list(displayable))
 
 		return "<!DOCTYPE html>\n" + text.to_html()
 
-	def __output_html(self, element):
-		if isinstance(element, list):
-			result = HtmlText()
-			for e in element:
-				result.append(unicode(e))
-			return result
+	def __output_html_list(self, elements):
+		output = []
+		for element in elements:
+			if isinstance(element, list):
+				result = HtmlText()
+				for e in element:
+					result.append(unicode(e))
+				output.append(result)
+				continue
 
-		if isinstance(element, CharCollection):
-			result = self.__output_text(element)
-			if result.tokens[0].tag[0] == "h":
-				level = int(result.tokens[0].tag[1]) - 1
-				self.__title_stack = self.__title_stack[0:level]
-				self.__title_stack.append(u"".join((c for c in result.tokens[1:-1] if isinstance(c, unicode))).strip().lower())
-			return result
+			if isinstance(element, CharCollection):
+				result = self.__output_text(elements, element)
+				if result.tokens[0].tag[0] == "h":
+					level = int(result.tokens[0].tag[1]) - 1
+					self.__title_stack = self.__title_stack[0:level]
+					self.__title_stack.append(u"".join((c for c in result.tokens[1:-1] if isinstance(c, unicode))).strip().lower())
+				output.append(result)
+				continue
 
-		if isinstance(element, pdftable.List):
-			result = HtmlText()
-			result.append(OpenTag("ul"))
-			for item in element.items:
-				item_result = self.__output_html(item)
-				if item_result.tokens[0].tag == "p":
-					item_result.tokens = item_result.tokens[1:-1]
-				result.append(OpenTag("li"))
-				result.append(item_result)
-				result.append(CloseTag("li"))
-			result.append(CloseTag("ul"))
-			return result
+			if isinstance(element, pdftable.List):
+				result = HtmlText()
+				result.append(OpenTag("ul"))
 
-		if isinstance(element, Figure):
-			def flatten(t):
-				everything = t.get_everything()
-				result = everything[:]
-				for i in result:
-					if isinstance(i, pdftable.TableBase):
-						everything += flatten(i)
-				return everything
+				item_results = self.__output_html_list(element.items)
+				for item_result in item_results:
+					if item_result.tokens[0].tag == "p":
+						item_result.tokens = item_result.tokens[1:-1]
+					result.append(OpenTag("li"))
+					result.append(item_result)
+					result.append(CloseTag("li"))
 
-			flat = flatten(element.data)
-			svg = HtmlText()
-			if len([f for f in flat if isinstance(f, CharCollection)]) > 0:
-				bounds = element.bounds()
-				attribs = {
-					"width": bounds.width() * 1.5,
-					"height": bounds.height() * 1.5,
-					"viewBox": "%f %f %f %f" % (bounds.x1(), bounds.y1(), bounds.width(), bounds.height())
-				}
-				svg.append(OpenTag("svg", attributes=attribs))
-				for item in flat:
-					svg.append(self.__output_svg(item))
-				svg.autoclose()
-			return svg
+				result.append(CloseTag("ul"))
+				output.append(result)
+				continue
 
-		if isinstance(element, pdftable.TableBase):
-			result = HtmlText()
-			print_index = -1
-			attributes = {}
-			if element.rows() == 1 and element.columns() == 1:
-				if len(self.__title_stack) == 1:
-					# instruction table
-					element = left_aligned_table(element)
-				elif len(self.__title_stack) != 0:
-					heading = self.__title_stack[-1]
-					if heading.startswith("instruction operand encoding"):
-						# operands encoding
-						element = center_aligned_table(element)
-					elif isinstance(element, SingleCellTable):
+			if isinstance(element, Figure):
+				def flatten(t):
+					everything = t.get_everything()
+					result = everything[:]
+					for i in result:
+						if isinstance(i, pdftable.TableBase):
+							everything += flatten(i)
+					return everything
+
+				flat = flatten(element.data)
+				svg = HtmlText()
+				if len([f for f in flat if isinstance(f, CharCollection)]) > 0:
+					bounds = element.bounds()
+					attribs = {
+						"width": bounds.width() * 1.5,
+						"height": bounds.height() * 1.5,
+						"viewBox": "%f %f %f %f" % (bounds.x1(), bounds.y1(), bounds.width(), bounds.height())
+					}
+					svg.append(OpenTag("svg", attributes=attribs))
+					for item in flat:
+						svg.append(self.__output_svg(item))
+					svg.autoclose()
+				output.append(svg)
+				continue
+
+			if isinstance(element, pdftable.TableBase):
+				result = HtmlText()
+				print_index = -1
+				attributes = {}
+				if element.rows() == 1 and element.columns() == 1:
+					if len(self.__title_stack) == 1:
+						# instruction table
 						element = left_aligned_table(element)
-						attributes["class"] = "exception-table"
+					elif len(self.__title_stack) != 0:
+						heading = self.__title_stack[-1]
+						if heading.startswith("instruction operand encoding"):
+							# operands encoding
+							element = center_aligned_table(element)
+						elif isinstance(element, SingleCellTable):
+							element = left_aligned_table(element)
+							attributes["class"] = "exception-table"
 
-			result.append(OpenTag("table", attributes=attributes))
-			for row in xrange(0, element.rows()):
-				result.append(OpenTag("tr"))
-				for col in xrange(0, element.columns()):
-					index = element.data_index(col, row)
-					if index <= print_index: continue
-					index = print_index
+				result.append(OpenTag("table", attributes=attributes))
+				for row in xrange(0, element.rows()):
+					result.append(OpenTag("tr"))
+					for col in xrange(0, element.columns()):
+						index = element.data_index(col, row)
+						if index <= print_index: continue
+						index = print_index
 
-					cell_tag = "td"
-					contents = HtmlText()
-					children = self.__merge_text(element.get_at(col, row))
-					if children != None:
-						if len(children) == 1:
-							contents = self.__output_text(children[0])
-							if contents.tokens[0].tag != "p":
-								contents.tokens = contents.tokens[1:-1]
-								cell_tag = "th"
-							else:
-								tok = contents.tokens[1]
-								if hasattr(tok, "tag") and tok.tag == "strong":
-									contents.tokens = contents.tokens[2:-2]
+						cell_tag = "td"
+						contents = HtmlText()
+						children = self.__merge_text(element.get_at(col, row))
+						if children != None:
+							if len(children) == 1:
+								contents = self.__output_text(children, children[0])
+								if contents.tokens[0].tag != "p":
+									contents.tokens = contents.tokens[1:-1]
 									cell_tag = "th"
 								else:
-									contents.tokens = contents.tokens[1:-1]
-						else:
-							for child in children:
-								contents.append(self.__output_html(child))
+									tok = contents.tokens[1]
+									if hasattr(tok, "tag") and tok.tag == "strong":
+										contents.tokens = contents.tokens[2:-2]
+										cell_tag = "th"
+									else:
+										contents.tokens = contents.tokens[1:-1]
+							else:
+								contents.extend(self.__output_html_list(children))
 
-					attributes = {}
-					size = element.cell_size(col, row)
-					if size[0] > 1: attributes["colspan"] = size[0]
-					if size[1] > 1: attributes["rowspan"] = size[1]
-					result.append(OpenTag(cell_tag, attributes=attributes))
-					result.append(contents)
-					result.append(CloseTag(cell_tag))
-				result.append(CloseTag("tr"))
-			result.append(CloseTag("table"))
-			return result
+						attributes = {}
+						size = element.cell_size(col, row)
+						if size[0] > 1: attributes["colspan"] = size[0]
+						if size[1] > 1: attributes["rowspan"] = size[1]
+						result.append(OpenTag(cell_tag, attributes=attributes))
+						result.append(contents)
+						result.append(CloseTag(cell_tag))
+					result.append(CloseTag("tr"))
+				result.append(CloseTag("table"))
+				output.append(result)
+				continue
 
-		assert False
-		return HtmlText()
+			assert False
+
+		return output
 
 	def __output_svg(self, element):
 		self_bounds = element.bounds()
@@ -532,7 +540,7 @@ class x86ManParser(object):
 		assert False
 		return result
 
-	def __output_text(self, element):
+	def __output_text(self, elements, element):
 		if len(element.chars) == 0: return ""
 
 		style = FontStyle(element.chars[0])
@@ -590,6 +598,12 @@ class x86ManParser(object):
 			text.append(string)
 		text.autoclose()
 		return text
+
+	def __output_text_list(self, elements):
+		output = []
+		for element in elements:
+			output.append(self.__output_text(elements, element));
+		return output
 
 	def __prepare_display(self):
 		frames = []
