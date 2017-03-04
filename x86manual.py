@@ -352,7 +352,7 @@ class x86ManParser(object):
 			raise Exception("Can't decode title")
 
 		title = title_parts[0]
-		path = "%s/%s.html" % (self.outputDir, title.replace("/", ":"))
+		path = "%s/%s.html" % (self.outputDir, title.replace("/", "-"))
 		print "Writing to %s" % path
 		file_data = self.__output_page(displayable).encode('ascii', 'xmlcharrefreplace')
 		with open(path, "w") as fd:
