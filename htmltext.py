@@ -15,7 +15,7 @@ class OpenTag(object):
 		self.attributes = attributes
 		self.closed_by = None
 		self.self_closes = self_closes
-	
+
 	def __attribute_string(self):
 		if len(self.attributes) == 0:
 			return ""
@@ -23,13 +23,13 @@ class OpenTag(object):
 		for key in self.attributes:
 			result += ' %s="%s"' % (key, unicode(self.attributes[key]).replace("&", "&amp;").replace('"', '&quot;'))
 		return result
-	
+
 	def open(self):
 		return "<%s%s>" % (self.tag, self.__attribute_string())
-	
+
 	def close(self):
 		return "</%s>" % self.tag
-	
+
 	def __str__(self): return self.open()
 	def __repr__(self): return "<OpenTag %s %s>" % (self.tag, self.__attribute_string())
 
@@ -37,14 +37,14 @@ class CloseTag(object):
 	def __init__(self, tag):
 		self.closes = None
 		self.tag = tag
-	
+
 	def __str__(self): return "</%s>" % self.tag
 	def __repr__(self): return "<CloseTag %s>" % self.tag
 
 class HtmlText(object):
 	def __init__(self):
 		self.tokens = []
-	
+
 	def autoclose(self):
 		close_stack = []
 		for t in self.tokens:
@@ -55,10 +55,10 @@ class HtmlText(object):
 					print self.tokens
 					raise Exception("autoclose mismatch")
 				close_stack.pop()
-		
+
 		while len(close_stack) > 0:
 			self.append(CloseTag(close_stack.pop().tag))
-	
+
 	def append(self, token):
 		if self.__is_close(token):
 			for prev in reversed(self.tokens):
@@ -93,12 +93,12 @@ class HtmlText(object):
 							self.tokens[-1].closed_by = tokens[-1]
 							self.tokens[-1] = "\n"
 							tokens = tokens[1:]
-				
+
 				self.tokens += tokens
 			return
-		
+
 		self.tokens.append(token)
-	
+
 	def to_html(self):
 		tag_stack = []
 		result = u""
@@ -124,13 +124,13 @@ class HtmlText(object):
 				for pair in [("&", "&amp;"), ("<", "&lt;"), (">", "&gt;")]:
 					uni = uni.replace(pair[0], pair[1])
 				result += uni
-		
+
 		while len(tag_stack) > 0:
 			result += tag_stack.pop().close()
 		return result
-	
+
 	def __is_open(self, token):
 		return hasattr(token, "tag") and hasattr(token, "coalesce")
-	
+
 	def __is_close(self, token):
 		return hasattr(token, "tag") and not hasattr(token, "coalesce")

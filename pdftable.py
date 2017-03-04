@@ -7,31 +7,31 @@ class Rect(object):
 		self.__x2 = x2
 		self.__y1 = y1
 		self.__y2 = y2
-	
+
 	def x1(self): return self.__x1
 	def x2(self): return self.__x2
 	def y1(self): return self.__y1
 	def y2(self): return self.__y2
 	def xmid(self): return (self.__x1 + self.__x2) / 2
 	def ymid(self): return (self.__y1 + self.__y2) / 2
-	
+
 	def width(self): return abs(self.__x1 - self.__x2)
 	def height(self): return abs(self.__y1 - self.__y2)
 	def area(self): return self.width() * self.height()
-	
+
 	def points(self):
 		return ((self.__x1, self.__y1), (self.__x1, self.__y2), (self.__x2, self.__y2), (self.__x2, self.__y1))
-	
+
 	def union(self, rect):
 		return Rect(min(rect.x1(), self.x1()), min(rect.y1(), self.y1()), max(rect.x2(), self.x2()), max(rect.y2(), self.y2()))
-	
+
 	def vertical(self): return self.width() < self.height()
 	def horizontal(self): return self.height() < self.width()
-	
+
 	def __repr__(self):
 		orientation = "V" if self.vertical() else "H"
 		return "Rect%s(%0.2f,%0.2f,%0.2f,%0.2f)" % (orientation, self.x1(), self.y1(), self.x2(), self.y2())
-	
+
 	def intersects(self, that, threshold = 2):
 		if self.x1() - that.x2() - threshold > 0:
 			return False
@@ -42,10 +42,10 @@ class Rect(object):
 		if that.y1() - self.y2() - threshold > 0:
 			return False
 		return True
-	
+
 	def contains(self, that):
 		return self.x1() <= that.x1() and self.x2() >= that.x2() and self.y1() <= that.y1() and self.y2() >= that.y2()
-	
+
 	def debug_html(self, color="black", cls="black"):
 		fmt = '<div class="%s" style="position:absolute;left:%fpx;top:%fpx;width:%fpx;height:%fpx;border:1px %s solid;background-color:%s"></div>'
 		return fmt % (cls, self.x1(), self.y1(), self.width(), self.height(), color, color)
@@ -56,10 +56,10 @@ def sort_rect_by_position(x, y, dimension):
 def sort_rect(a, b):
 	ydiff = a.y1() - b.y1()
 	if abs(ydiff) > 0.7: return int(ydiff * 100)
-	
+
 	xdiff = a.x1() - b.x1()
 	if abs(xdiff) > 0.7: return int(xdiff * 100)
-	
+
 	heightdiff = a.y2() - b.y2()
 	return int(-heightdiff * 100)
 
@@ -108,7 +108,7 @@ class Curve(object):
 			y[1] = max(p[1], y[1])
 		self.__bounds = Rect(x[0], y[0], x[1], y[1])
 		self.points = points
-	
+
 	def bounds(self): return self.__bounds
 
 class List(object):
@@ -118,7 +118,7 @@ class List(object):
 		self.rect = items[0].bounds()
 		for i in items[1:]:
 			self.rect = self.rect.union(i.bounds())
-	
+
 	def bounds(self): return self.rect
 
 class TableBase(object):
@@ -135,36 +135,36 @@ class ImplicitTable(TableBase):
 	def __init__(self, bounds, table_data):
 		self.__bounds = bounds
 		self.__data = table_data
-	
+
 	def get_at_pixel(self, x, y):
 		raise Exception("Not supported on implicit tables")
-	
+
 	def get_at(self, x, y):
 		return self.__data[y][x]
-	
+
 	def get_everything(self):
 		result = []
 		for c in self.__data: result += c
 		return result
-	
+
 	def item_count(self):
 		count = 0
 		for row in self.__data:
 			for cell in row:
 				count += len(col)
 		return count
-	
+
 	def rows(self): return len(self.__data)
 	def columns(self): return len(self.__data[0])
 	def bounds(self): return self.__bounds
-	
+
 	def cell_size(self, x, y):
 		assert x >= 0 and x < self.columns()
 		assert y >= 0 and y < self.rows()
 		return (1, 1)
-	
+
 	def data_index(self, x, y): return y * self.columns() + x
-	
+
 	def debug_html(self):
 		result = '<table border="1">'
 		for row in self.__data:
@@ -184,14 +184,14 @@ class Table(TableBase):
 		hor = []
 		for line in group:
 			(ver if line.vertical() else hor).append(line)
-		
+
 		assert len(ver) >= 2
 		assert len(hor) >= 2
-		
+
 		self.__columns = self.__identify_dimension(ver, Rect.xmid)
 		self.__rows = self.__identify_dimension(hor, Rect.ymid)
 		self.__init_data_layout()
-		
+
 		if len(self.__columns) > 2:
 			missingC = self.__identify_missing_col_lines(ver)
 			missingC.sort(key=sort_rect_by_position(Rect.y1, Rect.xmid, self.__columns[-1]))
@@ -203,7 +203,7 @@ class Table(TableBase):
 				endIndex = self.__data_row_index(missing.y2())
 				for i in xrange(beginIndex, endIndex):
 					self.__data_layout[i][rightColumn] = self.__data_layout[i][leftColumn]
-		
+
 		if len(self.__rows) > 2:
 			missingR = self.__identify_missing_row_lines(hor)
 			missingR.sort(key=sort_rect_by_position(Rect.x1, Rect.ymid, self.__rows[-1]))
@@ -213,57 +213,57 @@ class Table(TableBase):
 				bottomRow = topRow - 1
 				beginIndex = self.__data_col_index(missing.x1())
 				endIndex = self.__data_col_index(missing.x2())
-			
+
 				# Do not merge into non-rectangular cells.
 				if beginIndex > 0:
 					prev = beginIndex - 1
 					if self.__data_layout[topRow][prev] == self.__data_layout[topRow][beginIndex]:
 						continue
-			
+
 				if endIndex < len(self.__rows) - 1:
 					prev = endIndex - 1
 					if self.__data_layout[topRow][prev] == self.__data_layout[topRow][endIndex]:
 						continue
-			
+
 				for i in xrange(beginIndex, endIndex):
 					self.__data_layout[bottomRow][i] = self.__data_layout[topRow][i]
-		
+
 		self.__init_data_storage()
-	
+
 	def get_at_pixel(self, x, y):
 		row_index = self.__data_row_index(y)
 		col_index = self.__data_col_index(x)
 		return self.get_at(col_index, row_index)
-	
+
 	def get_at(self, x, y):
 		row = self.__data_layout[y]
 		data_index = row[x]
 		return self.__data_storage[data_index]
-	
+
 	def get_everything(self):
 		result = []
 		for c in self.__data_storage: result += c
 		return result
-	
+
 	def rows(self): return len(self.__rows) - 1
 	def columns(self): return len(self.__columns) - 1
-	
+
 	def item_count(self):
 		count = 0
 		for cell in self.__data_storage: count += len(cell)
 		return count
-	
+
 	def bounds(self):
 		return Rect(self.__columns[0], self.__rows[0], self.__columns[-1], self.__rows[-1])
-	
+
 	def cell_size(self, x, y):
 		row_index = self.__data_row_index(y)
 		col_index = self.__data_col_index(x)
 		return self.__cell_size(col_index, row_index)
-	
+
 	def data_index(self, x, y):
 		return self.__data_layout[y][x]
-	
+
 	def debug_html(self):
 		result = '<table border="1">'
 		print_index = -1
@@ -284,7 +284,7 @@ class Table(TableBase):
 			result += "</tr>"
 		result += "</table>"
 		return result
-	
+
 	def __identify_dimension(self, lines, key):
 		lines.sort(key=key)
 		dim = []
@@ -293,14 +293,14 @@ class Table(TableBase):
 			if len(dim) == 0 or value - dim[-1] > 1:
 				dim.append(value)
 		return dim
-	
+
 	def __identify_missing_col_lines(self, vertical):
 		sort_key = sort_rect_by_position(Rect.y1, Rect.xmid, self.__rows[0] - self.__rows[-1])
 		vertical.sort(key=sort_key)
 		missing_lines = []
 		def add_missing_line(x, y1, y2):
 			missing_lines.append(Rect(x, y1, x, y2))
-		
+
 		topY = self.__rows[0]
 		botY = self.__rows[-1] - 0.001
 		lastX = self.__columns[0]
@@ -310,20 +310,20 @@ class Table(TableBase):
 				if not pretty_much_equal(lastY, botY):
 					add_missing_line(lastX, lastY, botY)
 				lastY = topY
-			
+
 			if not pretty_much_equal(line.y1(), lastY):
 				add_missing_line(line.xmid(), lastY, line.y1())
 			lastY = line.y2()
 			lastX = line.xmid()
 		return missing_lines
-	
+
 	def __identify_missing_row_lines(self, horizontal):
 		sort_key = sort_rect_by_position(Rect.x1, Rect.ymid, self.__columns[-1] - self.__columns[0])
 		horizontal.sort(key=sort_key)
 		missing_lines = []
 		def add_missing_line(y, x1, x2):
 			missing_lines.append(Rect(x1, y, x2, y))
-		
+
 		topX = self.__columns[0]
 		botX = self.__columns[-1] - 0.001
 		lastX = botX
@@ -333,13 +333,13 @@ class Table(TableBase):
 				if not pretty_much_equal(lastX, botX):
 					add_missing_line(lastY, lastX, botX)
 				lastX = topX
-			
+
 			if not pretty_much_equal(line.x1(), lastX):
 				add_missing_line(line.ymid(), lastX, line.x1())
 			lastY = line.ymid()
 			lastX = line.x2()
 		return missing_lines
-	
+
 	def __init_data_layout(self):
 		self.__data_layout = []
 		i = 0
@@ -351,7 +351,7 @@ class Table(TableBase):
 				row.append(i)
 				i += 1
 			self.__data_layout.append(row)
-	
+
 	def __init_data_storage(self):
 		i = 0
 		last_index = 0
@@ -362,25 +362,25 @@ class Table(TableBase):
 					i += 1
 					last_index = row[cell_index]
 				row[cell_index] = i
-		
+
 		self.__data_storage = []
 		for i in xrange(0, self.__data_layout[-1][-1] + 1):
 			self.__data_storage.append([])
-	
+
 	def __data_row_index(self, y):
 		return self.__dim_index(self.__rows, y)
-	
+
 	def __data_col_index(self, x):
 		return self.__dim_index(self.__columns, x)
-	
+
 	def __dim_index(self, array, value):
 		for i in xrange(1, len(array)):
 			ref_value = array[i]
 			if ref_value > value:
 				return i - 1
-		
+
 		raise Exception("improbable (%g between %g and %g)" % (value, array[0], array[-1]))
-	
+
 	def __cell_size(self, column, row):
 		value = self.__data_layout[row][column]
 		width = 0
@@ -388,23 +388,23 @@ class Table(TableBase):
 		while x >= 0 and self.__data_layout[row][x] == value:
 			width += 1
 			x -= 1
-		
+
 		x = column + 1
 		while x < len(self.__data_layout[row]) and self.__data_layout[row][x] == value:
 			width += 1
 			x += 1
-		
+
 		height = 0
 		y = row
 		while y >= 0 and self.__data_layout[y][column] == value:
 			height += 1
 			y -= 1
-		
+
 		y = row + 1
 		while y < len(self.__data_layout) and self.__data_layout[y][column] == value:
 			height += 1
 			y += 1
-		
+
 		return (width, height)
 
 def main():
