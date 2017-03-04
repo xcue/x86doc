@@ -247,7 +247,7 @@ class x86ManParser(object):
 		if len(self.thisPageTextLines) > 0:
 			self.thisPageTextLines.sort(cmp=sort_topdown_ltr)
 			firstLine = self.thisPageTextLines[0]
-			if firstLine.font_name() == "NeoSansIntelMedium" and firstLine.font_size() >= 12:
+			if firstLine.font_name() == "Helvetica-Bold" and firstLine.font_size() >= 12:
 				if len(self.ltRects) > 0 or len(self.textLines) > 0:
 					# convenience: if we're debugging, let an exception crash
 					# the script
@@ -529,14 +529,14 @@ class x86ManParser(object):
 		text = HtmlText()
 		open = OpenTag("p")
 		strong = False
-		if element.font_name() == "NeoSansIntelMedium":
+		if element.font_name() == "Helvetica-Bold":
 			if element.font_size() >= 12: open.tag = "h1"
-			elif element.font_size() >= 9.9:
+			elif element.font_size() >= 9.8:
 				if element.bounds().x1() < 50: open.tag = "h2"
 				else: open.tag = "h3"
 			else:
 				strong = True
-		elif element.font_name() == "NeoSansIntel" and self.__title_stack[-1] == "operation":
+		elif element.font_name() == "Helvetica" and self.__title_stack[-1] == "operation":
 			open = OpenTag("pre", True)
 			indent = int((element.bounds().x1() - 45) / 3.375)
 			element.chars = [FakeChar(' ')] * indent + element.chars
@@ -608,7 +608,7 @@ class x86ManParser(object):
 				if bounds.contains(line.bounds()):
 					# Some pages have their "NOTES" section embedded inside the
 					# table rectangle. What were you thinking, Intel?
-					if line.font_name() == "NeoSansIntelMedium" and unicode(line).lower().startswith("notes"):
+					if line.font_name() == "Helvetica-Bold" and unicode(line).lower().startswith("notes"):
 						orphans += textLines[i:]
 						break
 					table.get_at_pixel(line.rect.xmid(), line.rect.ymid()).append(line)
@@ -623,7 +623,7 @@ class x86ManParser(object):
 		is_table_section = False
 		expected_format = None
 		for line in textLines:
-			if line.font_name() == "NeoSansIntelMedium":
+			if line.font_name() == "Helvetica-Bold":
 				orphans.append(line)
 				title = unicode(line).strip().lower()
 				if title[-10:] == "exceptions":
