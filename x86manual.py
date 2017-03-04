@@ -396,6 +396,8 @@ class x86ManParser(object):
 
 			if isinstance(element, CharCollection):
 				result = self.__output_text(elements, element)
+				if result == None:
+					continue
 				if result.tokens[0].tag[0] == "h":
 					level = int(result.tokens[0].tag[1]) - 1
 					self.__title_stack = self.__title_stack[0:level]
@@ -475,6 +477,8 @@ class x86ManParser(object):
 						if children != None:
 							if len(children) == 1:
 								contents = self.__output_text(children, children[0])
+								if contents == None:
+									continue
 								if contents.tokens[0].tag != "p":
 									contents.tokens = contents.tokens[1:-1]
 									cell_tag = "th"
@@ -549,7 +553,10 @@ class x86ManParser(object):
 		open = OpenTag("p")
 		strong = False
 		if element.font_name() == "Helvetica-Bold":
-			if element.font_size() >= 12: open.tag = "h1"
+			if element.font_size() >= 12:
+				open.tag = "h1"
+				if str(element).find("(continued)") != -1:
+					return None
 			elif element.font_size() >= 9.8:
 				if element.bounds().x1() < 50: open.tag = "h2"
 				else: open.tag = "h3"
@@ -602,7 +609,10 @@ class x86ManParser(object):
 	def __output_text_list(self, elements):
 		output = []
 		for element in elements:
-			output.append(self.__output_text(elements, element));
+			text = self.__output_text(elements, element)
+			if text == None:
+				continue
+			output.append(text);
 		return output
 
 	def __prepare_display(self):
