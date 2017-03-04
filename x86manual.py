@@ -255,10 +255,19 @@ class x86ManParser(object):
 		self.yBase += page.bbox[3] - page.bbox[1]
 
 	def end_page(self, page):
-		if len(self.thisPageTextLines) > 0:
+		numTextLines = len(self.thisPageTextLines)
+		if numTextLines > 0:
 			self.thisPageTextLines.sort(cmp=sort_topdown_ltr)
-			firstLine = self.thisPageTextLines[0]
-			if firstLine.font_name() == "Helvetica-Bold" and firstLine.font_size() >= 12 and str(firstLine).find("(continued)") == -1:
+
+			lastHeaderLine = -1
+			for i in xrange(0, numTextLines):
+				textLine = self.thisPageTextLines[i]
+				if (textLine.font_name() == "Helvetica-Bold" or textLine.font_name() == "Helvetica") and textLine.font_size() >= 12:
+					lastHeaderLine = i
+				else:
+					break
+
+			if lastHeaderLine >= 0 and str(self.thisPageTextLines[lastHeaderLine]).find("(continued)") == -1:
 				if len(self.ltRects) > 0 or len(self.textLines) > 0:
 					# convenience: if we're debugging, let an exception crash
 					# the script
