@@ -99,6 +99,10 @@ class HtmlText(object):
 
 		self.tokens.append(token)
 
+	def extend(self, tokens):
+		for token in tokens:
+			self.append(token)
+
 	def to_html(self):
 		tag_stack = []
 		result = u""
