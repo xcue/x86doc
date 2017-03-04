@@ -338,7 +338,7 @@ class x86ManParser(object):
 	def __fix_bbox(self, bbox):
 		return self.__fix_rect(pdftable.Rect(bbox[0], bbox[3], bbox[2], bbox[1]))
 
-	def __merge_text(self, lines):
+	def __merge_text(self, lines, parent_bounds=None, nexts=None):
 		def sort_text(a, b):
 			if pdftable.pretty_much_equal(a.rect.x1(), b.rect.x1()):
 				if a.rect.y1() < b.rect.y1():
@@ -352,14 +352,36 @@ class x86ManParser(object):
 
 		if len(lines) == 0: return
 
+		next = nexts[0] if nexts != None and 0 < len(nexts) else None
+
 		lines.sort(cmp=sort_topdown_ltr)
 		merged = [lines[0]]
 		for line in lines[1:]:
 			last = merged[-1]
-			same_x = pdftable.pretty_much_equal(line.rect.x1(), last.rect.x1())
+
 			same_size = last.font_size() == line.font_size()
-			decent_descent = line.approx_rect.y1() - last.approx_rect.y2() < 1.2
-			if same_x and same_size and decent_descent:
+			same_family = last.font_name().find(line.font_name()) != -1 or line.font_name().find(last.font_name()) != -1
+
+			last_zero_width = last.rect.width() < 0.1
+			same_left = pdftable.pretty_much_equal(line.rect.x1(), last.rect.x1())
+			same_right = pdftable.pretty_much_equal(line.rect.x2(), last.rect.x2()) and not same_left
+			gap_x = line.rect.x1() - last.rect.x2()
+			snug_x = -2 <= gap_x and gap_x < 10
+			overlapping_x = line.rect.x2() >= last.rect.x1() and last.rect.x2() >= line.rect.x1
+			justified_right = pdftable.pretty_much_equal(last.rect.x2(), 492) or pdftable.pretty_much_equal(last.rect.x2(), 498)
+			right_edge = last.rect.x2() + line.rect.width() + 3
+			overflows_right = right_edge > (parent_bounds.x2() if parent_bounds != None else 498)
+			clips_next_column = next != None and right_edge + 20 > next.rect.x1()
+
+			same_top = pdftable.pretty_much_equal(line.rect.y1(), last.rect.y1())
+			gap_y = line.rect.y1() - last.rect.y2()
+			snug_y = -6 <= gap_y and gap_y < 4
+			overlapping_y = line.rect.y2() >= last.rect.y1() and last.rect.y2() >= line.rect.y1()
+
+			linewrap = same_size and same_family and same_left and snug_y and (justified_right or overflows_right or clips_next_column)
+			formatting = (snug_x or same_right or last_zero_width) and (same_top or overlapping_y or snug_y)
+
+			if linewrap or formatting:
 				lastChar = last.chars[-1].get_text()[-1]
 				if not (lastChar == "-" or lastChar == "/"):
 					last.append_char(" ")
@@ -489,7 +511,7 @@ class x86ManParser(object):
 
 						cell_tag = "td"
 						contents = HtmlText()
-						children = self.__merge_text(element.get_at(col, row))
+						children = self.__merge_text(element.get_at(col, row), element.bounds(), element.get_at(col+1, row) if col+1 < element.columns() else None)
 						if children != None:
 							if len(children) == 1:
 								contents = self.__output_text(children, children[0])
