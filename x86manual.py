@@ -178,7 +178,7 @@ class CharCollection(object):
 		self.chars.append(FakeChar(c))
 
 	def font_name(self):
-		return self.chars[0].fontname[7:] if len(self.chars) != 0 else ""
+		return self.chars[0].fontname if len(self.chars) != 0 else ""
 
 	def font_size(self):
 		return self.chars[0].matrix[0] if len(self.chars) != 0 else 0
@@ -194,7 +194,7 @@ class CharCollection(object):
 
 class FontStyle(object):
 	def __init__(self, char):
-		self.font = char.fontname[7:]
+		self.font = char.fontname
 		self.size = char.matrix[0]
 		self.baseline = char.matrix[5]
 
