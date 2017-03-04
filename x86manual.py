@@ -36,6 +36,14 @@ class SingleCellTable(pdftable.TableBase):
 		assert x == 0 and y == 0
 		return self.__data
 
+	def data_index(self, x, y):
+		assert x == 0 and y == 0
+		return 0
+
+	def cell_size(self, x, y):
+		assert x == 0 and y == 0
+		return (1, 1)
+
 	def get_at_pixel(self, x, y):
 		if self.rect.x1() <= x and self.rect.x2() >= x and self.rect.y1() <= y and self.rect.y2() >= y:
 			return self.__data
