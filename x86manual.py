@@ -14,10 +14,17 @@ def escape_html(a):
 def sort_topdown_ltr(a, b):
 	aa = a.bounds()
 	bb = b.bounds()
-	if aa.y1() < bb.y1(): return -1
-	if aa.y1() > bb.y1(): return 1
+
+	if pdftable.pretty_much_equal(aa.y2(), bb.y1()) or aa.y2() < bb.y1(): return -1
+	if pdftable.pretty_much_equal(aa.y1(), bb.y2()) or aa.y1() > bb.y2(): return 1
+	if pdftable.pretty_much_equal(aa.x2(), bb.x1()) or aa.x2() < bb.x1(): return -1
+	if pdftable.pretty_much_equal(aa.x1(), bb.x2()) or aa.x1() > bb.x2(): return 1
+
 	if aa.x1() < bb.x1(): return -1
 	if aa.x1() > bb.x1(): return 1
+	if aa.y1() < bb.y1(): return -1
+	if aa.y1() > bb.y1(): return 1
+
 	return 0
 
 class SingleCellTable(pdftable.TableBase):
