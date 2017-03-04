@@ -184,7 +184,7 @@ class CharCollection(object):
 		return self.chars[0].matrix[0] if len(self.chars) != 0 else 0
 
 	def __str__(self):
-		uni = u"".join([c.get_text() for c in self.chars])
+		uni = u"".join([c.get_text() for c in self.chars]).encode('ascii', 'xmlcharrefreplace')
 		if len(uni) > 0 and uni[-1] != "-" and uni[-1] != "/":
 			uni += " "
 		return uni
@@ -342,7 +342,7 @@ class x86ManParser(object):
 		return merged
 
 	def __output_file(self, displayable):
-		title_parts = [p.strip() for p in re.split(u"\s*[-—]\s*", unicode(displayable[0]), 1)]
+		title_parts = [p.strip() for p in re.split(u"\s*&#8212;\s*", unicode(displayable[0]), 1)]
 		if len(title_parts) != 2:
 			print displayable[0].font_size(), unicode(displayable[0:5])
 			print title_parts
@@ -351,7 +351,7 @@ class x86ManParser(object):
 		title = title_parts[0]
 		path = "%s/%s.html" % (self.outputDir, title.replace("/", ":"))
 		print "Writing to %s" % path
-		file_data = self.__output_page(displayable).encode("UTF-8")
+		file_data = self.__output_page(displayable).encode('ascii', 'xmlcharrefreplace')
 		with open(path, "w") as fd:
 			fd.write(file_data)
 
