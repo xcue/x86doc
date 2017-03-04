@@ -271,14 +271,14 @@ class x86ManParser(object):
 
 	def process_text_line(self, line):
 		# ignore header and footer
-		if line.bbox[1] < 740 and line.bbox[1] > 50:
+		if line.bbox[1] < 677 and line.bbox[1] > 95:
 			coll = CharCollection(line, self.__fix_bbox(line.bbox))
 			coll.approx_rect = self.__fix_rect(coll.approx_rect)
 			if len(coll.chars) > 0:
 				self.thisPageTextLines.append(coll)
 
 	def process_rect(self, rect):
-		if rect.bbox[1] < 740 and rect.bbox[1] > 50:
+		if rect.bbox[1] < 677 and rect.bbox[1] > 95:
 			self.thisPageLtRects.append(self.__fix_bbox(rect.bbox))
 
 	def process_curve(self, curve):
