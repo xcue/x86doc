@@ -434,7 +434,7 @@ class x86ManParser(object):
 				if len(self.__title_stack) == 1:
 					# instruction table
 					element = left_aligned_table(element)
-				else:
+				elif len(self.__title_stack) != 0:
 					heading = self.__title_stack[-1]
 					if heading.startswith("instruction operand encoding"):
 						# operands encoding
