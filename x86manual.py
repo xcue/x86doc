@@ -250,7 +250,7 @@ class x86ManParser(object):
 		if len(self.thisPageTextLines) > 0:
 			self.thisPageTextLines.sort(cmp=sort_topdown_ltr)
 			firstLine = self.thisPageTextLines[0]
-			if firstLine.font_name() == "Helvetica-Bold" and firstLine.font_size() >= 12:
+			if firstLine.font_name() == "Helvetica-Bold" and firstLine.font_size() >= 12 and str(firstLine).find("(continued)") == -1:
 				if len(self.ltRects) > 0 or len(self.textLines) > 0:
 					# convenience: if we're debugging, let an exception crash
 					# the script
