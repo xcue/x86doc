@@ -573,7 +573,9 @@ class x86ManParser(object):
 				strong = True
 		elif element.font_name() == "Helvetica" and self.__title_stack[-1] == "operation":
 			open = OpenTag("pre", True)
-			indent = int((element.bounds().x1() - 45) / 3.375)
+			root_indent = elements[0].bounds().x1()
+			indent_width = 15
+			indent = int(round((element.bounds().x1() - root_indent) / indent_width)) * 4
 			element.chars = [FakeChar(' ')] * indent + element.chars
 
 		text.append(open)
