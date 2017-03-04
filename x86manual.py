@@ -566,10 +566,16 @@ class x86ManParser(object):
 
 				baseline = this_style.compare_baseline(style)
 				if baseline != None:
-					if this_style.size < style0.size: open.append(OpenTag(baseline[0]))
-					else: close.append(CloseTag(baseline[1]))
+					if this_style.size != style.size and this_style.size < style0.size:
+						open.append(OpenTag(baseline[0]))
+					else:
+						close.append(CloseTag(baseline[1]))
 
-				for tag in reversed(close): text.append(tag)
+				for tag in reversed(close):
+					try:
+						text.append(tag)
+					except Exception as e:
+						print e.message, tag
 				for tag in open: text.append(tag)
 				style = this_style
 
