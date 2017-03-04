@@ -117,16 +117,19 @@ def left_aligned_table(source):
 			row = [[]] * len(columns)
 			last_y = item_bounds.y1()
 
+		col_index = 0
 		for i in xrange(0, len(columns)):
 			if pdftable.pretty_much_equal(item_bounds.x1(), columns[i]):
 				col_index = i
 				break
-		else:
-			print columns
-			print contents
-			raise Exception("No matching column!")
+			if item_bounds.x1() < columns[i]:
+				break
+			col_index = i
 
-		row[col_index] = [item]
+		if row[col_index] == []:
+			row[col_index] = [item]
+		else:
+			row[col_index][0].append(item)
 
 	if any((len(c) == 0 for c in row)):
 		for i in xrange(0, len(columns)):
