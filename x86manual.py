@@ -676,6 +676,50 @@ class x86ManParser(object):
 				except: pass
 			orphans += cluster
 
+
+		# hack to account for cases where only the top and bottom lines of a table are present
+
+		lonely_pairs = []
+		for i in xrange(0, len(orphans)):
+			ii = orphans[i]
+			candidate = None
+			for j in xrange(i+1, len(orphans)):
+				jj = orphans[j]
+				if ii.x1() == jj.x1() and ii.x2() == jj.x2() and pdftable.pretty_much_equal(ii.y1(), ii.y2()) and pdftable.pretty_much_equal(jj.y1(), jj.y2()) and math.copysign(1, ii.y1() - jj.y1()) == math.copysign(1, ii.y2() - jj.y2()):
+					if candidate == None:
+						candidate = (i, j)
+					else:
+						candidate = None
+						break
+			if candidate != None:
+				lonely_pairs.append(candidate)
+
+		for i in xrange(0, len(lonely_pairs)): # sanity check
+			(aa, bb) = lonely_pairs[i]
+			for j in xrange(i+1, len(lonely_pairs)):
+				(cc, dd) = lonely_pairs[j]
+				assert aa != cc
+				assert aa != dd
+				assert bb != cc
+				assert bb != dd
+
+		to_be_deleted = []
+		for (i, j) in lonely_pairs:
+			ii = orphans[i]
+			jj = orphans[j]
+			fakerect = [ii, jj, pdftable.Rect(ii.x1(), ii.y1(), ii.x1(), jj.y1()), pdftable.Rect(ii.x2(), ii.y2(), ii.x2(), jj.y2())]
+			try:
+				frames.append(pdftable.Table(fakerect))
+			except:
+				print "failed fakerect:", fakerect
+				break
+			to_be_deleted.append(i)
+			to_be_deleted.append(j)
+		to_be_deleted.sort(reverse=True)
+		for d in to_be_deleted:
+			del orphans[d]
+
+
 		curves = sorted(self.curves + [pdftable.Curve(o.points()) for o in orphans], cmp=sort_topdown_ltr)
 		textLines = sorted(self.textLines, cmp=sort_topdown_ltr)
 
