@@ -195,11 +195,11 @@ class CharCollection(object):
 		aChar = self.chars[0]
 		self.chars.append(FakeChar(c))
 
-	def font_name(self):
-		return self.chars[0].fontname if len(self.chars) != 0 else ""
+	def font_name(self, index=0):
+		return self.chars[index].fontname if index < len(self.chars) else ""
 
-	def font_size(self):
-		return self.chars[0].matrix[0] if len(self.chars) != 0 else 0
+	def font_size(self, index=0):
+		return self.chars[index].matrix[0] if index < len(self.chars) else 0
 
 	def __str__(self):
 		uni = u"".join([c.get_text() for c in self.chars]).encode('ascii', 'xmlcharrefreplace')
@@ -269,7 +269,13 @@ class x86ManParser(object):
 			lastHeaderLine = -1
 			for i in xrange(0, numTextLines):
 				textLine = self.thisPageTextLines[i]
-				if (textLine.font_name() == "Helvetica-Bold" or textLine.font_name() == "Helvetica") and textLine.font_size() >= 12:
+				not_sp = 0
+				for j in xrange(0, len(textLine.chars)):
+					not_sp = j
+					if textLine.chars[j].get_text()[0] != " ":
+						break
+				fontName = textLine
+				if (textLine.font_name(not_sp) == "Helvetica-Bold" or textLine.font_name(not_sp) == "Helvetica") and textLine.font_size(not_sp) >= 12:
 					lastHeaderLine = i
 				else:
 					break
