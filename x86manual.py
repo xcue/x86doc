@@ -388,9 +388,12 @@ class x86ManParser(object):
 			formatting = (snug_x or same_right or last_zero_width) and (same_top or overlapping_y or snug_y)
 
 			if linewrap or formatting:
+				firstChar = line.chars[0].get_text()[0]
 				lastChar = last.chars[-1].get_text()[-1]
-				if not (lastChar == "-" or lastChar == "/"):
+				if not (lastChar == "-" or lastChar == "/" or lastChar == " " or firstChar == " "):
 					last.append_char(" ")
+				elif lastChar == "-" and linewrap:
+					last.chars[-1] = FakeChar(last.chars[-1].get_text()[:-1])
 				last.append(line)
 			else:
 				merged.append(line)
