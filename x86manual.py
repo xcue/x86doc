@@ -392,8 +392,8 @@ class x86ManParser(object):
 				lastChar = last.chars[-1].get_text()[-1]
 				if not (lastChar == "-" or lastChar == "/" or lastChar == " " or firstChar == " "):
 					last.append_char(" ")
-				elif lastChar == "-" and linewrap:
-					last.chars[-1] = FakeChar(last.chars[-1].get_text()[:-1])
+				#elif lastChar == "-" and linewrap:
+				#	last.chars[-1] = FakeChar(last.chars[-1].get_text()[:-1])
 				last.append(line)
 			else:
 				merged.append(line)
