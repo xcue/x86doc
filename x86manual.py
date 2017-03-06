@@ -510,6 +510,8 @@ class x86ManParser(object):
 							element = left_aligned_table(element)
 							attributes["class"] = "exception-table"
 
+				arraytable = [["" for x in xrange(element.columns())] for y in xrange(element.rows())]
+
 				result.append(OpenTag("table", attributes=attributes))
 				for row in xrange(0, element.rows()):
 					result.append(OpenTag("tr"))
@@ -543,6 +545,9 @@ class x86ManParser(object):
 						size = element.cell_size(col, row)
 						if size[0] > 1: attributes["colspan"] = size[0]
 						if size[1] > 1: attributes["rowspan"] = size[1]
+
+						arraytable[row][col] = contents.to_html()
+
 						result.append(OpenTag(cell_tag, attributes=attributes))
 						result.append(contents)
 						result.append(CloseTag(cell_tag))
