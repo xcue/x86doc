@@ -37,6 +37,9 @@ def main(argv):
 
 		print "Conversion result: %i/%i" % (parser.success, parser.success + parser.fail)
 
+		with open("opcodes.json", "wb") as fd:
+			fd.write(parser.output_opcodes_json())
+
 if __name__ == "__main__":
 	result = main(sys.argv)
 	sys.exit(result)

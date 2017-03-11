@@ -7,6 +7,16 @@ from htmltext import *
 import sys
 import math
 import re
+try:
+	import ujson as json
+except ImportError:
+	import json
+try:
+	# Python 2.6-2.7
+	from HTMLParser import HTMLParser
+except ImportError:
+	# Python 3
+	from html.parser import HTMLParser
 
 def escape_html(a):
 	return a.replace("<", "&lt;").replace(">", "&gt;").replace("&", "&amp;")
@@ -247,6 +257,8 @@ class x86ManParser(object):
 		self.__title_stack = []
 		self.__is_code = False
 
+		self.opcode_tables = []
+
 	def flush(self):
 		try:
 			displayable = self.__prepare_display()
@@ -431,6 +443,27 @@ class x86ManParser(object):
 
 		return "<!DOCTYPE html>\n" + text.to_html()
 
+	def output_opcodes_json(self):
+		h = HTMLParser()
+
+		columns = ["Opcode", "Instruction", "Description"]
+		columns_set = set(columns)
+
+		entries = []
+		for table in self.opcode_tables:
+			header = table[0]
+			num_rows = len(table)
+			for r in xrange(1, num_rows):
+				row = table[r]
+				entry = dict()
+				for c in xrange(0, len(row)):
+					column = header[c]
+					if column in columns_set:
+						entry[column] = h.unescape(row[c])
+				entries.append(entry)
+
+		return json.dumps(entries, indent=4)
+
 	def __output_html_list(self, elements):
 		output = []
 		for element in elements:
@@ -510,6 +543,7 @@ class x86ManParser(object):
 							element = left_aligned_table(element)
 							attributes["class"] = "exception-table"
 
+				isOpcode = False
 				arraytable = [["" for x in xrange(element.columns())] for y in xrange(element.rows())]
 
 				result.append(OpenTag("table", attributes=attributes))
@@ -546,6 +580,9 @@ class x86ManParser(object):
 						if size[0] > 1: attributes["colspan"] = size[0]
 						if size[1] > 1: attributes["rowspan"] = size[1]
 
+						if col == 0 and row == 0 and contents.to_html() == u"Opcode":
+							isOpcode = True
+
 						arraytable[row][col] = contents.to_html()
 
 						result.append(OpenTag(cell_tag, attributes=attributes))
@@ -554,6 +591,10 @@ class x86ManParser(object):
 					result.append(CloseTag("tr"))
 				result.append(CloseTag("table"))
 				output.append(result)
+
+				if isOpcode:
+					self.opcode_tables.append(arraytable)
+
 				continue
 
 			assert False
