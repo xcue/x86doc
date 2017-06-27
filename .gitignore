@@ -5,3 +5,4 @@
 *.json
 pdfminer/*
 html/*
+**/target/*
