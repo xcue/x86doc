@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="style.css" type="text/css" rel="stylesheet">
+<title>VCVTUQQ2PD—Convert Packed Unsigned Quadword Integers to Packed Double-Precision Floating-Point Values </title></head>
+<body>
+<h1>VCVTUQQ2PD—Convert Packed Unsigned Quadword Integers to Packed Double-Precision Floating-Point Values</h1>
+<table>
+<tr>
+<th>Opcode/Instruction</th>
+<th>Op /En</th>
+<th>64/32 bit Mode Support</th>
+<th>CPUID Feature Flag</th>
+<th>Description</th></tr>
+<tr>
+<td>
+<p>EVEX.128.F3.0F.W1 7A /r</p>
+<p>VCVTUQQ2PD xmm1 {k1}{z}, xmm2/m128/m64bcst</p></td>
+<td>FV</td>
+<td>V/V</td>
+<td>
+<p>AVX512VL</p>
+<p>AVX512DQ</p></td>
+<td>Convert two packed unsigned quadword integers from xmm2/m128/m64bcst to two packed double-precision floating-point values in xmm1 with writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.256.F3.0F.W1 7A /r</p>
+<p>VCVTUQQ2PD ymm1 {k1}{z}, ymm2/m256/m64bcst</p></td>
+<td>FV</td>
+<td>V/V</td>
+<td>
+<p>AVX512VL</p>
+<p>AVX512DQ</p></td>
+<td>Convert four packed unsigned quadword integers from ymm2/m256/m64bcst to packed double-precision floating-point values in ymm1 with writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.512.F3.0F.W1 7A /r</p>
+<p>VCVTUQQ2PD zmm1 {k1}{z}, zmm2/m512/m64bcst{er}</p></td>
+<td>FV</td>
+<td>V/V</td>
+<td>AVX512DQ</td>
+<td>Convert eight packed unsigned quadword integers from zmm2/m512/m64bcst to eight packed double-precision floating-point values in zmm1 with writemask k1.</td></tr></table>
+<h3>Instruction Operand Encoding</h3>
+<table>
+<tr>
+<td>Op/En</td>
+<td>Operand 1</td>
+<td>Operand 2</td>
+<td>Operand 3</td>
+<td>Operand 4</td></tr>
+<tr>
+<td>FV</td>
+<td>ModRM:reg (w)</td>
+<td>ModRM:r/m (r)</td>
+<td>NA</td>
+<td>NA</td></tr></table>
+<p><strong>Description</strong></p>
+<p>Converts packed unsigned quadword integers in the source operand (second operand) to packed double-precision floating-point values in the destination operand (first operand).</p>
+<p>The source operand is a ZMM/YMM/XMM register, a 512/256/128-bit memory location or a 512/256/128-bit vector broadcasted from a 64-bit memory location. The destination operand is a ZMM/YMM/XMM register conditionally updated with writemask k1.</p>
+<p>Note: EVEX.vvvv is reserved and must be 1111b, otherwise instructions will #UD.</p>
+<p><strong>Operation</strong></p>
+<p><strong>VCVTUQQ2PD (EVEX encoded version) when src operand is a register</strong></p>
+<p>(KL, VL) = (2, 128), (4, 256), (8, 512)</p>
+<p>IF (VL == 512) AND (EVEX.b == 1)</p>
+<p>THEN</p>
+<p>SET_RM(EVEX.RC);</p>
+<p>ELSE</p>
+<p>SET_RM(MXCSR.RM);</p>
+<p>FI;</p>
+<p>FOR j (cid:197) 0 TO KL-1</p>
+<p>i (cid:197) j * 64</p>
+<p>IF k1[j] OR *no writemask*</p>
+<p>THEN DEST[i+63:i] (cid:197)</p>
+<p>Convert_UQuadInteger_To_Double_Precision_Floating_Point(SRC[i+63:i])</p>
+<p>ELSE</p>
+<p>IF *merging-masking*</p>
+<p>; merging-masking</p>
+<p>THEN *DEST[i+63:i] remains unchanged*</p>
+<p>ELSE</p>
+<p>; zeroing-masking</p>
+<p>DEST[i+63:i] (cid:197) 0</p>
+<p>FI</p>
+<p>FI;</p>
+<p>ENDFOR</p>
+<p>DEST[MAX_VL-1:VL] (cid:197) 0</p>
+<p><strong>VCVTUQQ2PD (EVEX encoded version) when src operand is a memory source</strong></p>
+<p>(KL, VL) = (2, 128), (4, 256), (8, 512)</p>
+<p>FOR j (cid:197) 0 TO KL-1</p>
+<p>i (cid:197) j * 64</p>
+<p>IF k1[j] OR *no writemask*</p>
+<p>THEN</p>
+<p>IF (EVEX.b == 1)</p>
+<p>THEN</p>
+<p>DEST[i+63:i] (cid:197)</p>
+<p>Convert_UQuadInteger_To_Double_Precision_Floating_Point(SRC[63:0])</p>
+<p>ELSE</p>
+<p>DEST[i+63:i] (cid:197)</p>
+<p>Convert_UQuadInteger_To_Double_Precision_Floating_Point(SRC[i+63:i])</p>
+<p>FI;</p>
+<p>ELSE</p>
+<p>IF *merging-masking*</p>
+<p>; merging-masking</p>
+<p>THEN *DEST[i+63:i] remains unchanged*</p>
+<p>ELSE</p>
+<p>; zeroing-masking</p>
+<p>DEST[i+63:i] (cid:197) 0</p>
+<p>FI</p>
+<p>FI;</p>
+<p>ENDFOR</p>
+<p>DEST[MAX_VL-1:VL] (cid:197) 0</p>
+<p><strong>Intel C/C++ Compiler Intrinsic Equivalent</strong></p>
+<p>VCVTUQQ2PD __m512d _mm512_cvtepu64_ps( __m512i a);</p>
+<p>VCVTUQQ2PD __m512d _mm512_mask_cvtepu64_ps( __m512d s, __mmask8 k, __m512i a);</p>
+<p>VCVTUQQ2PD __m512d _mm512_maskz_cvtepu64_ps( __mmask8 k, __m512i a);</p>
+<p>VCVTUQQ2PD __m512d _mm512_cvt_roundepu64_ps( __m512i a, int r);</p>
+<p>VCVTUQQ2PD __m512d _mm512_mask_cvt_roundepu64_ps( __m512d s, __mmask8 k, __m512i a, int r);</p>
+<p>VCVTUQQ2PD __m512d _mm512_maskz_cvt_roundepu64_ps( __mmask8 k, __m512i a, int r);</p>
+<p>VCVTUQQ2PD __m256d _mm256_cvtepu64_ps( __m256i a);</p>
+<p>VCVTUQQ2PD __m256d _mm256_mask_cvtepu64_ps( __m256d s, __mmask8 k, __m256i a);</p>
+<p>VCVTUQQ2PD __m256d _mm256_maskz_cvtepu64_ps( __mmask8 k, __m256i a);</p>
+<p>VCVTUQQ2PD __m128d _mm_cvtepu64_ps( __m128i a);</p>
+<p>VCVTUQQ2PD __m128d _mm_mask_cvtepu64_ps( __m128d s, __mmask8 k, __m128i a);</p>
+<p>VCVTUQQ2PD __m128d _mm_maskz_cvtepu64_ps( __mmask8 k, __m128i a);</p>
+<p><strong>SIMD Floating-Point Exceptions</strong></p>
+<p>Precision</p>
+<p><strong>Other Exceptions</strong></p>
+<table>
+<tr>
+<td>EVEX-encoded instructions, see Exceptions Type E2.</td></tr>
+<tr>
+<td>If EVEX.vvvv != 1111B.</td></tr></table></body></html>

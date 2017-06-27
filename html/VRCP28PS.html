@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="style.css" type="text/css" rel="stylesheet">
+<title>VRCP28PS—Approximation to the Reciprocal of Packed Single-Precision Floating-Point Values with Less Than 2^-28 Relative Error </title></head>
+<body>
+<h1>VRCP28PS—Approximation to the Reciprocal of Packed Single-Precision Floating-Point Values with Less Than 2^-28 Relative Error</h1>
+<table>
+<tr>
+<th>Opcode/Instruction</th>
+<th>Op /En</th>
+<th>64/32 bit Mode Support</th>
+<th>CPUID Feature Flag</th>
+<th>Description</th></tr>
+<tr>
+<td>
+<p>EVEX.512.66.0F38.W0 CA /r</p>
+<p>VRCP28PS zmm1 {k1}{z}, zmm2/m512/m32bcst {sae}</p></td>
+<td>FV</td>
+<td>V/V</td>
+<td>AVX512ER</td>
+<td>Computes the approximate reciprocals ( &lt; 2^-28 relative error) of the packed single-precision floating-point values in zmm2/m512/m32bcst and stores the results in zmm1. Under writemask.</td></tr></table>
+<h3>Instruction Operand Encoding</h3>
+<table>
+<tr>
+<td>Op/En</td>
+<td>Operand 1</td>
+<td>Operand 2</td>
+<td>Operand 3</td>
+<td>Operand 4</td></tr>
+<tr>
+<td>FV</td>
+<td>ModRM:reg (w)</td>
+<td>ModRM:r/m (r)</td>
+<td>NA</td>
+<td>NA</td></tr></table>
+<p><strong>Description</strong></p>
+<p>Computes the reciprocal approximation of the float32 values in the source operand (the second operand) and store the results to the destination operand (the first operand) using the writemask k1. The approximate reciprocal is evaluated with less than 2^-28 of maximum relative error prior to final rounding. The final results are rounded to &lt; 2^-23 relative error before written to the destination.</p>
+<p>Denormal input values are treated as zeros and do not signal #DE, irrespective of MXCSR.DAZ. Denormal results are flushed to zeros and do not signal #UE, irrespective of MXCSR.FZ.</p>
+<p>If any source element is NaN, the quietized NaN source value is returned for that element. If any source element is ±∞, ±0.0 is returned for that element. Also, if any source element is ±0.0, ±∞ is returned for that element.</p>
+<p>The source operand is a ZMM register, a 512-bit memory location, or a 512-bit vector broadcasted from a 32-bit memory location. The destination operand is a ZMM register, conditionally updated using writemask k1.</p>
+<p>EVEX.vvvv is reserved and must be 1111b otherwise instructions will #UD.</p>
+<p>A numerically exact implementation of VRCP28xx can be found at https://software.intel.com/en-us/articles/refer-ence-implementations-for-IA-approximation-instructions-vrcp14-vrsqrt14-vrcp28-vrsqrt28-vexp2.</p>
+<p><strong>Operation</strong></p>
+<p><strong>VRCP28PS (EVEX encoded versions)</strong></p>
+<p>(KL, VL) = (16, 512)</p>
+<p>FOR j (cid:197) 0 TO KL-1</p>
+<p>i (cid:197) j * 32</p>
+<p>IF k1[j] OR *no writemask* THEN</p>
+<p>IF (EVEX.b = 1) AND (SRC *is memory*)</p>
+<p>THEN DEST[i+31:i] (cid:197) RCP_28_SP(1.0/SRC[31:0]);</p>
+<p>ELSE DEST[i+31:i] (cid:197) RCP_28_SP(1.0/SRC[i+31:i]);</p>
+<p>FI;</p>
+<p>ELSE</p>
+<p>IF *merging-masking*</p>
+<p>; merging-masking</p>
+<p>THEN *DEST[i+31:i] remains unchanged*</p>
+<p>ELSE</p>
+<p>; zeroing-masking</p>
+<p>DEST[i+31:i] (cid:197) 0</p>
+<p>FI;</p>
+<p>FI;</p>
+<p>ENDFOR;</p>
+<h3>Table 5-19. VRCP28PS Special Cases</h3>
+<table>
+<tr>
+<th>Input value</th>
+<th>Result value</th>
+<th>Comments</th></tr>
+<tr>
+<td>NAN</td>
+<td>QNAN(input)</td>
+<td>If (SRC = SNaN) then #I</td></tr>
+<tr>
+<td>0 ≤ X &lt; 2<sup>-126</sup></td>
+<td>INF</td>
+<td>Positive input denormal or zero; #Z</td></tr>
+<tr>
+<td>-2<sup>-126 </sup>&lt; X ≤ -0</td>
+<td>-INF</td>
+<td>Negative input denormal or zero; #Z</td></tr>
+<tr>
+<td>X &gt; 2<sup>126</sup></td>
+<td>+0.0f</td>
+<td></td></tr>
+<tr>
+<td>X &lt; -2<sup>126</sup></td>
+<td>-0.0f</td>
+<td></td></tr>
+<tr>
+<td>X = +∞</td>
+<td>+0.0f</td>
+<td></td></tr>
+<tr>
+<td>X = -∞</td>
+<td>-0.0f</td>
+<td></td></tr>
+<tr>
+<td>X = 2<sup>-n</sup></td>
+<td>2<sup>n</sup></td>
+<td>Exact result (unless input/output is a denormal)</td></tr>
+<tr>
+<td>X = -2<sup>-n</sup></td>
+<td>-2<sup>n</sup></td>
+<td>Exact result (unless input/output is a denormal)</td></tr></table>
+<p><strong>Intel C/C++ Compiler Intrinsic Equivalent</strong></p>
+<p>VRCP28PS _mm512_rcp28_round_ps ( __m512 a, int sae);</p>
+<p>VRCP28PS __m512 _mm512_mask_rcp28_round_ps(__m512 s, __mmask16 m, __m512 a, int sae);</p>
+<p>VRCP28PS __m512 _mm512_maskz_rcp28_round_ps( __mmask16 m, __m512 a, int sae);</p>
+<p><strong>SIMD Floating-Point Exceptions</strong></p>
+<p>Invalid (if SNaN input), Divide-by-zero</p>
+<p><strong>Other Exceptions</strong></p>
+<p>See Exceptions Type E2.</p></body></html>

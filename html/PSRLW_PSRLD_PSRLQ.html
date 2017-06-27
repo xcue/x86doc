@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="style.css" type="text/css" rel="stylesheet">
+<title>PSRLW/PSRLD/PSRLQ—Shift Packed Data Right Logical </title></head>
+<body>
+<h1>PSRLW/PSRLD/PSRLQ—Shift Packed Data Right Logical</h1>
+<table>
+<tr>
+<th>Description</th>
+<th>CPUID Feature Flag</th>
+<th>Opcode/Instruction</th>
+<th>Op/En</th>
+<th>64/32 bit Mode Support</th></tr>
+<tr>
+<td>Shift words in <em>mm</em> right by amount specified in <em>mm/m64</em> while shifting in 0s.</td>
+<td>MMX</td>
+<td>
+<p>0F D1 /<em>r</em><sup>1</sup></p>
+<p>PSRLW <em>mm, mm/m64</em></p></td>
+<td>RM</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift words in <em>xmm1</em> right by amount specified in <em>xmm2/m128</em> while shifting in 0s.</td>
+<td>SSE2</td>
+<td>
+<p>66 0F D1 /<em>r</em></p>
+<p>PSRLW <em>xmm1</em>, <em>xmm2/m128</em></p></td>
+<td>RM</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift words in <em>mm</em> right by <em>imm8</em> while shifting in 0s.</td>
+<td>MMX</td>
+<td>
+<p>0F 71 /2 ib<sup>1</sup></p>
+<p>PSRLW <em>mm, imm8</em></p></td>
+<td>MI</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift words in <em>xmm1</em> right by <em>imm8</em> while shifting in 0s.</td>
+<td>SSE2</td>
+<td>
+<p>66 0F 71 /2 ib</p>
+<p>PSRLW <em>xmm1</em>, <em>imm8</em></p></td>
+<td>MI</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift doublewords in <em>mm</em> right by amount specified in <em>mm/m64</em> while shifting in 0s.</td>
+<td>MMX</td>
+<td>
+<p>0F D2 /<em>r</em><sup>1</sup></p>
+<p>PSRLD <em>mm, mm/m64</em></p></td>
+<td>RM</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift doublewords in <em>xmm1</em> right by amount specified in <em>xmm2 /m128</em> while shifting in 0s.</td>
+<td>SSE2</td>
+<td>
+<p>66 0F D2 /<em>r</em></p>
+<p>PSRLD <em>xmm1</em>, <em>xmm2/m128</em></p></td>
+<td>RM</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift doublewords in <em>mm</em> right by <em>imm8</em> while shifting in 0s.</td>
+<td>MMX</td>
+<td>
+<p>0F 72 /2 ib<sup>1</sup></p>
+<p>PSRLD <em>mm, imm8</em></p></td>
+<td>MI</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift doublewords in <em>xmm1</em> right by <em>imm8 </em>while shifting in 0s.</td>
+<td>SSE2</td>
+<td>
+<p>66 0F 72 /2 ib</p>
+<p>PSRLD <em>xmm1</em>, imm8</p></td>
+<td>MI</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift <em>mm</em> right by amount specified in <em>mm/m64</em> while shifting in 0s.</td>
+<td>MMX</td>
+<td>
+<p>0F D3 /<em>r</em><sup>1</sup></p>
+<p>PSRLQ <em>mm, mm/m64</em></p></td>
+<td>RM</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift quadwords in <em>xmm1</em> right by amount specified in <em>xmm2/m128</em> while shifting in 0s.</td>
+<td>SSE2</td>
+<td>
+<p>66 0F D3 /<em>r</em></p>
+<p>PSRLQ <em>xmm1</em>, <em>xmm2/m128</em></p></td>
+<td>RM</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift <em>mm</em> right by <em>imm8</em> while shifting in 0s.</td>
+<td>MMX</td>
+<td>
+<p>0F 73 /2 ib<sup>1</sup></p>
+<p>PSRLQ <em>mm, imm8</em></p></td>
+<td>MI</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift quadwords in <em>xmm1</em> right by <em>imm8</em> while shifting in 0s.</td>
+<td>SSE2</td>
+<td>
+<p>66 0F 73 /2 ib</p>
+<p>PSRLQ <em>xmm1</em>, <em>imm8</em></p></td>
+<td>MI</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift words in <em>xmm2</em> right by amount specified in <em>xmm3/m128</em> while shifting in 0s.</td>
+<td>AVX</td>
+<td>
+<p>VEX.NDS.128.66.0F.WIG D1 /r</p>
+<p>VPSRLW <em>xmm1, xmm2, xmm3/m128</em></p></td>
+<td>RVM</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift words in <em>xmm2</em> right by <em>imm8</em> while shifting in 0s.</td>
+<td>AVX</td>
+<td>
+<p>VEX.NDD.128.66.0F.WIG 71 /2 ib</p>
+<p>VPSRLW <em>xmm1, xmm2, imm8</em></p></td>
+<td>VMI</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift doublewords in <em>xmm2</em> right by amount specified in <em>xmm3/m128</em> while shifting in 0s.</td>
+<td>AVX</td>
+<td>
+<p>VEX.NDS.128.66.0F.WIG D2 /r</p>
+<p>VPSRLD <em>xmm1, xmm2, xmm3/m128</em></p></td>
+<td>RVM</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift doublewords in <em>xmm2</em> right by <em>imm8 </em>while shifting in 0s.</td>
+<td>AVX</td>
+<td>
+<p>VEX.NDD.128.66.0F.WIG 72 /2 ib</p>
+<p>VPSRLD <em>xmm1, xmm2, imm8</em></p></td>
+<td>VMI</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift quadwords in <em>xmm2</em> right by amount specified in <em>xmm3/m128</em> while shifting in 0s.</td>
+<td>AVX</td>
+<td>
+<p>VEX.NDS.128.66.0F.WIG D3 /r</p>
+<p>VPSRLQ <em>xmm1, xmm2, xmm3/m128</em></p></td>
+<td>RVM</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift quadwords in <em>xmm2</em> right by <em>imm8</em> while shifting in 0s.</td>
+<td>AVX</td>
+<td>
+<p>VEX.NDD.128.66.0F.WIG 73 /2 ib</p>
+<p>VPSRLQ <em>xmm1, xmm2, imm8</em></p></td>
+<td>VMI</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift words in <em>ymm2</em> right by amount specified in <em>xmm3/m128</em> while shifting in 0s.</td>
+<td>AVX2</td>
+<td>
+<p>VEX.NDS.256.66.0F.WIG D1 /r</p>
+<p>VPSRLW <em>ymm1, ymm2, xmm3/m128</em></p></td>
+<td>RVM</td>
+<td>V/V</td></tr>
+<tr>
+<td>Shift words in <em>ymm2</em> right by <em>imm8</em> while shifting in 0s.</td>
+<td>AVX2</td>
+<td>
+<p>VEX.NDD.256.66.0F.WIG 71 /2 ib</p>
+<p>VPSRLW <em>ymm1, ymm2, imm8</em></p></td>
+<td>VMI</td>
+<td>V/V</td></tr></table>
+<table>
+<tr>
+<td>
+<p>VEX.NDS.256.66.0F.WIG D2 /r</p>
+<p>VPSRLD <em>ymm1, ymm2, xmm3/m128</em></p></td>
+<td>RVM</td>
+<td>V/V</td>
+<td>AVX2</td>
+<td>Shift doublewords in <em>ymm2</em> right by amount specified in <em>xmm3/m128</em> while shifting in 0s.</td></tr>
+<tr>
+<td>
+<p>VEX.NDD.256.66.0F.WIG 72 /2 ib</p>
+<p>VPSRLD <em>ymm1, ymm2, imm8</em></p></td>
+<td>VMI</td>
+<td>V/V</td>
+<td>AVX2</td>
+<td>Shift doublewords in <em>ymm2</em> right by <em>imm8 </em>while shifting in 0s.</td></tr>
+<tr>
+<td>
+<p>VEX.NDS.256.66.0F.WIG D3 /r</p>
+<p>VPSRLQ <em>ymm1, ymm2, xmm3/m128</em></p></td>
+<td>RVM</td>
+<td>V/V</td>
+<td>AVX2</td>
+<td>Shift quadwords in <em>ymm2</em> right by amount specified in <em>xmm3/m128</em> while shifting in 0s.</td></tr>
+<tr>
+<td>
+<p>VEX.NDD.256.66.0F.WIG 73 /2 ib</p>
+<p>VPSRLQ <em>ymm1, ymm2, imm8</em></p></td>
+<td>VMI</td>
+<td>V/V</td>
+<td>AVX2</td>
+<td>Shift quadwords in <em>ymm2</em> right by <em>imm8</em> while shifting in 0s.</td></tr>
+<tr>
+<td>
+<p>EVEX.NDS.128.66.0F.WIG D1 /r</p>
+<p>VPSRLW xmm1 {k1}{z}, xmm2, xmm3/m128</p></td>
+<td>M128</td>
+<td>V/V</td>
+<td>AVX512VL AVX512BW</td>
+<td>Shift words in xmm2 right by amount specified in xmm3/m128 while shifting in 0s using writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.NDS.256.66.0F.WIG D1 /r</p>
+<p>VPSRLW ymm1 {k1}{z}, ymm2, xmm3/m128</p></td>
+<td>M128</td>
+<td>V/V</td>
+<td>AVX512VL AVX512BW</td>
+<td>Shift words in ymm2 right by amount specified in xmm3/m128 while shifting in 0s using writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.NDS.512.66.0F.WIG D1 /r</p>
+<p>VPSRLW zmm1 {k1}{z}, zmm2, xmm3/m128</p></td>
+<td>M128</td>
+<td>V/V</td>
+<td>AVX512BW</td>
+<td>Shift words in zmm2 right by amount specified in xmm3/m128 while shifting in 0s using writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.NDD.128.66.0F.WIG 71 /2 ib</p>
+<p>VPSRLW xmm1 {k1}{z}, xmm2/m128, imm8</p></td>
+<td>FVM</td>
+<td>V/V</td>
+<td>AVX512VL AVX512BW</td>
+<td>Shift words in xmm2/m128 right by imm8 while shifting in 0s using writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.NDD.256.66.0F.WIG 71 /2 ib</p>
+<p>VPSRLW ymm1 {k1}{z}, ymm2/m256, imm8</p></td>
+<td>FVM</td>
+<td>V/V</td>
+<td>AVX512VL AVX512BW</td>
+<td>Shift words in ymm2/m256 right by imm8 while shifting in 0s using writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.NDD.512.66.0F.WIG 71 /2 ib</p>
+<p>VPSRLW zmm1 {k1}{z}, zmm2/m512, imm8</p></td>
+<td>FVM</td>
+<td>V/V</td>
+<td>AVX512BW</td>
+<td>Shift words in zmm2/m512 right by imm8 while shifting in 0s using writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.NDS.128.66.0F.W0 D2 /r</p>
+<p>VPSRLD xmm1 {k1}{z}, xmm2, xmm3/m128</p></td>
+<td>M128</td>
+<td>V/V</td>
+<td>AVX512VL AVX512F</td>
+<td>Shift doublewords in xmm2 right by amount specified in xmm3/m128 while shifting in 0s using writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.NDS.256.66.0F.W0 D2 /r</p>
+<p>VPSRLD ymm1 {k1}{z}, ymm2, xmm3/m128</p></td>
+<td>M128</td>
+<td>V/V</td>
+<td>AVX512VL AVX512F</td>
+<td>Shift doublewords in ymm2 right by amount specified in xmm3/m128 while shifting in 0s using writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.NDS.512.66.0F.W0 D2 /r</p>
+<p>VPSRLD zmm1 {k1}{z}, zmm2, xmm3/m128</p></td>
+<td>M128</td>
+<td>V/V</td>
+<td>AVX512F</td>
+<td>Shift doublewords in zmm2 right by amount specified in xmm3/m128 while shifting in 0s using writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.NDD.128.66.0F.W0 72 /2 ib</p>
+<p>VPSRLD xmm1 {k1}{z}, xmm2/m128/m32bcst, imm8</p></td>
+<td>FV</td>
+<td>V/V</td>
+<td>AVX512VL AVX512F</td>
+<td>Shift doublewords in xmm2/m128/m32bcst right by imm8 while shifting in 0s using writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.NDD.256.66.0F.W0 72 /2 ib</p>
+<p>VPSRLD ymm1 {k1}{z}, ymm2/m256/m32bcst, imm8</p></td>
+<td>FV</td>
+<td>V/V</td>
+<td>AVX512VL AVX512F</td>
+<td>Shift doublewords in ymm2/m256/m32bcst right by imm8 while shifting in 0s using writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.NDD.512.66.0F.W0 72 /2 ib</p>
+<p>VPSRLD zmm1 {k1}{z}, zmm2/m512/m32bcst, imm8</p></td>
+<td>FVI</td>
+<td>V/V</td>
+<td>AVX512F</td>
+<td>Shift doublewords in zmm2/m512/m32bcst right by imm8 while shifting in 0s using writemask k1.</td></tr></table>
+<table>
+<tr>
+<td>
+<p>EVEX.NDS.128.66.0F.W1 D3 /r</p>
+<p>VPSRLQ xmm1 {k1}{z}, xmm2, xmm3/m128</p></td>
+<td>M128</td>
+<td>V/V</td>
+<td>AVX512VL AVX512F</td>
+<td>Shift quadwords in xmm2 right by amount specified in xmm3/m128 while shifting in 0s using writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.NDS.256.66.0F.W1 D3 /r</p>
+<p>VPSRLQ ymm1 {k1}{z}, ymm2, xmm3/m128</p></td>
+<td>M128</td>
+<td>V/V</td>
+<td>AVX512VL AVX512F</td>
+<td>Shift quadwords in ymm2 right by amount specified in xmm3/m128 while shifting in 0s using writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.NDS.512.66.0F.W1 D3 /r</p>
+<p>VPSRLQ zmm1 {k1}{z}, zmm2, xmm3/m128</p></td>
+<td>M128</td>
+<td>V/V</td>
+<td>AVX512F</td>
+<td>Shift quadwords in zmm2 right by amount specified in xmm3/m128 while shifting in 0s using writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.NDD.128.66.0F.W1 73 /2 ib</p>
+<p>VPSRLQ xmm1 {k1}{z}, xmm2/m128/m64bcst, imm8</p></td>
+<td>FV</td>
+<td>V/V</td>
+<td>AVX512VL AVX512F</td>
+<td>Shift quadwords in xmm2/m128/m64bcst right by imm8 while shifting in 0s using writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.NDD.256.66.0F.W1 73 /2 ib</p>
+<p>VPSRLQ ymm1 {k1}{z}, ymm2/m256/m64bcst, imm8</p></td>
+<td>FV</td>
+<td>V/V</td>
+<td>AVX512VL AVX512F</td>
+<td>Shift quadwords in ymm2/m256/m64bcst right by imm8 while shifting in 0s using writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.NDD.512.66.0F.W1 73 /2 ib</p>
+<p>VPSRLQ zmm1 {k1}{z}, zmm2/m512/m64bcst, imm8</p></td>
+<td>FVI</td>
+<td>V/V</td>
+<td>AVX512F</td>
+<td>Shift quadwords in zmm2/m512/m64bcst right by imm8 while shifting in 0s using writemask k1.</td></tr></table>
+<p>NOTES:</p>
+<p>1. See note in Section 2.4, “AVX and SSE Instruction Exception Specification” in the <em>Intel® 64 and IA-32 Architectures Software Developer’s Manual, Volume 2A</em> and Section 22.25.3, “Exception Conditions of Legacy SIMD Instructions Operating on MMX Registers” in the <em>Intel® 64 and IA-32 Architectures Software Developer’s Manual, Volume 3A</em>.</p>
+<h3>Instruction Operand Encoding</h3>
+<table>
+<tr>
+<td>Op/En</td>
+<td>Operand 1</td>
+<td>Operand 2</td>
+<td>Operand 3</td>
+<td>Operand 4</td></tr>
+<tr>
+<td>RM</td>
+<td>ModRM:reg (r, w)</td>
+<td>ModRM:r/m (r)</td>
+<td>NA</td>
+<td>NA</td></tr>
+<tr>
+<td>MI</td>
+<td>ModRM:r/m (r, w)</td>
+<td>imm8</td>
+<td>NA</td>
+<td>NA</td></tr>
+<tr>
+<td>RVM</td>
+<td>ModRM:reg (w)</td>
+<td>VEX.vvvv (r)</td>
+<td>ModRM:r/m (r)</td>
+<td>NA</td></tr>
+<tr>
+<td>VMI</td>
+<td>VEX.vvvv (w)</td>
+<td>ModRM:r/m (r)</td>
+<td>imm8</td>
+<td>NA</td></tr>
+<tr>
+<td>FVM</td>
+<td>EVEX.vvvv (w)</td>
+<td>ModRM:r/m (R)</td>
+<td>Imm8</td>
+<td>NA</td></tr>
+<tr>
+<td>FVI</td>
+<td>EVEX.vvvv (w)</td>
+<td>ModRM:r/m (R)</td>
+<td>Imm8</td>
+<td>NA</td></tr>
+<tr>
+<td>M128</td>
+<td>ModRM:reg (w)</td>
+<td>VEX.vvvv (r)</td>
+<td>ModRM:r/m (r)</td>
+<td>NA</td></tr></table>
+<h2>Description</h2>
+<p>Shifts the bits in the individual data elements (words, doublewords, or quadword) in the destination operand (first operand) to the right by the number of bits specified in the count operand (second operand). As the bits in the data elements are shifted right, the empty high-order bits are cleared (set to 0). If the value specified by the count operand is greater than 15 (for words), 31 (for doublewords), or 63 (for a quadword), then the destination operand is set to all 0s. Figure 4-19 gives an example of shifting words in a 64-bit operand.</p>
+<p>Note that only the low 64-bits of a 128-bit count operand are checked to compute the count.</p>
+<svg width="568.799985" viewBox="111.840000 787321.980010 379.199990 88.140000" height="132.21">
+<text y="787340.806588" x="159.5398" style="font-size:7.991000pt" lengthAdjust="spacingAndGlyphs" textLength="31.0226602">Pre-Shift</text>
+<text y="787349.086888" x="170.04" style="font-size:7.991000pt" lengthAdjust="spacingAndGlyphs" textLength="21.3263808">DEST</text>
+<text y="787362.685488" x="158.46" style="font-size:6.960000pt" lengthAdjust="spacingAndGlyphs" textLength="31.41744">Shift Right</text>
+<text y="787369.945488" x="161.16" style="font-size:6.960000pt" lengthAdjust="spacingAndGlyphs" textLength="28.485888">with Zero</text>
+<text y="787377.745588" x="160.6199" style="font-size:6.960000pt" lengthAdjust="spacingAndGlyphs" textLength="29.386512">Extension</text>
+<text y="787393.666288" x="154.7396" style="font-size:7.991000pt" lengthAdjust="spacingAndGlyphs" textLength="34.5506867">Post-Shift</text>
+<text y="787401.646888" x="169.02" style="font-size:7.991000pt" lengthAdjust="spacingAndGlyphs" textLength="21.3207871">DEST</text>
+<rect y="787333.14" x="319.98" style="fill:rgba(0,0,0,0);stroke:rgb(0,0,0);stroke-width:1pt;" height="18.0" width="62.88"></rect>
+<rect y="787333.14" x="382.86" style="fill:rgba(0,0,0,0);stroke:rgb(0,0,0);stroke-width:1pt;" height="18.0" width="62.88"></rect>
+<rect y="787386.12" x="193.62" style="fill:rgba(0,0,0,0);stroke:rgb(0,0,0);stroke-width:1pt;" height="18.0" width="62.88"></rect>
+<rect y="787386.12" x="256.5" style="fill:rgba(0,0,0,0);stroke:rgb(0,0,0);stroke-width:1pt;" height="18.0" width="62.88"></rect>
+<rect y="787386.12" x="319.38" style="fill:rgba(0,0,0,0);stroke:rgb(0,0,0);stroke-width:1pt;" height="18.0" width="62.88"></rect>
+<rect y="787333.14" x="194.16" style="fill:rgba(0,0,0,0);stroke:rgb(0,0,0);stroke-width:1pt;" height="18.0" width="62.88"></rect>
+<rect y="787333.14" x="257.04" style="fill:rgba(0,0,0,0);stroke:rgb(0,0,0);stroke-width:1pt;" height="18.0" width="62.94"></rect>
+<rect y="787386.12" x="382.26" style="fill:rgba(0,0,0,0);stroke:rgb(0,0,0);stroke-width:1pt;" height="18.0" width="62.94"></rect>
+<path style="stroke:black" d="M193.920000,787332.900000 L193.920000,787351.140000 L194.400000,787351.140000 L194.400000,787332.900000 "></path>
+<path style="stroke:black" d="M256.800000,787332.900000 L256.800000,787351.140000 L257.280010,787351.140000 L257.280010,787332.900000 "></path>
+<path style="stroke:black" d="M319.740000,787332.900000 L319.740000,787351.140000 L320.220010,787351.140000 L320.220010,787332.900000 "></path>
+<path style="stroke:black" d="M382.620000,787332.900000 L382.620000,787351.140000 L383.100010,787351.140000 L383.100010,787332.900000 "></path>
+<path style="stroke:black" d="M194.160000,787332.900020 L194.160000,787333.380000 L257.280000,787333.380000 L257.280000,787332.900020 "></path>
+<path style="stroke:black" d="M257.040000,787332.900020 L257.040000,787333.380000 L320.220000,787333.380000 L320.220000,787332.900020 "></path>
+<path style="stroke:black" d="M319.980000,787332.900020 L319.980000,787333.380000 L383.100000,787333.380000 L383.100000,787332.900020 "></path>
+<path style="stroke:black" d="M382.860000,787332.900020 L382.860000,787333.380000 L445.980000,787333.380000 L445.980000,787332.900020 "></path>
+<path style="stroke:black" d="M256.800000,787333.140000 L256.800000,787351.380000 L257.280010,787351.380000 L257.280010,787333.140000 "></path>
+<path style="stroke:black" d="M319.740000,787333.140000 L319.740000,787351.380000 L320.220010,787351.380000 L320.220010,787333.140000 "></path>
+<path style="stroke:black" d="M382.620000,787333.140000 L382.620000,787351.380000 L383.100010,787351.380000 L383.100010,787333.140000 "></path>
+<path style="stroke:black" d="M445.500000,787333.140000 L445.500000,787351.380000 L445.980010,787351.380000 L445.980010,787333.140000 "></path>
+<path style="stroke:black" d="M193.920000,787350.900020 L193.920000,787351.380000 L257.040000,787351.380000 L257.040000,787350.900020 "></path>
+<path style="stroke:black" d="M256.800000,787350.900020 L256.800000,787351.380000 L319.980000,787351.380000 L319.980000,787350.900020 "></path>
+<path style="stroke:black" d="M319.740000,787350.900020 L319.740000,787351.380000 L382.860000,787351.380000 L382.860000,787350.900020 "></path>
+<path style="stroke:black" d="M382.620000,787350.900020 L382.620000,787351.380000 L445.740000,787351.380000 L445.740000,787350.900020 "></path>
+<path style="stroke:black" d="M275.820000,787351.260000 L275.820000,787366.200000 L276.299980,787366.200000 L276.299980,787351.260000 "></path>
+<path style="stroke:black" d="M212.100000,787351.320000 L212.100000,787366.260000 L212.580010,787366.260000 L212.580010,787351.320000 "></path>
+<path style="stroke:black" d="M394.320000,787351.380000 L394.320000,787366.320000 L394.800010,787366.320000 L394.800010,787351.380000 "></path>
+<path style="stroke:black" d="M332.580000,787351.800000 L332.580000,787366.740000 L333.060010,787366.740000 L333.060010,787351.800000 "></path>
+<path style="stroke:black" d="M276.060000,787365.720020 L276.060000,787366.200000 L302.040000,787366.200000 L302.040000,787365.720020 "></path>
+<path style="stroke:black" d="M212.340000,787365.780020 L212.340000,787366.260000 L238.320000,787366.260000 L238.320000,787365.780020 "></path>
+<path style="stroke:black" d="M394.560000,787365.840020 L394.560000,787366.320000 L420.480000,787366.320000 L420.480000,787365.840020 "></path>
+<path style="stroke:black" d="M301.560000,787365.960000 L301.560000,787378.920000 L302.040010,787378.920000 L302.040010,787365.960000 "></path>
+<path style="stroke:black" d="M237.840000,787366.020000 L237.840000,787378.920000 L238.320000,787378.920000 L238.320000,787366.020000 "></path>
+<path style="stroke:black" d="M420.000000,787366.080000 L420.000000,787378.980000 L420.480010,787378.980000 L420.480010,787366.080000 "></path>
+<path style="stroke:black" d="M332.820000,787366.260020 L332.820000,787366.740000 L358.800000,787366.740000 L358.800000,787366.260020 "></path>
+<path style="stroke:black" d="M358.320000,787366.500000 L358.320000,787379.400000 L358.800010,787379.400000 L358.800010,787366.500000 "></path>
+<path style="stroke:black" d="M301.620000,787379.220000 L303.180000,787378.680000 L304.140000,787378.320000 L303.840000,787379.340000 L302.280000,787384.740000 L301.800000,787386.420000 L301.320000,787384.740000 L299.760000,787379.340000 L299.460000,787378.320000 L300.420000,787378.680000 L300.720000,787379.040000 L302.280000,787384.440000 L301.320000,787384.740000 L301.320000,787384.440000 L302.880000,787379.040000 L303.840000,787379.340000 L303.540000,787379.640000 L301.980000,787380.180000 "></path>
+<path style="stroke:black" d="M237.900000,787379.280000 L239.460000,787378.740000 L240.420000,787378.380000 L240.120000,787379.400000 L238.560000,787384.740000 L238.080000,787386.360000 L237.600000,787384.740000 L236.040000,787379.400000 L235.740000,787378.380000 L236.700000,787378.740000 L237.000000,787379.100000 L238.560000,787384.440000 L237.600000,787384.740000 L237.600000,787384.440000 L239.160000,787379.100000 L240.120000,787379.400000 L239.820000,787379.700000 L238.260000,787380.240000 "></path>
+<path style="stroke:black" d="M420.060000,787379.280000 L421.620000,787378.740000 L422.580000,787378.380000 L422.280000,787379.400000 L420.720000,787384.800000 L420.240000,787386.540000 L419.760000,787384.800000 L418.260000,787379.400000 L417.960000,787378.380000 L418.920000,787378.740000 L419.220000,787379.100000 L420.720000,787384.500000 L419.760000,787384.800000 L419.760000,787384.500000 L421.320000,787379.100000 L422.280000,787379.400000 L421.980000,787379.700000 L420.420000,787380.240000 "></path>
+<path style="stroke:black" d="M237.840000,787378.680000 L237.840000,787379.760000 L238.320000,787379.760000 L238.320000,787378.680000 "></path>
+<path style="stroke:black" d="M300.420000,787378.680000 L301.980000,787379.220000 L301.980000,787380.180000 L301.800000,787380.240000 L301.620000,787380.180000 L300.060000,787379.640000 "></path>
+<path style="stroke:black" d="M301.560000,787378.680000 L301.560000,787379.700000 L302.040010,787379.700000 L302.040010,787378.680000 "></path>
+<path style="stroke:black" d="M236.700000,787378.740000 L238.260000,787379.280000 L238.260000,787380.240000 L238.080000,787380.300000 L237.900000,787380.240000 L236.340000,787379.700000 "></path>
+<path style="stroke:black" d="M358.380000,787379.760000 L359.880000,787379.160000 L360.840000,787378.740000 L359.040000,787385.220000 L358.560000,787386.900000 L358.080000,787385.220000 L356.520000,787379.820000 L356.220000,787378.800000 L357.180000,787379.160000 L357.480000,787379.520000 L359.040000,787384.920000 L358.080000,787385.220000 L358.080000,787384.920000 L359.580000,787379.520000 L360.540000,787379.820000 L360.240000,787380.120000 L358.740000,787380.720000 "></path>
+<path style="stroke:black" d="M418.920000,787378.740000 L420.420000,787379.280000 L420.420000,787380.240000 L420.240000,787380.300000 L420.060000,787380.240000 L418.560000,787379.700000 "></path>
+<path style="stroke:black" d="M420.000000,787378.740000 L420.000000,787379.760000 L420.480010,787379.760000 L420.480010,787378.740000 "></path>
+<path style="stroke:black" d="M301.800000,787379.700000 L303.360000,787379.160000 L301.800000,787384.560000 L300.240000,787379.160000 "></path>
+<path style="stroke:black" d="M357.180000,787379.160000 L358.740000,787379.760000 L358.740000,787380.720000 L358.560000,787380.780000 L358.380000,787380.720000 L356.820000,787380.120000 "></path>
+<path style="stroke:black" d="M358.320000,787379.160000 L358.320000,787380.240000 L358.800010,787380.240000 L358.800010,787379.160000 "></path>
+<path style="stroke:black" d="M238.080000,787379.760000 L239.640000,787379.220000 L238.080000,787384.560000 L236.520000,787379.220000 "></path>
+<path style="stroke:black" d="M420.240000,787379.760000 L421.800000,787379.220000 L420.240000,787384.620000 L418.740000,787379.220000 "></path>
+<path style="stroke:black" d="M358.560000,787380.240000 L360.060000,787379.640000 L358.560000,787385.040000 L357.000000,787379.640000 "></path>
+<text y="787344.887388" x="345.1782452" style="font-size:7.991000pt" lengthAdjust="spacingAndGlyphs" textLength="9.7833813">X1</text>
+<text y="787344.886788" x="407.4" style="font-size:7.991000pt" lengthAdjust="spacingAndGlyphs" textLength="9.7234488">X0</text>
+<text y="787398.646888" x="198.3601" style="font-size:7.991000pt" lengthAdjust="spacingAndGlyphs" textLength="53.6597463">X3 &gt;&gt; COUNT</text>
+<text y="787398.646888" x="262.1404" style="font-size:7.991000pt" lengthAdjust="spacingAndGlyphs" textLength="53.6146967">X2 &gt;&gt; COUNT</text>
+<text y="787398.646888" x="325.4405" style="font-size:7.991000pt" lengthAdjust="spacingAndGlyphs" textLength="53.5962174">X1 &gt;&gt; COUNT</text>
+<text y="787344.887388" x="220.3812" style="font-size:7.991000pt" lengthAdjust="spacingAndGlyphs" textLength="9.7833813">X3</text>
+<text y="787344.887388" x="284.0982376" style="font-size:7.991000pt" lengthAdjust="spacingAndGlyphs" textLength="9.7833813">X2</text>
+<text y="787398.646288" x="385.9801" style="font-size:7.991000pt" lengthAdjust="spacingAndGlyphs" textLength="12.0008838">X0 &gt;&gt; COUNT</text></svg>
+<h3>Figure 4-19.  PSRLW, PSRLD, and PSRLQ Instruction Operation Using 64-bit Operand</h3>
+<p>The (V)PSRLW instruction shifts each of the words in the destination operand to the right by the number of bits specified in the count operand; the (V)PSRLD instruction shifts each of the doublewords in the destination operand; and the PSRLQ instruction shifts the quadword (or quadwords) in the destination operand.</p>
+<p>In 64-bit mode and not encoded with VEX/EVEX, using a REX prefix in the form of REX.R permits this instruction to access additional registers (XMM8-XMM15).</p>
+<p>Legacy SSE instruction 64-bit operand: The destination operand is an MMX technology register; the count operand can be either an MMX technology register or an 64-bit memory location.</p>
+<p>128-bit Legacy SSE version: The destination operand is an XMM register; the count operand can be either an XMM register or a 128-bit memory location, or an 8-bit immediate. If the count operand is a memory address, 128 bits are loaded but the upper 64 bits are ignored. Bits (VLMAX-1:128) of the corresponding YMM destination register remain unchanged.</p>
+<p>VEX.128 encoded version: The destination operand is an XMM register; the count operand can be either an XMM register or a 128-bit memory location, or an 8-bit immediate. If the count operand is a memory address, 128 bits are loaded but the upper 64 bits are ignored. Bits (VLMAX-1:128) of the destination YMM register are zeroed.</p>
+<p>VEX.256 encoded version: The destination operand is a YMM register. The source operand is a YMM register or a memory location. The count operand can come either from an XMM register or a memory location or an 8-bit imme-diate. Bits (MAX_VL-1:256) of the corresponding ZMM register are zeroed.</p>
+<p>EVEX encoded versions: The destination operand is a ZMM register updated according to the writemask. The count operand is either an 8-bit immediate (the immediate count version) or an 8-bit value from an XMM register or a memory location (the variable count version). For the immediate count version, the source operand (the second operand) can be a ZMM register, a 512-bit memory location or a 512-bit vector broadcasted from a 32/64-bit memory location. For the variable count version, the first source operand (the second operand) is a ZMM register, the second source operand (the third operand, 8-bit variable count) can be an XMM register or a memory location.</p>
+<p>Note: In VEX/EVEX encoded versions of shifts with an immediate count, vvvv of VEX/EVEX encode the destination register, and VEX.B/EVEX.B + ModRM.r/m encodes the source register.</p>
+<p>Note: For shifts with an immediate count (VEX.128.66.0F 71-73 /2, or EVEX.128.66.0F 71-73 /2), VEX.vvvv/EVEX.vvvv encodes the destination register.</p>
+<h2>Operation</h2>
+<p><strong>PSRLW (with 64-bit operand)</strong></p>
+<pre>    IF (COUNT &gt; 15)
+    THEN
+         DEST[64:0] ← 0000000000000000H
+    ELSE
+         DEST[15:0] ← ZeroExtend(DEST[15:0] &gt;&gt; COUNT);
+         (* Repeat shift operation for 2nd and 3rd words *)
+         DEST[63:48] ← ZeroExtend(DEST[63:48] &gt;&gt; COUNT);
+    FI;</pre>
+<p><strong>PSRLD (with 64-bit operand)</strong></p>
+<pre>    IF (COUNT &gt; 31)
+    THEN
+         DEST[64:0] ← 0000000000000000H
+    ELSE
+         DEST[31:0] ← ZeroExtend(DEST[31:0] &gt;&gt; COUNT);
+         DEST[63:32] ← ZeroExtend(DEST[63:32] &gt;&gt; COUNT);
+    FI;</pre>
+<p><strong>PSRLQ (with 64-bit operand)</strong></p>
+<pre>    IF (COUNT &gt; 63)
+    THEN
+         DEST[64:0] ← 0000000000000000H
+    ELSE
+         DEST ← ZeroExtend(DEST &gt;&gt; COUNT);
+    FI;
+LOGICAL_RIGHT_SHIFT_DWORDS1(SRC, COUNT_SRC)
+COUNT (cid:197) COUNT_SRC[63:0];
+IF (COUNT &gt; 31)
+THEN
+    DEST[31:0] (cid:197) 0
+ELSE
+    DEST[31:0] (cid:197) ZeroExtend(SRC[31:0] &gt;&gt; COUNT);
+FI;
+LOGICAL_RIGHT_SHIFT_QWORDS1(SRC, COUNT_SRC)
+COUNT (cid:197) COUNT_SRC[63:0];
+IF (COUNT &gt; 63)
+THEN
+    DEST[63:0] (cid:197) 0
+ELSE
+    DEST[63:0] (cid:197) ZeroExtend(SRC[63:0] &gt;&gt; COUNT);
+FI;
+LOGICAL_RIGHT_SHIFT_WORDS_256b(SRC, COUNT_SRC)
+COUNT (cid:197)COUNT_SRC[63:0];
+IF (COUNT &gt; 15)
+THEN
+    DEST[255:0] (cid:197)0
+ELSE
+    DEST[15:0] (cid:197)ZeroExtend(SRC[15:0] &gt;&gt; COUNT);
+    (* Repeat shift operation for 2nd through 15th words *)
+    DEST[255:240] (cid:197)ZeroExtend(SRC[255:240] &gt;&gt; COUNT);
+FI;
+LOGICAL_RIGHT_SHIFT_WORDS(SRC, COUNT_SRC)
+COUNT (cid:197)COUNT_SRC[63:0];
+IF (COUNT &gt; 15)
+THEN
+    DEST[127:0] (cid:197)00000000000000000000000000000000H
+ELSE
+    DEST[15:0] (cid:197)ZeroExtend(SRC[15:0] &gt;&gt; COUNT);
+    (* Repeat shift operation for 2nd through 7th words *)
+    DEST[127:112] (cid:197)ZeroExtend(SRC[127:112] &gt;&gt; COUNT);
+FI;
+LOGICAL_RIGHT_SHIFT_DWORDS_256b(SRC, COUNT_SRC)
+COUNT (cid:197)COUNT_SRC[63:0];
+IF (COUNT &gt; 31)
+THEN
+    DEST[255:0] (cid:197)0
+ELSE
+    DEST[31:0] (cid:197)ZeroExtend(SRC[31:0] &gt;&gt; COUNT);
+    (* Repeat shift operation for 2nd through 3rd words *)
+    DEST[255:224] (cid:197)ZeroExtend(SRC[255:224] &gt;&gt; COUNT);
+FI;
+LOGICAL_RIGHT_SHIFT_DWORDS(SRC, COUNT_SRC)
+COUNT (cid:197)COUNT_SRC[63:0];
+IF (COUNT &gt; 31)
+THEN
+    DEST[127:0] (cid:197)00000000000000000000000000000000H
+ELSE
+    DEST[31:0] (cid:197)ZeroExtend(SRC[31:0] &gt;&gt; COUNT);
+    (* Repeat shift operation for 2nd through 3rd words *)
+    DEST[127:96] (cid:197)ZeroExtend(SRC[127:96] &gt;&gt; COUNT);
+FI;
+LOGICAL_RIGHT_SHIFT_QWORDS_256b(SRC, COUNT_SRC)
+COUNT (cid:197)COUNT_SRC[63:0];
+IF (COUNT &gt; 63)
+THEN
+    DEST[255:0] (cid:197)0
+ELSE
+    DEST[63:0] (cid:197)ZeroExtend(SRC[63:0] &gt;&gt; COUNT);
+    DEST[127:64] (cid:197)ZeroExtend(SRC[127:64] &gt;&gt; COUNT);
+    DEST[191:128] (cid:197)ZeroExtend(SRC[191:128] &gt;&gt; COUNT);
+    DEST[255:192] (cid:197)ZeroExtend(SRC[255:192] &gt;&gt; COUNT);
+FI;
+LOGICAL_RIGHT_SHIFT_QWORDS(SRC, COUNT_SRC)
+COUNT (cid:197)COUNT_SRC[63:0];
+IF (COUNT &gt; 63)
+THEN
+    DEST[127:0] (cid:197)00000000000000000000000000000000H
+ELSE
+    DEST[63:0] (cid:197)ZeroExtend(SRC[63:0] &gt;&gt; COUNT);
+    DEST[127:64] (cid:197)ZeroExtend(SRC[127:64] &gt;&gt; COUNT);
+FI;</pre>
+<p><strong>VPSRLW (EVEX versions, xmm/m128)</strong></p>
+<pre>(KL, VL) = (8, 128), (16, 256), (32, 512)
+IF VL = 128
+    TMP_DEST[127:0] (cid:197) LOGICAL_RIGHT_SHIFT_WORDS_128b(SRC1[127:0], SRC2)
+FI;
+IF VL = 256
+    TMP_DEST[255:0] (cid:197) LOGICAL_RIGHT_SHIFT_WORDS_256b(SRC1[255:0], SRC2)
+FI;
+IF VL = 512
+    TMP_DEST[255:0] (cid:197) LOGICAL_RIGHT_SHIFT_WORDS_256b(SRC1[255:0], SRC2)
+    TMP_DEST[511:256] (cid:197) LOGICAL_RIGHT_SHIFT_WORDS_256b(SRC1[511:256], SRC2)
+FI;
+FOR j (cid:197) 0 TO KL-1
+    i (cid:197) j * 16
+    IF k1[j] OR *no writemask*
+         THEN DEST[i+15:i] (cid:197) TMP_DEST[i+15:i]
+         ELSE
+              IF *merging-masking*
+                                                         ; merging-masking
+                    THEN *DEST[i+15:i] remains unchanged*
+                    ELSE *zeroing-masking*
+                                                              ; zeroing-masking
+                         DEST[i+15:i] = 0
+              FI
+    FI;
+ENDFOR
+DEST[MAX_VL-1:VL] (cid:197) 0</pre>
+<p><strong>VPSRLW (EVEX versions, imm8)</strong></p>
+<pre>(KL, VL) = (8, 128), (16, 256), (32, 512)
+IF VL = 128
+    TMP_DEST[127:0] (cid:197) LOGICAL_RIGHT_SHIFT_WORDS_128b(SRC1[127:0], imm8)
+FI;
+IF VL = 256
+    TMP_DEST[255:0] (cid:197) LOGICAL_RIGHT_SHIFT_WORDS_256b(SRC1[255:0], imm8)
+FI;
+IF VL = 512
+    TMP_DEST[255:0] (cid:197) LOGICAL_RIGHT_SHIFT_WORDS_256b(SRC1[255:0], imm8)
+    TMP_DEST[511:256] (cid:197) LOGICAL_RIGHT_SHIFT_WORDS_256b(SRC1[511:256], imm8)
+FI;
+FOR j (cid:197) 0 TO KL-1
+    i (cid:197) j * 16
+    IF k1[j] OR *no writemask*
+         THEN DEST[i+15:i] (cid:197) TMP_DEST[i+15:i]
+         ELSE
+              IF *merging-masking*
+                                                         ; merging-masking
+                    THEN *DEST[i+15:i] remains unchanged*
+                    ELSE *zeroing-masking*
+                                                              ; zeroing-masking
+                         DEST[i+15:i] = 0
+              FI
+    FI;
+ENDFOR
+DEST[MAX_VL-1:VL] (cid:197) 0</pre>
+<p><strong>VPSRLW (ymm, ymm, xmm/m128) - VEX.256 encoding</strong></p>
+<pre>DEST[255:0] (cid:197)LOGICAL_RIGHT_SHIFT_WORDS_256b(SRC1, SRC2)
+DEST[MAX_VL-1:256] (cid:197)0;</pre>
+<p><strong>VPSRLW (ymm, imm8) - VEX.256 encoding</strong></p>
+<pre>DEST[255:0] (cid:197)LOGICAL_RIGHT_SHIFT_WORDS_256b(SRC1, imm8)
+DEST[MAX_VL-1:256] (cid:197)0;</pre>
+<p><strong>VPSRLW (xmm, xmm, xmm/m128) - VEX.128 encoding</strong></p>
+<pre>DEST[127:0] (cid:197)LOGICAL_RIGHT_SHIFT_WORDS(SRC1, SRC2)
+DEST[MAX_VL-1:128] (cid:197)0</pre>
+<p><strong>VPSRLW (xmm, imm8) - VEX.128 encoding</strong></p>
+<pre>DEST[127:0] (cid:197)LOGICAL_RIGHT_SHIFT_WORDS(SRC1, imm8)
+DEST[MAX_VL-1:128] (cid:197)0</pre>
+<p><strong>PSRLW (xmm, xmm, xmm/m128)</strong></p>
+<pre>DEST[127:0] (cid:197)LOGICAL_RIGHT_SHIFT_WORDS(DEST, SRC)
+DEST[MAX_VL-1:128] (Unmodified)</pre>
+<p><strong>PSRLW (xmm, imm8)</strong></p>
+<pre>DEST[127:0] (cid:197)LOGICAL_RIGHT_SHIFT_WORDS(DEST, imm8)
+DEST[MAX_VL-1:128] (Unmodified)</pre>
+<p><strong>VPSRLD (EVEX versions, xmm/m128)</strong></p>
+<pre>(KL, VL) = (4, 128), (8, 256), (16, 512)
+IF VL = 128
+    TMP_DEST[127:0] (cid:197) LOGICAL_RIGHT_SHIFT_DWORDS_128b(SRC1[127:0], SRC2)
+FI;
+IF VL = 256
+    TMP_DEST[255:0] (cid:197) LOGICAL_RIGHT_SHIFT_DWORDS_256b(SRC1[255:0], SRC2)
+FI;
+IF VL = 512
+    TMP_DEST[255:0] (cid:197) LOGICAL_RIGHT_SHIFT_DWORDS_256b(SRC1[255:0], SRC2)
+    TMP_DEST[511:256] (cid:197) LOGICAL_RIGHT_SHIFT_DWORDS_256b(SRC1[511:256], SRC2)
+FI;
+FOR j (cid:197) 0 TO KL-1
+    i (cid:197) j * 32
+    IF k1[j] OR *no writemask*
+         THEN DEST[i+31:i] (cid:197) TMP_DEST[i+31:i]
+         ELSE
+              IF *merging-masking*
+                                                         ; merging-masking
+                    THEN *DEST[i+31:i] remains unchanged*
+                    ELSE *zeroing-masking*
+                                                              ; zeroing-masking
+                         DEST[i+31:i] (cid:197) 0
+              FI
+    FI;
+ENDFOR
+DEST[MAX_VL-1:VL] (cid:197) 0</pre>
+<p><strong>VPSRLD (EVEX versions, imm8)</strong></p>
+<pre>(KL, VL) = (4, 128), (8, 256), (16, 512)
+FOR j (cid:197) 0 TO KL-1
+    i (cid:197) j * 32
+    IF k1[j] OR *no writemask* THEN
+              IF (EVEX.b = 1) AND (SRC1 *is memory*)
+                    THEN DEST[i+31:i] (cid:197) LOGICAL_RIGHT_SHIFT_DWORDS1(SRC1[31:0], imm8)
+                    ELSE DEST[i+31:i] (cid:197) LOGICAL_RIGHT_SHIFT_DWORDS1(SRC1[i+31:i], imm8)
+              FI;
+         ELSE
+              IF *merging-masking*
+                                                         ; merging-masking
+                    THEN *DEST[i+31:i] remains unchanged*
+                    ELSE *zeroing-masking*
+                                                              ; zeroing-masking
+                         DEST[i+31:i] (cid:197) 0
+              FI
+    FI;
+ENDFOR
+DEST[MAX_VL-1:VL] (cid:197) 0</pre>
+<p><strong>VPSRLD (ymm, ymm, xmm/m128) - VEX.256 encoding</strong></p>
+<pre>DEST[255:0] (cid:197)LOGICAL_RIGHT_SHIFT_DWORDS_256b(SRC1, SRC2)
+DEST[MAX_VL-1:256] (cid:197)0;</pre>
+<p><strong>VPSRLD (ymm, imm8) - VEX.256 encoding</strong></p>
+<pre>DEST[255:0] (cid:197)LOGICAL_RIGHT_SHIFT_DWORDS_256b(SRC1, imm8)
+DEST[MAX_VL-1:256] (cid:197)0;</pre>
+<p><strong>VPSRLD (xmm, xmm, xmm/m128) - VEX.128 encoding</strong></p>
+<pre>DEST[127:0] (cid:197)LOGICAL_RIGHT_SHIFT_DWORDS(SRC1, SRC2)
+DEST[MAX_VL-1:128] (cid:197)0</pre>
+<p><strong>VPSRLD (xmm, imm8) - VEX.128 encoding</strong></p>
+<pre>DEST[127:0] (cid:197)LOGICAL_RIGHT_SHIFT_DWORDS(SRC1, imm8)
+DEST[MAX_VL-1:128] (cid:197)0</pre>
+<p><strong>PSRLD (xmm, xmm, xmm/m128)</strong></p>
+<pre>DEST[127:0] (cid:197)LOGICAL_RIGHT_SHIFT_DWORDS(DEST, SRC)
+DEST[MAX_VL-1:128] (Unmodified)</pre>
+<p><strong>PSRLD (xmm, imm8)</strong></p>
+<pre>DEST[127:0] (cid:197)LOGICAL_RIGHT_SHIFT_DWORDS(DEST, imm8)
+DEST[MAX_VL-1:128] (Unmodified)</pre>
+<p><strong>VPSRLQ (EVEX versions, xmm/m128)</strong></p>
+<pre>(KL, VL) = (2, 128), (4, 256), (8, 512)
+TMP_DEST[255:0] (cid:197) LOGICAL_RIGHT_SHIFT_QWORDS_256b(SRC1[255:0], SRC2)
+TMP_DEST[511:256] (cid:197) LOGICAL_RIGHT_SHIFT_QWORDS_256b(SRC1[511:256], SRC2)
+IF VL = 128
+    TMP_DEST[127:0] (cid:197) LOGICAL_RIGHT_SHIFT_QWORDS_128b(SRC1[127:0], SRC2)
+FI;
+IF VL = 256
+    TMP_DEST[255:0] (cid:197) LOGICAL_RIGHT_SHIFT_QWORDS_256b(SRC1[255:0], SRC2)
+FI;
+IF VL = 512
+    TMP_DEST[255:0] (cid:197) LOGICAL_RIGHT_SHIFT_QWORDS_256b(SRC1[255:0], SRC2)
+    TMP_DEST[511:256] (cid:197) LOGICAL_RIGHT_SHIFT_QWORDS_256b(SRC1[511:256], SRC2)
+FI;
+FOR j (cid:197) 0 TO KL-1
+    i (cid:197) j * 64
+    IF k1[j] OR *no writemask*
+         THEN DEST[i+63:i] (cid:197) TMP_DEST[i+63:i]
+         ELSE
+              IF *merging-masking*
+                                                         ; merging-masking
+                    THEN *DEST[i+63:i] remains unchanged*
+                    ELSE *zeroing-masking*
+                                                              ; zeroing-masking
+                         DEST[i+63:i] (cid:197) 0
+              FI
+    FI;
+ENDFOR
+DEST[MAX_VL-1:VL] (cid:197) 0</pre>
+<p><strong>VPSRLQ (EVEX versions, imm8)</strong></p>
+<pre>(KL, VL) = (2, 128), (4, 256), (8, 512)
+FOR j (cid:197) 0 TO KL-1
+    i (cid:197) j * 64
+    IF k1[j] OR *no writemask* THEN
+              IF (EVEX.b = 1) AND (SRC1 *is memory*)
+                    THEN DEST[i+63:i] (cid:197) LOGICAL_RIGHT_SHIFT_QWORDS1(SRC1[63:0], imm8)
+                    ELSE DEST[i+63:i] (cid:197) LOGICAL_RIGHT_SHIFT_QWORDS1(SRC1[i+63:i], imm8)
+              FI;
+         ELSE
+              IF *merging-masking*
+                                                         ; merging-masking
+                    THEN *DEST[i+63:i] remains unchanged*
+                    ELSE *zeroing-masking*
+                                                              ; zeroing-masking
+                         DEST[i+63:i] (cid:197) 0
+              FI
+    FI;
+ENDFOR
+DEST[MAX_VL-1:VL] (cid:197) 0</pre>
+<p><strong>VPSRLQ (ymm, ymm, xmm/m128) - VEX.256 encoding</strong></p>
+<pre>DEST[255:0] (cid:197)LOGICAL_RIGHT_SHIFT_QWORDS_256b(SRC1, SRC2)
+DEST[MAX_VL-1:256] (cid:197)0;</pre>
+<p><strong>VPSRLQ (ymm, imm8) - VEX.256 encoding</strong></p>
+<pre>DEST[255:0] (cid:197)LOGICAL_RIGHT_SHIFT_QWORDS_256b(SRC1, imm8)
+DEST[MAX_VL-1:256] (cid:197)0;</pre>
+<p><strong>VPSRLQ (xmm, xmm, xmm/m128) - VEX.128 encoding</strong></p>
+<pre>DEST[127:0] (cid:197)LOGICAL_RIGHT_SHIFT_QWORDS(SRC1, SRC2)
+DEST[MAX_VL-1:128] (cid:197)0</pre>
+<p><strong>VPSRLQ (xmm, imm8) - VEX.128 encoding</strong></p>
+<pre>DEST[127:0] (cid:197)LOGICAL_RIGHT_SHIFT_QWORDS(SRC1, imm8)
+DEST[MAX_VL-1:128] (cid:197)0</pre>
+<p><strong>PSRLQ (xmm, xmm, xmm/m128)</strong></p>
+<pre>DEST[127:0] (cid:197)LOGICAL_RIGHT_SHIFT_QWORDS(DEST, SRC)
+DEST[MAX_VL-1:128] (Unmodified)</pre>
+<p><strong>PSRLQ (xmm, imm8)</strong></p>
+<pre>DEST[127:0] (cid:197)LOGICAL_RIGHT_SHIFT_QWORDS(DEST, imm8)
+DEST[MAX_VL-1:128] (Unmodified)</pre>
+<h2>Intel C/C++ Compiler Intrinsic Equivalents</h2>
+<p>VPSRLD __m512i _mm512_srli_epi32(__m512i a, unsigned int imm);</p>
+<p>VPSRLD __m512i _mm512_mask_srli_epi32(__m512i s, __mmask16 k, __m512i a, unsigned int imm);</p>
+<p>VPSRLD __m512i _mm512_maskz_srli_epi32( __mmask16 k, __m512i a, unsigned int imm);</p>
+<p>VPSRLD __m256i _mm256_mask_srli_epi32(__m256i s, __mmask8 k, __m256i a, unsigned int imm);</p>
+<p>VPSRLD __m256i _mm256_maskz_srli_epi32( __mmask8 k, __m256i a, unsigned int imm);</p>
+<p>VPSRLD __m128i _mm_mask_srli_epi32(__m128i s, __mmask8 k, __m128i a, unsigned int imm);</p>
+<p>VPSRLD __m128i _mm_maskz_srli_epi32( __mmask8 k, __m128i a, unsigned int imm);</p>
+<p>VPSRLD __m512i _mm512_srl_epi32(__m512i a, __m128i cnt);</p>
+<p>VPSRLD __m512i _mm512_mask_srl_epi32(__m512i s, __mmask16 k, __m512i a, __m128i cnt);</p>
+<p>VPSRLD __m512i _mm512_maskz_srl_epi32( __mmask16 k, __m512i a, __m128i cnt);</p>
+<p>VPSRLD __m256i _mm256_mask_srl_epi32(__m256i s, __mmask8 k, __m256i a, __m128i cnt);</p>
+<p>VPSRLD __m256i _mm256_maskz_srl_epi32( __mmask8 k, __m256i a, __m128i cnt);</p>
+<p>VPSRLD __m128i _mm_mask_srl_epi32(__m128i s, __mmask8 k, __m128i a, __m128i cnt);</p>
+<p>VPSRLD __m128i _mm_maskz_srl_epi32( __mmask8 k, __m128i a, __m128i cnt);</p>
+<p>VPSRLQ __m512i _mm512_srli_epi64(__m512i a, unsigned int imm);</p>
+<p>VPSRLQ __m512i _mm512_mask_srli_epi64(__m512i s, __mmask8 k, __m512i a, unsigned int imm);</p>
+<p>VPSRLQ __m512i _mm512_mask_srli_epi64( __mmask8 k, __m512i a, unsigned int imm);</p>
+<p>VPSRLQ __m256i _mm256_mask_srli_epi64(__m256i s, __mmask8 k, __m256i a, unsigned int imm);</p>
+<p>VPSRLQ __m256i _mm256_maskz_srli_epi64( __mmask8 k, __m256i a, unsigned int imm);</p>
+<p>VPSRLQ __m128i _mm_mask_srli_epi64(__m128i s, __mmask8 k, __m128i a, unsigned int imm);</p>
+<p>VPSRLQ __m128i _mm_maskz_srli_epi64( __mmask8 k, __m128i a, unsigned int imm);</p>
+<p>VPSRLQ __m512i _mm512_srl_epi64(__m512i a, __m128i cnt);</p>
+<p>VPSRLQ __m512i _mm512_mask_srl_epi64(__m512i s, __mmask8 k, __m512i a, __m128i cnt);</p>
+<p>VPSRLQ __m512i _mm512_mask_srl_epi64( __mmask8 k, __m512i a, __m128i cnt);</p>
+<p>VPSRLQ __m256i _mm256_mask_srl_epi64(__m256i s, __mmask8 k, __m256i a, __m128i cnt);</p>
+<p>VPSRLQ __m256i _mm256_maskz_srl_epi64( __mmask8 k, __m256i a, __m128i cnt);</p>
+<p>VPSRLQ __m128i _mm_mask_srl_epi64(__m128i s, __mmask8 k, __m128i a, __m128i cnt);</p>
+<p>VPSRLQ __m128i _mm_maskz_srl_epi64( __mmask8 k, __m128i a, __m128i cnt);</p>
+<p>VPSRLW __m512i _mm512_srli_epi16(__m512i a, unsigned int imm);</p>
+<p>VPSRLW __m512i _mm512_mask_srli_epi16(__m512i s, __mmask32 k, __m512i a, unsigned int imm);</p>
+<p>VPSRLW __m512i _mm512_maskz_srli_epi16( __mmask32 k, __m512i a, unsigned int imm);</p>
+<p>VPSRLW __m256i _mm256_mask_srlii_epi16(__m256i s, __mmask16 k, __m256i a, unsigned int imm);</p>
+<p>VPSRLW __m256i _mm256_maskz_srli_epi16( __mmask16 k, __m256i a, unsigned int imm);</p>
+<p>VPSRLW __m128i _mm_mask_srli_epi16(__m128i s, __mmask8 k, __m128i a, unsigned int imm);</p>
+<p>VPSRLW __m128i _mm_maskz_srli_epi16( __mmask8 k, __m128i a, unsigned int imm);</p>
+<p>VPSRLW __m512i _mm512_srl_epi16(__m512i a, __m128i cnt);</p>
+<p>VPSRLW __m512i _mm512_mask_srl_epi16(__m512i s, __mmask32 k, __m512i a, __m128i cnt);</p>
+<p>VPSRLW __m512i _mm512_maskz_srl_epi16( __mmask32 k, __m512i a, __m128i cnt);</p>
+<p>VPSRLW __m256i _mm256_mask_srl_epi16(__m256i s, __mmask16 k, __m256i a, __m128i cnt);</p>
+<p>VPSRLW __m256i _mm256_maskz_srl_epi16( __mmask8 k, __mmask16 a, __m128i cnt);</p>
+<p>VPSRLW __m128i _mm_mask_srl_epi16(__m128i s, __mmask8 k, __m128i a, __m128i cnt);</p>
+<p>VPSRLW __m128i _mm_maskz_srl_epi16( __mmask8 k, __m128i a, __m128i cnt);</p>
+<p>PSRLW:__m64 _mm_srli_pi16(__m64 m, int  count)</p>
+<p>PSRLW:__m64 _mm_srl_pi16 (__m64 m, __m64 count)</p>
+<p>(V)PSRLW:__m128i _mm_srli_epi16 (__m128i m, int count)</p>
+<p>(V)PSRLW:__m128i _mm_srl_epi16 (__m128i m, __m128i count)</p>
+<p>VPSRLW:__m256i _mm256_srli_epi16 (__m256i m, int count)</p>
+<p>VPSRLW:__m256i _mm256_srl_epi16 (__m256i m, __m128i count)</p>
+<p>PSRLD:__m64 _mm_srli_pi32 (__m64 m, int  count)</p>
+<p>PSRLD:__m64 _mm_srl_pi32 (__m64 m, __m64 count)</p>
+<p>(V)PSRLD:__m128i _mm_srli_epi32 (__m128i m, int  count)</p>
+<p>(V)PSRLD:__m128i _mm_srl_epi32 (__m128i m, __m128i count)</p>
+<p>VPSRLD:__m256i _mm256_srli_epi32 (__m256i m, int count)</p>
+<p>VPSRLD:__m256i _mm256_srl_epi32 (__m256i m, __m128i count)</p>
+<p>PSRLQ:__m64 _mm_srli_si64 (__m64 m, int  count)</p>
+<p>PSRLQ:__m64 _mm_srl_si64 (__m64 m, __m64 count)</p>
+<p>(V)PSRLQ:__m128i _mm_srli_epi64 (__m128i m, int  count)</p>
+<p>(V)PSRLQ:__m128i _mm_srl_epi64 (__m128i m, __m128i count)</p>
+<p>VPSRLQ:__m256i _mm256_srli_epi64 (__m256i m, int count)</p>
+<p>VPSRLQ:__m256i _mm256_srl_epi64 (__m256i m, __m128i count)</p>
+<h2>Flags Affected</h2>
+<p>None.</p>
+<h2>Numeric Exceptions</h2>
+<p>None.</p>
+<h2>Other Exceptions</h2>
+<table class="exception-table">
+<tr>
+<td>VEX-encoded instructions:</td></tr>
+<tr>
+<td>Syntax with RM/RVM operand encoding, see Exceptions Type 4.</td></tr>
+<tr>
+<td>Syntax with MI/VMI operand encoding, see Exceptions Type 7.</td></tr>
+<tr>
+<td>EVEX-encoded VPSRLW, see Exceptions Type E4NF.nb.</td></tr>
+<tr>
+<td>EVEX-encoded VPSRLD/Q:</td></tr>
+<tr>
+<td>Syntax with M128 operand encoding, see Exceptions Type E4NF.nb.</td></tr>
+<tr>
+<td>Syntax with FVI operand encoding, see Exceptions Type E4.</td></tr></table></body></html>

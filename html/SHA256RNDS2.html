@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="style.css" type="text/css" rel="stylesheet">
+<title>SHA256RNDS2—Perform Two Rounds of SHA256 Operation </title></head>
+<body>
+<h1>SHA256RNDS2—Perform Two Rounds of SHA256 Operation</h1>
+<table>
+<tr>
+<th>Opcode/Instruction</th>
+<th>Op/En</th>
+<th>64/32 bit Mode Support</th>
+<th>CPUID Feature Flag</th>
+<th>Description</th></tr>
+<tr>
+<td>
+<p>0F 38 CB /r</p>
+<p>SHA256RNDS2 xmm1, xmm2/m128, &lt;XMM0&gt;</p></td>
+<td>RM0</td>
+<td>V/V</td>
+<td>SHA</td>
+<td>Perform 2 rounds of SHA256 operation using an initial SHA256 state (C,D,G,H) from xmm1, an initial SHA256 state (A,B,E,F) from xmm2/m128, and a pre-computed sum of the next 2 round mes-sage dwords and the corresponding round constants from the implicit operand XMM0, storing the updated SHA256 state (A,B,E,F) result in xmm1.</td></tr></table>
+<h3>Instruction Operand Encoding</h3>
+<table>
+<tr>
+<td>Op/En</td>
+<td>Operand 1</td>
+<td>Operand 2</td>
+<td>Operand 3</td></tr>
+<tr>
+<td>RMI</td>
+<td>ModRM:reg (r, w)</td>
+<td>ModRM:r/m (r)</td>
+<td>Implicit XMM0 (r)</td></tr></table>
+<p><strong>Description</strong></p>
+<p>The SHA256RNDS2 instruction performs 2 rounds of SHA256 operation using an initial SHA256 state (C,D,G,H) from the first operand, an initial SHA256 state (A,B,E,F) from the second operand, and a pre-computed sum of the next 2 round message dwords and the corresponding round constants from the implicit operand xmm0. Note that only the two lower dwords of XMM0 are used by the instruction.</p>
+<p>The updated SHA256 state (A,B,E,F) is written to the first operand, and the second operand can be used as the updated state (C,D,G,H) in later rounds.</p>
+<p><strong>Operation</strong></p>
+<p><strong>SHA256RNDS2</strong></p>
+<p>A_0 (cid:197) SRC2[127:96];</p>
+<p>B_0 (cid:197) SRC2[95:64];</p>
+<p>C_0 (cid:197) SRC1[127:96];</p>
+<p>D_0 (cid:197) SRC1[95:64];</p>
+<p>E_0 (cid:197) SRC2[63:32];</p>
+<p>F_0 (cid:197) SRC2[31:0];</p>
+<p>G_0 (cid:197) SRC1[63:32];</p>
+<p>H_0 (cid:197) SRC1[31:0];</p>
+<p>WK<sub>0</sub> (cid:197) XMM0[31: 0];</p>
+<p>WK<sub>1</sub> (cid:197) XMM0[63: 32];</p>
+<p>FOR i = 0 to 1</p>
+<p>A_(i +1) (cid:197) Ch (E_i, F_i, G_i) +Σ<sub>1</sub>( E_i) +WK<sub>i</sub>+ H_i + Maj(A_i , B_i, C_i) +Σ<sub>0</sub>( A_i);</p>
+<p>B_(i +1) (cid:197) A_i;</p>
+<p>C_(i +1) (cid:197) B_i ;</p>
+<p>D_(i +1) (cid:197) C_i;</p>
+<p>E_(i +1) (cid:197) Ch (E_i, F_i, G_i) +Σ<sub>1</sub>( E_i) +WK<sub>i</sub>+ H_i + D_i;</p>
+<p>F_(i +1) (cid:197) E_i ;</p>
+<p>G_(i +1) (cid:197) F_i;</p>
+<p>H_(i +1) (cid:197) G_i;</p>
+<p>ENDFOR</p>
+<p>DEST[127:96] (cid:197) A_2;</p>
+<p>DEST[95:64] (cid:197) B_2;</p>
+<p>DEST[63:32] (cid:197) E_2;</p>
+<p>DEST[31:0] (cid:197) F_2;</p>
+<p><strong>Intel C/C++ Compiler Intrinsic Equivalent</strong></p>
+<p>SHA256RNDS2: __m128i _mm_sha256rnds2_epu32(__m128i, __m128i, __m128i);</p>
+<p><strong>Flags Affected</strong></p>
+<p>None</p>
+<p><strong>SIMD Floating-Point Exceptions</strong></p>
+<p>None</p>
+<p><strong>Other Exceptions</strong></p>
+<p>See Exceptions Type 4.</p></body></html>

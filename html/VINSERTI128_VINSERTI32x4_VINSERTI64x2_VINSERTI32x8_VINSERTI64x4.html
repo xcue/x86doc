@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="style.css" type="text/css" rel="stylesheet">
+<title>VINSERTI128/VINSERTI32x4/VINSERTI64x2/VINSERTI32x8/VINSERTI64x4—Insert Packed Integer Values </title></head>
+<body>
+<h1>VINSERTI128/VINSERTI32x4/VINSERTI64x2/VINSERTI32x8/VINSERTI64x4—Insert Packed Integer Values</h1>
+<table>
+<tr>
+<th>Opcode/Instruction</th>
+<th>Op /En</th>
+<th>64/32 bit Mode Support</th>
+<th>CPUID Feature Flag</th>
+<th>Description</th></tr>
+<tr>
+<td>
+<p>VEX.NDS.256.66.0F3A.W0 38 /r ib</p>
+<p>VINSERTI128 ymm1, ymm2, xmm3/m128, imm8</p></td>
+<td>RVMI</td>
+<td>V/V</td>
+<td>AVX2</td>
+<td>Insert 128 bits of integer data from xmm3/m128 and the remaining values from ymm2 into ymm1.</td></tr>
+<tr>
+<td>
+<p>EVEX.NDS.256.66.0F3A.W0 38 /r ib</p>
+<p>VINSERTI32X4 ymm1 {k1}{z}, ymm2, xmm3/m128, imm8</p></td>
+<td>T4</td>
+<td>V/V</td>
+<td>
+<p>AVX512VL</p>
+<p>AVX512F</p></td>
+<td>Insert 128 bits of packed doubleword integer values from xmm3/m128 and the remaining values from ymm2 into ymm1 under writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.NDS.512.66.0F3A.W0 38 /r ib</p>
+<p>VINSERTI32X4 zmm1 {k1}{z}, zmm2, xmm3/m128, imm8</p></td>
+<td>T4</td>
+<td>V/V</td>
+<td>AVX512F</td>
+<td>Insert 128 bits of packed doubleword integer values from xmm3/m128 and the remaining values from zmm2 into zmm1 under writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.NDS.256.66.0F3A.W1 38 /r ib</p>
+<p>VINSERTI64X2 ymm1 {k1}{z}, ymm2, xmm3/m128, imm8</p></td>
+<td>T2</td>
+<td>V/V</td>
+<td>
+<p>AVX512VL</p>
+<p>AVX512DQ</p></td>
+<td>Insert 128 bits of packed quadword integer values from xmm3/m128 and the remaining values from ymm2 into ymm1 under writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.NDS.512.66.0F3A.W1 38 /r ib</p>
+<p>VINSERTI64X2 zmm1 {k1}{z}, zmm2, xmm3/m128, imm8</p></td>
+<td>T2</td>
+<td>V/V</td>
+<td>AVX512DQ</td>
+<td>Insert 128 bits of packed quadword integer values from xmm3/m128 and the remaining values from zmm2 into zmm1 under writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.NDS.512.66.0F3A.W0 3A /r ib</p>
+<p>VINSERTI32X8 zmm1 {k1}{z}, zmm2, ymm3/m256, imm8</p></td>
+<td>T8</td>
+<td>V/V</td>
+<td>AVX512DQ</td>
+<td>Insert 256 bits of packed doubleword integer values from ymm3/m256 and the remaining values from zmm2 into zmm1 under writemask k1.</td></tr>
+<tr>
+<td>
+<p>EVEX.NDS.512.66.0F3A.W1 3A /r ib</p>
+<p>VINSERTI64X4 zmm1 {k1}{z}, zmm2, ymm3/m256, imm8</p></td>
+<td>T4</td>
+<td>V/V</td>
+<td>AVX512F</td>
+<td>Insert 256 bits of packed quadword integer values from ymm3/m256 and the remaining values from zmm2 into zmm1 under writemask k1.</td></tr></table>
+<h3>Instruction Operand Encoding</h3>
+<table>
+<tr>
+<td>Op/En</td>
+<td>Operand 1</td>
+<td>Operand 2</td>
+<td>Operand 3</td>
+<td>Operand 4</td></tr>
+<tr>
+<td>RVMI</td>
+<td>ModRM:reg (w)</td>
+<td>VEX.vvvv</td>
+<td>ModRM:r/m (r)</td>
+<td>Imm8</td></tr>
+<tr>
+<td>T2, T4, T8</td>
+<td>ModRM:reg (w)</td>
+<td>EVEX.vvvv</td>
+<td>ModRM:r/m (r)</td>
+<td>Imm8</td></tr></table>
+<p><strong>Description</strong></p>
+<p>VINSERTI32x4 and VINSERTI64x2 inserts 128-bits of packed integer values from the second source operand (the third operand) into the destination operand (the first operand) at an 128-bit granular offset multiplied by imm8[0] (256-bit) or imm8[1:0]. The remaining portions of the destination are copied from the corresponding fields of the first source operand (the second operand). The second source operand can be either an XMM register or a 128-bit memory location. The high 6/7bits of the immediate are ignored. The destination operand is a ZMM/YMM register and updated at 32 and 64-bit granularity according to the writemask.</p>
+<p>VINSERTI32x8 and VINSERTI64x4 inserts 256-bits of packed integer values from the second source operand (the third operand) into the destination operand (the first operand) at a 256-bit granular offset multiplied by imm8[0]. The remaining portions of the destination are copied from the corresponding fields of the first source operand (the second operand). The second source operand can be either an YMM register or a 256-bit memory location. The upper bits of the immediate are ignored. The destination operand is a ZMM register and updated at 32 and 64-bit granularity according to the writemask.</p>
+<p>VINSERTI128 inserts 128-bits of packed integer data from the second source operand (the third operand) into the destination operand (the first operand) at a 128-bit granular offset multiplied by imm8[0]. The remaining portions of the destination are copied from the corresponding fields of the first source operand (the second operand). The second source operand can be either an XMM register or a 128-bit memory location. The high 7 bits of the imme-diate are ignored. VEX.L must be 1, otherwise attempt to execute this instruction with VEX.L=0 will cause #UD.</p>
+<p><strong>Operation</strong></p>
+<p><strong>VINSERTI32x4 (EVEX encoded versions)</strong></p>
+<p>(KL, VL) = (8, 256), (16, 512)</p>
+<p>TEMP_DEST[VL-1:0] (cid:197) SRC1[VL-1:0]</p>
+<p>IF VL = 256</p>
+<p>CASE (imm8[0]) OF</p>
+<p>0:</p>
+<p>TMP_DEST[127:0] (cid:197) SRC2[127:0]</p>
+<p>1:</p>
+<p>TMP_DEST[255:128] (cid:197) SRC2[127:0]</p>
+<p>ESAC.</p>
+<p>FI;</p>
+<p>IF VL = 512</p>
+<p>CASE (imm8[1:0]) OF</p>
+<p>00:  TMP_DEST[127:0] (cid:197) SRC2[127:0]</p>
+<p>01:  TMP_DEST[255:128] (cid:197) SRC2[127:0]</p>
+<p>10:  TMP_DEST[383:256] (cid:197) SRC2[127:0]</p>
+<p>11:  TMP_DEST[511:384] (cid:197) SRC2[127:0]</p>
+<p>ESAC.</p>
+<p>FI;</p>
+<p>FOR j (cid:197) 0 TO KL-1</p>
+<p>i (cid:197) j * 32</p>
+<p>IF k1[j] OR *no writemask*</p>
+<p>THEN DEST[i+31:i] (cid:197) TMP_DEST[i+31:i]</p>
+<p>ELSE</p>
+<p>IF *merging-masking*</p>
+<p>; merging-masking</p>
+<p>THEN *DEST[i+31:i] remains unchanged*</p>
+<p>ELSE</p>
+<p>; zeroing-masking</p>
+<p>DEST[i+31:i] (cid:197) 0</p>
+<p>FI</p>
+<p>FI;</p>
+<p>ENDFOR</p>
+<p>DEST[MAX_VL-1:VL] (cid:197) 0</p>
+<p><strong>VINSERTI64x2 (EVEX encoded versions)</strong></p>
+<p>(KL, VL) = (4, 256), (8, 512)</p>
+<p>TEMP_DEST[VL-1:0] (cid:197) SRC1[VL-1:0]</p>
+<p>IF VL = 256</p>
+<p>CASE (imm8[0]) OF</p>
+<p>0:</p>
+<p>TMP_DEST[127:0] (cid:197) SRC2[127:0]</p>
+<p>1:</p>
+<p>TMP_DEST[255:128] (cid:197) SRC2[127:0]</p>
+<p>ESAC.</p>
+<p>FI;</p>
+<p>IF VL = 512</p>
+<p>CASE (imm8[1:0]) OF</p>
+<p>00:  TMP_DEST[127:0] (cid:197) SRC2[127:0]</p>
+<p>01:  TMP_DEST[255:128] (cid:197) SRC2[127:0]</p>
+<p>10:  TMP_DEST[383:256] (cid:197) SRC2[127:0]</p>
+<p>11:  TMP_DEST[511:384] (cid:197) SRC2[127:0]</p>
+<p>ESAC.</p>
+<p>FI;</p>
+<p>FOR j (cid:197) 0 TO KL-1</p>
+<p>i (cid:197) j * 64</p>
+<p>IF k1[j] OR *no writemask*</p>
+<p>THEN DEST[i+63:i] (cid:197) TMP_DEST[i+63:i]</p>
+<p>ELSE</p>
+<p>IF *merging-masking*</p>
+<p>; merging-masking</p>
+<p>THEN *DEST[i+63:i] remains unchanged*</p>
+<p>ELSE</p>
+<p>; zeroing-masking</p>
+<p>DEST[i+63:i] (cid:197) 0</p>
+<p>FI</p>
+<p>FI;</p>
+<p>ENDFOR</p>
+<p>DEST[MAX_VL-1:VL] (cid:197) 0</p>
+<p><strong>VINSERTI32x8 (EVEX.U1.512 encoded version)</strong></p>
+<p>TEMP_DEST[VL-1:0] (cid:197) SRC1[VL-1:0]</p>
+<p>CASE (imm8[0]) OF</p>
+<p>0: TMP_DEST[255:0] (cid:197) SRC2[255:0]</p>
+<p>1: TMP_DEST[511:256] (cid:197) SRC2[255:0]</p>
+<p>ESAC.</p>
+<p>FOR j (cid:197) 0 TO 15</p>
+<p>i (cid:197) j * 32</p>
+<p>IF k1[j] OR *no writemask*</p>
+<p>THEN DEST[i+31:i] (cid:197) TMP_DEST[i+31:i]</p>
+<p>ELSE</p>
+<p>IF *merging-masking*</p>
+<p>; merging-masking</p>
+<p>THEN *DEST[i+31:i] remains unchanged*</p>
+<p>ELSE</p>
+<p>; zeroing-masking</p>
+<p>DEST[i+31:i] (cid:197) 0</p>
+<p>FI</p>
+<p>FI;</p>
+<p>ENDFOR</p>
+<p>DEST[MAX_VL-1:VL] (cid:197) 0</p>
+<p><strong>VINSERTI64x4 (EVEX.512 encoded version)</strong></p>
+<p>VL = 512</p>
+<p>TEMP_DEST[VL-1:0] (cid:197) SRC1[VL-1:0]</p>
+<p>CASE (imm8[0]) OF</p>
+<p>0: TMP_DEST[255:0] (cid:197) SRC2[255:0]</p>
+<p>1: TMP_DEST[511:256] (cid:197) SRC2[255:0]</p>
+<p>ESAC.</p>
+<p>FOR j (cid:197) 0 TO 7</p>
+<p>i (cid:197) j * 64</p>
+<p>IF k1[j] OR *no writemask*</p>
+<p>THEN DEST[i+63:i] (cid:197) TMP_DEST[i+63:i]</p>
+<p>ELSE</p>
+<p>IF *merging-masking*</p>
+<p>; merging-masking</p>
+<p>THEN *DEST[i+63:i] remains unchanged*</p>
+<p>ELSE</p>
+<p>; zeroing-masking</p>
+<p>DEST[i+63:i] (cid:197) 0</p>
+<p>FI</p>
+<p>FI;</p>
+<p>ENDFOR</p>
+<p>DEST[MAX_VL-1:VL] (cid:197) 0</p>
+<p><strong>VINSERTI128</strong></p>
+<p>TEMP[255:0] (cid:197)SRC1[255:0]</p>
+<p>CASE (imm8[0]) OF</p>
+<p>0: TEMP[127:0] (cid:197)SRC2[127:0]</p>
+<p>1: TEMP[255:128] (cid:197)SRC2[127:0]</p>
+<p>ESAC</p>
+<p>DEST (cid:197)TEMP</p>
+<p><strong>Intel C/C++ Compiler Intrinsic Equivalent</strong></p>
+<p>VINSERTI32x4 _mm512i _inserti32x4( __m512i a, __m128i b, int imm);</p>
+<p>VINSERTI32x4 _mm512i _mask_inserti32x4(__m512i s, __mmask16 k, __m512i a, __m128i b, int imm);</p>
+<p>VINSERTI32x4 _mm512i _maskz_inserti32x4( __mmask16 k, __m512i a, __m128i b, int imm);</p>
+<p>VINSERTI32x4 __m256i _mm256_inserti32x4( __m256i a, __m128i b, int imm);</p>
+<p>VINSERTI32x4 __m256i _mm256_mask_inserti32x4(__m256i s, __mmask8 k, __m256i a, __m128i b, int imm);</p>
+<p>VINSERTI32x4 __m256i _mm256_maskz_inserti32x4( __mmask8 k, __m256i a, __m128i b, int imm);</p>
+<p>VINSERTI32x8 __m512i _mm512_inserti32x8( __m512i a, __m256i b, int imm);</p>
+<p>VINSERTI32x8 __m512i _mm512_mask_inserti32x8(__m512i s, __mmask16 k, __m512i a, __m256i b, int imm);</p>
+<p>VINSERTI32x8 __m512i _mm512_maskz_inserti32x8( __mmask16 k, __m512i a, __m256i b, int imm);</p>
+<p>VINSERTI64x2 __m512i _mm512_inserti64x2( __m512i a, __m128i b, int imm);</p>
+<p>VINSERTI64x2 __m512i _mm512_mask_inserti64x2(__m512i s, __mmask8 k, __m512i a, __m128i b, int imm);</p>
+<p>VINSERTI64x2 __m512i _mm512_maskz_inserti64x2( __mmask8 k, __m512i a, __m128i b, int imm);</p>
+<p>VINSERTI64x2 __m256i _mm256_inserti64x2( __m256i a, __m128i b, int imm);</p>
+<p>VINSERTI64x2 __m256i _mm256_mask_inserti64x2(__m256i s, __mmask8 k, __m256i a, __m128i b, int imm);</p>
+<p>VINSERTI64x2 __m256i _mm256_maskz_inserti64x2( __mmask8 k, __m256i a, __m128i b, int imm);</p>
+<p>VINSERTI64x4 _mm512_inserti64x4( __m512i a, __m256i b, int imm);</p>
+<p>VINSERTI64x4 _mm512_mask_inserti64x4(__m512i s, __mmask8 k, __m512i a, __m256i b, int imm);</p>
+<p>VINSERTI64x4 _mm512_maskz_inserti64x4( __mmask m, __m512i a, __m256i b, int imm);</p>
+<p>VINSERTI128 __m256i _mm256_insertf128_si256 (__m256i a, __m128i b, int offset);</p>
+<p><strong>SIMD Floating-Point Exceptions</strong></p>
+<p>None</p>
+<p><strong>Other Exceptions</strong></p>
+<table>
+<tr>
+<td>VEX-encoded instruction, see Exceptions Type 6; additionally</td></tr>
+<tr>
+<td>If VEX.L = 0.</td></tr>
+<tr>
+<td>EVEX-encoded instruction, see Exceptions Type E6NF.</td></tr></table></body></html>

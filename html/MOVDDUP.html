@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="style.css" type="text/css" rel="stylesheet">
+<title>MOVDDUP—Replicate Double FP Values </title></head>
+<body>
+<h1>MOVDDUP—Replicate Double FP Values</h1>
+<table>
+<tr>
+<th>Opcode/Instruction</th>
+<th>Op / En</th>
+<th>64/32 bit Mode Support</th>
+<th>CPUID Feature Flag</th>
+<th>Description</th></tr>
+<tr>
+<td>F2 0F 12 /r MOVDDUP xmm1, xmm2/m64</td>
+<td>RM</td>
+<td>V/V</td>
+<td>SSE3</td>
+<td>Move double-precision floating-point value from xmm2/m64 and duplicate into xmm1.</td></tr>
+<tr>
+<td>VEX.128.F2.0F.WIG 12 /r VMOVDDUP xmm1, xmm2/m64</td>
+<td>RM</td>
+<td>V/V</td>
+<td>AVX</td>
+<td>Move double-precision floating-point value from xmm2/m64 and duplicate into xmm1.</td></tr>
+<tr>
+<td>VEX.256.F2.0F.WIG 12 /r VMOVDDUP ymm1, ymm2/m256</td>
+<td>RM</td>
+<td>V/V</td>
+<td>AVX</td>
+<td>Move even index double-precision floating-point values from ymm2/mem and duplicate each element into ymm1.</td></tr>
+<tr>
+<td>EVEX.128.F2.0F.W1 12 /r VMOVDDUP xmm1 {k1}{z}, xmm2/m64</td>
+<td>DUP-RM</td>
+<td>V/V</td>
+<td>AVX512VL AVX512F</td>
+<td>Move double-precision floating-point value from xmm2/m64 and duplicate each element into xmm1 subject to writemask k1.</td></tr>
+<tr>
+<td>EVEX.256.F2.0F.W1 12 /r VMOVDDUP ymm1 {k1}{z}, ymm2/m256</td>
+<td>DUP-RM</td>
+<td>V/V</td>
+<td>AVX512VL AVX512F</td>
+<td>Move even index double-precision floating-point values from ymm2/m256 and duplicate each element into ymm1 subject to writemask k1.</td></tr>
+<tr>
+<td>EVEX.512.F2.0F.W1 12 /r VMOVDDUP zmm1 {k1}{z}, zmm2/m512</td>
+<td>DUP-RM</td>
+<td>V/V</td>
+<td>AVX512F</td>
+<td>Move even index double-precision floating-point values from zmm2/m512 and duplicate each element into zmm1 subject to writemask k1.</td></tr></table>
+<h3>Instruction Operand Encoding</h3>
+<table>
+<tr>
+<td>Op/En</td>
+<td>Operand 1</td>
+<td>Operand 2</td>
+<td>Operand 3</td>
+<td>Operand 4</td></tr>
+<tr>
+<td>RM</td>
+<td>ModRM:reg (w)</td>
+<td>ModRM:r/m (r)</td>
+<td>NA</td>
+<td>NA</td></tr>
+<tr>
+<td>DUP-RM</td>
+<td>ModRM:reg (w)</td>
+<td>ModRM:r/m (r)</td>
+<td>NA</td>
+<td>NA</td></tr></table>
+<p><strong>Description</strong></p>
+<p>For 256-bit or higher versions: Duplicates even-indexed double-precision floating-point values from the source operand (the second operand) and into adjacent pair and store to the destination operand (the first operand).</p>
+<p>For 128-bit versions: Duplicates the low double-precision floating-point value from the source operand (the second operand) and store to the destination operand (the first operand).</p>
+<p>128-bit Legacy SSE version: Bits (MAX_VL-1:128) of the corresponding destination register are unchanged. The source operand is XMM register or a 64-bit memory location.</p>
+<p>VEX.128 and EVEX.128 encoded version: Bits (MAX_VL-1:128) of the destination register are zeroed. The source operand is XMM register or a 64-bit memory location. The destination is updated conditionally under the writemask for EVEX version.</p>
+<p>VEX.256 and EVEX.256 encoded version: Bits (MAX_VL-1:256) of the destination register are zeroed. The source operand is YMM register or a 256-bit memory location. The destination is updated conditionally under the writemask for EVEX version.</p>
+<p>EVEX.512 encoded version: The destination is updated according to the writemask. The source operand is ZMM register or a 512-bit memory location.</p>
+<p>Note: VEX.vvvv and EVEX.vvvv are reserved and must be 1111b otherwise instructions will #UD.</p>
+<svg width="594.089985" viewBox="103.440000 470529.000010 396.059990 103.980000" height="155.97">
+<text y="470553.7335" x="143.1" style="font-size:7.500000pt" lengthAdjust="spacingAndGlyphs" textLength="15.855">SRC</text>
+<text y="470619.6135" x="142.86" style="font-size:7.500000pt" lengthAdjust="spacingAndGlyphs" textLength="19.9395">DEST</text>
+<rect y="470611.5" x="237.36" style="fill:rgba(0,0,0,0);stroke:rgb(0,0,0);stroke-width:1pt;" height="13.5" width="74.22"></rect>
+<rect y="470611.5" x="385.86" style="fill:rgba(0,0,0,0);stroke:rgb(0,0,0);stroke-width:1pt;" height="13.5" width="74.22"></rect>
+<rect y="470544.0" x="237.36" style="fill:rgba(0,0,0,0);stroke:rgb(0,0,0);stroke-width:1pt;" height="13.5" width="74.22"></rect>
+<rect y="470544.0" x="385.86" style="fill:rgba(0,0,0,0);stroke:rgb(0,0,0);stroke-width:1pt;" height="13.5" width="74.22"></rect>
+<rect y="470611.5" x="163.08" style="fill:rgba(0,0,0,0);stroke:rgb(0,0,0);stroke-width:1pt;" height="13.5" width="74.28"></rect>
+<rect y="470544.0" x="163.08" style="fill:rgba(0,0,0,0);stroke:rgb(0,0,0);stroke-width:1pt;" height="13.5" width="74.28"></rect>
+<rect y="470611.5" x="311.58" style="fill:rgba(0,0,0,0);stroke:rgb(0,0,0);stroke-width:1pt;" height="13.5" width="74.28"></rect>
+<rect y="470544.0" x="311.58" style="fill:rgba(0,0,0,0);stroke:rgb(0,0,0);stroke-width:1pt;" height="13.5" width="74.28"></rect>
+<path style="stroke:black" d="M162.840000,470543.760000 L162.840000,470557.500000 L163.320000,470557.500000 L163.320000,470543.760000 "></path>
+<path style="stroke:black" d="M237.120000,470543.760000 L237.120000,470557.500000 L237.600000,470557.500000 L237.600000,470543.760000 "></path>
+<path style="stroke:black" d="M311.340000,470543.760000 L311.340000,470557.500000 L311.820010,470557.500000 L311.820010,470543.760000 "></path>
+<path style="stroke:black" d="M385.620000,470543.760000 L385.620000,470557.500000 L386.100010,470557.500000 L386.100010,470543.760000 "></path>
+<path style="stroke:black" d="M163.080000,470543.760020 L163.080000,470544.240000 L237.600000,470544.240000 L237.600000,470543.760020 "></path>
+<path style="stroke:black" d="M237.360000,470543.760020 L237.360000,470544.240000 L311.820000,470544.240000 L311.820000,470543.760020 "></path>
+<path style="stroke:black" d="M311.580000,470543.760020 L311.580000,470544.240000 L386.100000,470544.240000 L386.100000,470543.760020 "></path>
+<path style="stroke:black" d="M385.860000,470543.760020 L385.860000,470544.240000 L460.320000,470544.240000 L460.320000,470543.760020 "></path>
+<path style="stroke:black" d="M237.120000,470544.000000 L237.120000,470557.740000 L237.600000,470557.740000 L237.600000,470544.000000 "></path>
+<path style="stroke:black" d="M311.340000,470544.000000 L311.340000,470557.740000 L311.820010,470557.740000 L311.820010,470544.000000 "></path>
+<path style="stroke:black" d="M385.620000,470544.000000 L385.620000,470557.740000 L386.100010,470557.740000 L386.100010,470544.000000 "></path>
+<path style="stroke:black" d="M459.840000,470544.000000 L459.840000,470557.740000 L460.320010,470557.740000 L460.320010,470544.000000 "></path>
+<path style="stroke:black" d="M162.840000,470557.260020 L162.840000,470557.740000 L237.360000,470557.740000 L237.360000,470557.260020 "></path>
+<path style="stroke:black" d="M237.120000,470557.260020 L237.120000,470557.740000 L311.580000,470557.740000 L311.580000,470557.260020 "></path>
+<path style="stroke:black" d="M311.340000,470557.260020 L311.340000,470557.740000 L385.860000,470557.740000 L385.860000,470557.260020 "></path>
+<path style="stroke:black" d="M385.620000,470557.260020 L385.620000,470557.740000 L460.080000,470557.740000 L460.080000,470557.260020 "></path>
+<path style="stroke:black" d="M276.900000,470557.500000 L276.900000,470594.220000 L278.880000,470594.220000 L278.880000,470557.500000 "></path>
+<path style="stroke:black" d="M425.400000,470557.500000 L425.400000,470594.220000 L427.380000,470594.220000 L427.380000,470557.500000 "></path>
+<path style="stroke:black" d="M203.580000,470583.540000 L203.580000,470585.520000 L277.860000,470585.520000 L277.860000,470583.540000 "></path>
+<path style="stroke:black" d="M352.080000,470583.540000 L352.080000,470585.520000 L426.360000,470585.520000 L426.360000,470583.540000 "></path>
+<path style="stroke:black" d="M202.620000,470584.500000 L202.620000,470594.220000 L204.600000,470594.220000 L204.600000,470584.500000 "></path>
+<path style="stroke:black" d="M351.120000,470584.500000 L351.120000,470594.220000 L353.100000,470594.220000 L353.100000,470584.500000 "></path>
+<path style="stroke:black" d="M203.580000,470595.180000 L203.760000,470595.180000 L204.000000,470595.120000 L204.862000,470594.731000 L204.719000,470593.387000 L203.760000,470593.200000 L203.400000,470593.200000 L202.405000,470593.401000 L202.303000,470594.837000 L203.220000,470595.120000 L203.400000,470595.180000 L203.580000,470595.180000 "></path>
+<path style="stroke:black" d="M277.860000,470595.180000 L278.040000,470595.180000 L278.220000,470595.120000 L279.128000,470594.756000 L278.976000,470593.439000 L278.040000,470593.200000 L277.620000,470593.200000 L276.684000,470593.439000 L276.532000,470594.756000 L277.440000,470595.120000 L277.620000,470595.180000 L277.860000,470595.180000 "></path>
+<path style="stroke:black" d="M352.080000,470595.180000 L352.320000,470595.180000 L352.500000,470595.120000 L353.306000,470594.779000 L353.321000,470593.525000 L352.320000,470593.200000 L351.900000,470593.200000 L350.905000,470593.401000 L350.803000,470594.837000 L351.720000,470595.120000 L351.900000,470595.180000 L352.080000,470595.180000 "></path>
+<path style="stroke:black" d="M426.360000,470595.180000 L426.540000,470595.180000 L426.720000,470595.120000 L427.645000,470594.809000 L427.473000,470593.382000 L426.540000,470593.200000 L426.120000,470593.200000 L425.184000,470593.439000 L425.032000,470594.756000 L425.940000,470595.120000 L426.120000,470595.180000 L426.360000,470595.180000 "></path>
+<path style="stroke:black" d="M203.580000,470594.220000 L208.560000,470594.220000 L208.380000,470594.880000 L204.060000,470609.880000 L203.580000,470611.560000 L203.100000,470609.880000 L198.780000,470594.880000 L198.600000,470594.220000 L199.260000,470594.220000 L199.740000,470594.580000 L204.060000,470609.580000 L203.100000,470609.880000 L203.100000,470609.580000 L207.420000,470594.580000 L208.380000,470594.880000 L207.900000,470595.240000 L203.580000,470595.240000 "></path>
+<path style="stroke:black" d="M199.260000,470594.220000 L199.260000,470595.240000 L203.580000,470595.240000 L203.580000,470594.220000 "></path>
+<path style="stroke:black" d="M277.860000,470594.220000 L282.780000,470594.220000 L282.600000,470594.880000 L278.340000,470609.880000 L277.860000,470611.560000 L277.380000,470609.880000 L273.060000,470594.880000 L272.880000,470594.220000 L273.540000,470594.220000 L274.020000,470594.580000 L278.340000,470609.580000 L277.380000,470609.880000 L277.380000,470609.580000 L281.640000,470594.580000 L282.600000,470594.880000 L282.120000,470595.240000 L277.860000,470595.240000 "></path>
+<path style="stroke:black" d="M273.540000,470594.220000 L273.540000,470595.240000 L277.860000,470595.240000 L277.860000,470594.220000 "></path>
+<path style="stroke:black" d="M352.080000,470594.220000 L357.060000,470594.220000 L356.880000,470594.880000 L352.560000,470609.880000 L352.080000,470611.560000 L351.600000,470609.880000 L347.340000,470594.880000 L347.160000,470594.220000 L347.820000,470594.220000 L348.300000,470594.580000 L352.560000,470609.580000 L351.600000,470609.880000 L351.600000,470609.580000 L355.920000,470594.580000 L356.880000,470594.880000 L356.400000,470595.240000 L352.080000,470595.240000 "></path>
+<path style="stroke:black" d="M347.820000,470594.220000 L347.820000,470595.240000 L352.080000,470595.240000 L352.080000,470594.220000 "></path>
+<path style="stroke:black" d="M426.360000,470594.220000 L431.280000,470594.220000 L431.100000,470594.880000 L426.840000,470609.880000 L426.360000,470611.560000 L425.880000,470609.880000 L421.560000,470594.880000 L421.380000,470594.220000 L422.040000,470594.220000 L422.520000,470594.580000 L426.840000,470609.580000 L425.880000,470609.880000 L425.880000,470609.580000 L430.140000,470594.580000 L431.100000,470594.880000 L430.620000,470595.240000 L426.360000,470595.240000 "></path>
+<path style="stroke:black" d="M422.040000,470594.220000 L422.040000,470595.240000 L426.360000,470595.240000 L426.360000,470594.220000 "></path>
+<path style="stroke:black" d="M203.580000,470594.700000 L207.900000,470594.700000 L203.580000,470609.700000 L199.260000,470594.700000 "></path>
+<path style="stroke:black" d="M277.860000,470594.700000 L282.120000,470594.700000 L277.860000,470609.700000 L273.540000,470594.700000 "></path>
+<path style="stroke:black" d="M352.080000,470594.700000 L356.400000,470594.700000 L352.080000,470609.700000 L347.820000,470594.700000 "></path>
+<path style="stroke:black" d="M426.360000,470594.700000 L430.620000,470594.700000 L426.360000,470609.700000 L422.040000,470594.700000 "></path>
+<text y="470619.6135" x="272.04" style="font-size:7.500000pt" lengthAdjust="spacingAndGlyphs" textLength="9.21">X2</text>
+<text y="470619.6135" x="421.68" style="font-size:7.500000pt" lengthAdjust="spacingAndGlyphs" textLength="9.21">X0</text>
+<text y="470552.1135" x="273.18" style="font-size:7.500000pt" lengthAdjust="spacingAndGlyphs" textLength="9.15">X2</text>
+<text y="470552.1135" x="421.68" style="font-size:7.500000pt" lengthAdjust="spacingAndGlyphs" textLength="9.21">X0</text>
+<text y="470619.6135" x="197.82" style="font-size:7.500000pt" lengthAdjust="spacingAndGlyphs" textLength="9.15">X2</text>
+<text y="470552.1135" x="198.9" style="font-size:7.500000pt" lengthAdjust="spacingAndGlyphs" textLength="9.15">X3</text>
+<text y="470619.6135" x="347.4" style="font-size:7.500000pt" lengthAdjust="spacingAndGlyphs" textLength="9.15">X0</text>
+<text y="470552.1135" x="347.4" style="font-size:7.500000pt" lengthAdjust="spacingAndGlyphs" textLength="9.15">X1</text></svg>
+<h3>Figure 4-2.  VMOVDDUP Operation</h3>
+<p><strong>Operation</strong></p>
+<p><strong>VMOVDDUP (EVEX encoded versions)</strong></p>
+<p>(KL, VL) = (2, 128), (4, 256), (8, 512)</p>
+<p>TMP_SRC[63:0] (cid:197) SRC[63:0]</p>
+<p>TMP_SRC[127:64] (cid:197) SRC[63:0]</p>
+<p>IF VL &gt;= 256</p>
+<p>TMP_SRC[191:128] (cid:197) SRC[191:128]</p>
+<p>TMP_SRC[255:192] (cid:197) SRC[191:128]</p>
+<p>FI;</p>
+<p>IF VL &gt;= 512</p>
+<p>TMP_SRC[319:256] (cid:197) SRC[319:256]</p>
+<p>TMP_SRC[383:320] (cid:197) SRC[319:256]</p>
+<p>TMP_SRC[477:384] (cid:197) SRC[477:384]</p>
+<p>TMP_SRC[511:484] (cid:197) SRC[477:384]</p>
+<p>FI;</p>
+<p>FOR j (cid:197) 0 TO KL-1</p>
+<p>i (cid:197) j * 64</p>
+<p>IF k1[j] OR *no writemask*</p>
+<p>THEN DEST[i+63:i] (cid:197) TMP_SRC[i+63:i]</p>
+<p>ELSE</p>
+<p>IF *merging-masking*</p>
+<p>; merging-masking</p>
+<p>THEN *DEST[i+63:i] remains unchanged*</p>
+<p>ELSE</p>
+<p>; zeroing-masking</p>
+<p>DEST[i+63:i] (cid:197) 0</p>
+<p>; zeroing-masking</p>
+<p>FI</p>
+<p>FI;</p>
+<p>ENDFOR</p>
+<p>DEST[MAX_VL-1:VL] (cid:197) 0</p>
+<p><strong>VMOVDDUP (VEX.256 encoded version)</strong></p>
+<p>DEST[63:0] (cid:197)SRC[63:0]</p>
+<p>DEST[127:64] (cid:197)SRC[63:0]</p>
+<p>DEST[191:128] (cid:197)SRC[191:128]</p>
+<p>DEST[255:192] (cid:197)SRC[191:128]</p>
+<p>DEST[MAX_VL-1:256] (cid:197)0</p>
+<p><strong>VMOVDDUP (VEX.128 encoded version)</strong></p>
+<p>DEST[63:0] (cid:197)SRC[63:0]</p>
+<p>DEST[127:64] (cid:197)SRC[63:0]</p>
+<p>DEST[MAX_VL-1:128] (cid:197)0</p>
+<p><strong>MOVDDUP (128-bit Legacy SSE version)</strong></p>
+<p>DEST[63:0] (cid:197)SRC[63:0]</p>
+<p>DEST[127:64] (cid:197)SRC[63:0]</p>
+<p>DEST[MAX_VL-1:128] (Unmodified)</p>
+<p><strong>Intel C/C++ Compiler Intrinsic Equivalent</strong></p>
+<p>VMOVDDUP __m512d _mm512_movedup_pd( __m512d a);</p>
+<p>VMOVDDUP __m512d _mm512_mask_movedup_pd(__m512d s, __mmask8 k, __m512d a);</p>
+<p>VMOVDDUP __m512d _mm512_maskz_movedup_pd( __mmask8 k, __m512d a);</p>
+<p>VMOVDDUP __m256d _mm256_mask_movedup_pd(__m256d s, __mmask8 k, __m256d a);</p>
+<p>VMOVDDUP __m256d _mm256_maskz_movedup_pd( __mmask8 k, __m256d a);</p>
+<p>VMOVDDUP __m128d _mm_mask_movedup_pd(__m128d s, __mmask8 k, __m128d a);</p>
+<p>VMOVDDUP __m128d _mm_maskz_movedup_pd( __mmask8 k, __m128d a);</p>
+<p>MOVDDUP __m256d _mm256_movedup_pd (__m256d a);</p>
+<p>MOVDDUP __m128d _mm_movedup_pd (__m128d a);</p>
+<p><strong>SIMD Floating-Point Exceptions</strong></p>
+<p>None</p>
+<p><strong>Other Exceptions</strong></p>
+<p>Non-EVEX-encoded instruction, see Exceptions Type 5;</p>
+<table class="exception-table">
+<tr>
+<td>EVEX-encoded instruction, see Exceptions Type E5NF.</td></tr>
+<tr>
+<td>If EVEX.vvvv != 1111B or VEX.vvvv != 1111B.</td></tr></table></body></html>
