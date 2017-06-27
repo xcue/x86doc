@@ -52,13 +52,21 @@ class HtmlText(object):
 			elif self.__is_close(t):
 				
 				if not (close_stack[-1].tag == t.tag):
+<<<<<<< HEAD:htmltext.py
+					print close_stack
+					print self.tokens
+					raise Exception("autoclose mismatch")
+				close_stack.pop()
+
+=======
 					print "autoclose mismatch"
 					#print close_stack
 					#print self.tokens
 					#raise Exception("autoclose mismatch")
 				else:
 					close_stack.pop()
-
+		
+>>>>>>> master:Python/htmltext.py
 		while len(close_stack) > 0:
 			self.append(CloseTag(close_stack.pop().tag))
 

@@ -18,13 +18,13 @@ def main(argv):
 		if not document.is_extractable:
 			print "Document not extractable."
 			return 1
-	
+
 		params = LAParams(char_margin=1)
 		resMan = PDFResourceManager(caching=True)
 		device = PDFPageAggregator(resMan, laparams=params)
 		interpreter = PDFPageInterpreter(resMan, device)
 		parser = x86ManParser("html", params)
-	
+
 		i = 1
 		for page in PDFPage.get_pages(fd, set(), caching=True, check_extractable=True):
 			print "Processing page %i" % i
@@ -34,8 +34,11 @@ def main(argv):
 			i += 1
 		parser.flush()
 		fd.close()
-	
+
 		print "Conversion result: %i/%i" % (parser.success, parser.success + parser.fail)
+
+		with open("opcodes.json", "wb") as fd:
+			fd.write(parser.output_opcodes_json())
 
 if __name__ == "__main__":
 	result = main(sys.argv)

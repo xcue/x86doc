@@ -3,4 +3,6 @@ th, td { padding: 0px 10px; border: 1px #ddd solid; vertical-align: top }
 svg { display: block; margin: 0px auto }
 svg + h3 { text-align: center; }
 
+table.opcodes { font: 10pt "Courier New", monospace; }
+
 .notes { font-size: 9pt; }

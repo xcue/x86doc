@@ -184,10 +184,17 @@ class Table(TableBase):
 		hor = []
 		for line in group:
 			(ver if line.vertical() else hor).append(line)
+<<<<<<< HEAD:pdftable.py
 
+		assert len(ver) >= 2
+		assert len(hor) >= 2
+
+=======
+		
 		#assert len(ver) >= 2
 		#assert len(hor) >= 2
-
+		
+>>>>>>> master:Python/pdftable.py
 		self.__columns = self.__identify_dimension(ver, Rect.xmid)
 		self.__rows = self.__identify_dimension(hor, Rect.ymid)
 		self.__init_data_layout()
